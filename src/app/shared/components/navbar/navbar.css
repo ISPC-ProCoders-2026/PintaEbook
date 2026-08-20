@@ -43,8 +43,10 @@
 
 .navbar__left a,
 .navbar__right a {
-	color: #FFFFFF;
+	color: #5e0b15;
 	text-decoration: none;
+	font-weight: 600;
+	
 }
 
 .navbar__left a:hover,
