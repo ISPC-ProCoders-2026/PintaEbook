@@ -5,6 +5,7 @@
 	padding-inline: 2.5rem;
 	padding-block: 1rem;
 	min-height: 5.5rem;
+	background-color: #D9CAB3;
 }
 
 .navbar__left {
@@ -13,6 +14,18 @@
 
 .navbar__brand {
 	justify-self: center;
+}
+
+.navbar__brand a {
+	display: block;
+	line-height: 0;
+}
+
+.navbar__brand img {
+	display: block;
+	width: 11.25rem;
+	height: auto;
+	border-radius: 16px;
 }
 
 .navbar__right {
@@ -26,4 +39,15 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
+}
+
+.navbar__left a,
+.navbar__right a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.navbar__left a:hover,
+.navbar__right a:hover {
+	color: #BC8034;
 }
