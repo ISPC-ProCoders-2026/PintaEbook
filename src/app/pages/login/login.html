@@ -89,7 +89,15 @@
           <input type="checkbox" class="h-4.5 w-4.5 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]">
           <span>Recuérdame</span>
         </label>
-        <a href="#" class="font-medium text-[#5d131a] transition hover:text-[#8c2832]">¿Olvidaste tu contraseña?</a>
+        <button
+          type="button"
+          (click)="openRecoveryModal()"
+          class="font-medium text-[#5d131a] transition hover:text-[#8c2832] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a]"
+          aria-haspopup="dialog"
+          [attr.aria-expanded]="isRecoveryModalOpen"
+        >
+          ¿Olvidaste tu contraseña?
+        </button>
       </div>
 
       <!-- Botón Entrar -->
@@ -125,3 +133,55 @@
     </form>
   </div>
 </section>
+
+@if (isRecoveryModalOpen) {
+  <div
+    class="recovery-backdrop"
+    role="presentation"
+    (click)="closeRecoveryModal()"
+  >
+    <div
+      class="recovery-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="recovery-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        type="button"
+        class="recovery-close"
+        aria-label="Cerrar recuperación de contraseña"
+        (click)="closeRecoveryModal()"
+      >
+        ×
+      </button>
+
+      <p class="recovery-kicker">Seguridad</p>
+      <h2 id="recovery-title" class="recovery-title">Recuperar contraseña</h2>
+      <p class="recovery-description">
+        Ingresa tu correo electrónico registrado y te enviaremos instrucciones para restablecer tu acceso.
+      </p>
+
+      <form class="recovery-form" (ngSubmit)="onSubmit()" novalidate>
+        <label for="recover-email" class="recovery-label">Correo electrónico</label>
+        <input
+          id="recover-email"
+          type="email"
+          name="recoverEmail"
+          class="recovery-input"
+          placeholder="tu@correo.com"
+          autocomplete="email"
+          required
+        >
+
+        <button type="submit" class="recovery-submit">
+          Enviar enlace
+        </button>
+      </form>
+
+      <button type="button" class="recovery-secondary" (click)="closeRecoveryModal()">
+        Volver al inicio de sesión
+      </button>
+    </div>
+  </div>
+}
