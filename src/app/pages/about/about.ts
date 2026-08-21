@@ -1,11 +1,12 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Navbar } from "../../shared/components/navbar/navbar";
 import { RouterLink } from '@angular/router';
+import { Footer } from "../../shared/components/footer/footer";
 
 
 @Component({
   selector: 'app-about',
-  imports: [Navbar, RouterLink],
+  imports: [Navbar, RouterLink, Footer],
   templateUrl: './about.html',
   styleUrl: './about.css',
 })
