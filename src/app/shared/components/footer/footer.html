@@ -1,36 +1,43 @@
 <footer class="footer" aria-label="Pie de página de PintaEbook">
-	<div class="mx-auto max-w-7xl px-8 py-16 lg:px-12 lg:py-20">
-		<div class="grid grid-cols-4 gap-12">
-			<section class="col-span-1" aria-label="Identidad de PintaEbook">
-				<a class="footer__brand" routerLink="/" aria-label="PintaEbook, volver al inicio">
-					PintaEbook
-				</a>
-				<p class="footer__intro">
-					Un espacio para leer, escribir y dar forma a nuevas historias.
-				</p>
-			</section>
+	<div class="footer__main">
+		<div class="mx-auto max-w-7xl px-8 py-16 lg:px-12 lg:py-20">
+			<div class="footer__grid grid gap-12 lg:grid-cols-4 lg:gap-16">
+				<section class="footer__identity" aria-label="Identidad de PintaEbook">
+					<span class="footer__ornament" aria-hidden="true">✦</span>
+					<a class="footer__brand" routerLink="/" aria-label="PintaEbook, volver al inicio">
+						PintaEbook
+					</a>
+					<p class="footer__intro">
+						Un espacio para leer, escribir y dar forma a nuevas historias.
+					</p>
+				</section>
 
-			<nav aria-labelledby="footer-navigation-title">
-				<h2 id="footer-navigation-title" class="footer__heading">Navegación</h2>
-				<ul class="footer__links">
-					<li><a routerLink="/">Inicio</a></li>
-					<li><a routerLink="/about">Sobre nosotros</a></li>
-					<li><a routerLink="/login">Iniciar sesión</a></li>
-				</ul>
-			</nav>
+				<nav aria-labelledby="footer-navigation-title">
+					<h2 id="footer-navigation-title" class="footer__heading">Navegación</h2>
+					<ul class="footer__links">
+						<li><a routerLink="/">Inicio</a></li>
+						<li><a routerLink="/about">Sobre nosotros</a></li>
+						<li><a routerLink="/login">Iniciar sesión</a></li>
+					</ul>
+				</nav>
 
-			<section aria-labelledby="footer-resources-title">
-				<h2 id="footer-resources-title" class="footer__heading">Producto</h2>
-				<p class="footer__empty">Próximamente, nuevas herramientas para tus historias.</p>
-			</section>
+				<section aria-labelledby="footer-resources-title">
+					<h2 id="footer-resources-title" class="footer__heading">Producto</h2>
+					<p class="footer__empty">Próximamente, nuevas herramientas para tus historias.</p>
+				</section>
 
-			<section aria-labelledby="footer-contact-title">
-				<h2 id="footer-contact-title" class="footer__heading">Contacto</h2>
-				<p class="footer__empty">Información de contacto próximamente.</p>
-			</section>
+				<section aria-labelledby="footer-contact-title">
+					<h2 id="footer-contact-title" class="footer__heading">Contacto</h2>
+					<p class="footer__empty">Información de contacto próximamente.</p>
+				</section>
+			</div>
+
+			<div class="footer__rule" aria-hidden="true"><span>❦</span></div>
 		</div>
+	</div>
 
-		<div class="footer__bottom mt-16 flex items-center justify-between gap-8 pt-6">
+	<div class="footer__bottom">
+		<div class="mx-auto flex max-w-7xl flex-col gap-4 px-8 py-6 sm:flex-row sm:items-center sm:justify-between lg:px-12">
 			<p>&copy; 2026 PintaEbook. Todos los derechos reservados.</p>
 			<p class="footer__note">Hecho para quienes convierten ideas en libros.</p>
 		</div>
