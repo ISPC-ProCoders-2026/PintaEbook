@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {}
+export class Login {
+   onSubmit(): void {
+    // La integración de autenticación se añadirá cuando esté disponible el endpoint.
+  }
+}
