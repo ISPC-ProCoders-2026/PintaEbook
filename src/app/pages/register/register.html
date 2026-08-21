@@ -1,0 +1,166 @@
+<section class="login-layout h-screen min-h-screen overflow-hidden text-[#2f1818] lg:grid lg:grid-cols-[1.05fr_auto_1fr]">
+  <div class="relative hidden h-full overflow-hidden lg:block">
+    <img
+      src="/img/home/hero.jpg"
+      alt="Mesa editorial con cuaderno y pluma"
+      class="absolute inset-0 h-full w-full object-cover"
+    >
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(46,9,11,0.52),rgba(46,9,11,0.82))]"></div>
+
+    <div class="bookmark-card absolute top-0 left-10 z-20 flex flex-col items-center bg-[#f7f4ee] px-5 pt-6 pb-4 text-center shadow-lg">
+      <img src="/img/logos/logo_sin_fondo2.png" width="111" height="100" alt="Pinta Ebook" class="h-auto">
+      <a routerLink="/" class="mt-2 inline-flex items-center gap-2 text-sm text-[#4e2e25] transition hover:text-[#7a4a3a]">
+        <span aria-hidden="true">←</span>
+        Volver a inicio
+      </a>
+    </div>
+
+    <div class="relative z-10 mx-auto flex h-full max-w-2xl items-center justify-center px-12 py-14 text-center text-white">
+      <div>
+        <p class="text-[0.82rem] font-semibold uppercase tracking-[0.31em] text-[#d5a658]">Únete a nuestra comunidad</p>
+        <h2 class="mt-8 text-balance font-[Georgia,Times_New_Roman,serif] text-6xl font-medium italic leading-[1.22] text-white">
+          “ Donde cada historia
+          comienza con una idea.
+          ”
+        </h2>
+        <div class="mx-auto my-9 h-px w-14 bg-[#d5a658]"></div>
+        <p class="mx-auto max-w-lg text-[1.95rem] font-[Georgia,Times_New_Roman,serif] leading-relaxed text-white/90">
+          Crea tu biblioteca, guarda tus proyectos y comparte tus historias con el mundo.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden h-full lg:block">
+    <div class="login-ribbon h-full" aria-hidden="true"></div>
+  </div>
+
+  <div class="relative flex h-full items-center justify-center overflow-y-auto px-6 py-14 sm:px-10 lg:px-16">
+    <form class="w-full max-w-xl" (ngSubmit)="onSubmit()">
+      <p class="text-[0.82rem] font-semibold uppercase tracking-[0.23em] text-[#ba8b45]">Registro</p>
+      <h1 class="mt-5 font-[Georgia,Times_New_Roman,serif] text-[3.25rem] font-semibold leading-none text-[#3d1718]">Crear cuenta</h1>
+      <p class="mt-5 text-xl text-[#66544c]">Empieza a escribir tu próximo proyecto.</p>
+
+      <div class="mt-10 space-y-7">
+        <div class="grid gap-7 sm:grid-cols-2">
+          <div>
+            <label for="firstName" class="mb-2.5 block text-[0.95rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Nombre</label>
+            <input
+              id="firstName"
+              type="text"
+              autocomplete="given-name"
+              placeholder="Tu nombre"
+              required
+              class="h-15 w-full rounded-[1.1rem] border border-[#b69367] bg-white/95 px-5 text-lg text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+            >
+          </div>
+
+          <div>
+            <label for="lastName" class="mb-2.5 block text-[0.95rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Apellido</label>
+            <input
+              id="lastName"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Tu apellido"
+              required
+              class="h-15 w-full rounded-[1.1rem] border border-[#b69367] bg-white/95 px-5 text-lg text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="register-email" class="mb-2.5 block text-[0.95rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Correo electrónico</label>
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-[#9f9088]" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 7h16v10H4z"></path>
+                <path d="m4 8 8 6 8-6"></path>
+              </svg>
+            </span>
+            <input
+              id="register-email"
+              type="email"
+              autocomplete="email"
+              placeholder="tu@correo.com"
+              required
+              class="h-15 w-full rounded-[1.1rem] border border-[#b69367] bg-white/95 pr-5 pl-12 text-lg text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="register-password" class="mb-2.5 block text-[0.95rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Contraseña</label>
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-[#9f9088]" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+                <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+              </svg>
+            </span>
+            <input
+              id="register-password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="••••••••"
+              required
+              class="h-15 w-full rounded-[1.1rem] border border-[#b69367] bg-white/95 pr-5 pl-12 text-lg text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="confirm-password" class="mb-2.5 block text-[0.95rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Confirmar contraseña</label>
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-[#9f9088]" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+                <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+              </svg>
+            </span>
+            <input
+              id="confirm-password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Repite tu contraseña"
+              required
+              class="h-15 w-full rounded-[1.1rem] border border-[#b69367] bg-white/95 pr-5 pl-12 text-lg text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+            >
+          </div>
+        </div>
+      </div>
+
+      <label class="mt-6 flex items-center gap-3 text-[1.05rem] text-[#6b5348]">
+        <input type="checkbox" class="h-4.5 w-4.5 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]" required>
+        <span>Acepto los términos y condiciones</span>
+      </label>
+
+      <button type="submit" class="mt-8 h-15 w-full rounded-2xl bg-[#5d131a] text-[1.65rem] font-semibold text-white transition hover:bg-[#7e1f2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a]">
+        Registrarme
+      </button>
+
+      <div class="relative my-6 flex items-center justify-center">
+        <div class="w-full border-t border-[#b69367]/40"></div>
+        <span class="absolute bg-[#fcfaf7] px-4 text-sm uppercase tracking-widest text-[#7c675e]">o</span>
+      </div>
+
+      <button
+        type="button"
+        (click)="registerWithGoogle()"
+        class="flex h-15 w-full items-center justify-center gap-3 rounded-2xl border border-[#b69367] bg-white/95 text-lg font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b5d24]"
+      >
+        <svg class="h-6 w-6" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        Registrarse con Google
+      </button>
+
+      <p class="mt-8 text-center text-[1.15rem] text-[#624f46]">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login" class="font-semibold text-[#5d131a] underline-offset-3 transition hover:text-[#8c2832] hover:underline">Iniciar sesión</a>
+      </p>
+    </form>
+  </div>
+</section>
