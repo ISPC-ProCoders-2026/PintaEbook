@@ -1,28 +1,88 @@
 <app-navbar />
 
-<section class="hero">
-  <video
-  class="hero__video"
-  autoplay
-  muted
-  loop
-  playsinline
->
-  <source src="img/home/video-hero.mp4" type="video/mp4">
-</video>
-
- <div class="hero__content text-left items-start px-[8vw]">
-
-    <h1 class="text-5xl">Bienvenido a PintaEbook</h1>
-
-    <p class="hero__description" class="text-2xl">
-      Transformá tus ideas en historias.
-    </p>
-
-    <a routerLink="/login" class="hero__button">
-      Comenzar a escribir
+<main>
+  <section class="hero" aria-labelledby="home-title">
+    <video class="hero__video" autoplay muted loop playsinline aria-hidden="true">
+      <source src="img/home/video-hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__content">
+      <p class="eyebrow">Tu rincón para crear</p>
+      <h1 id="home-title">Historias que esperan<br />ser contadas.</h1>
+      <p class="hero__description">
+        Escribí, organizá y convertí tus ideas en un libro que sea verdaderamente tuyo.
+      </p>
+      <div class="hero__actions">
+        <a routerLink="/register" class="button button--primary">Empezar a escribir</a>
+        <a routerLink="/about" class="button button--secondary">Conocé PintaEbook <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <a class="hero__scroll" href="#explorar" aria-label="Ir a explorar">
+      <span></span>
+      Explorar
     </a>
-  </div>
-</section>
+  </section>
+
+  <section id="explorar" class="section section--featured" aria-labelledby="featured-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Para inspirarte</p>
+        <h2 id="featured-title">Destacados de la semana</h2>
+      </div>
+      <a routerLink="/register" class="text-link">Ver biblioteca <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="book-grid">
+      <article class="book-card">
+        <div class="book-cover book-cover--terracotta"><span>Donde<br />nace<br />la luz</span></div>
+        <p class="book-card__genre">Ficción contemporánea</p>
+        <h3>Donde nace la luz</h3>
+        <p class="book-card__author">Lucía Ferrer</p>
+      </article>
+      <article class="book-card">
+        <div class="book-cover book-cover--forest"><span>El jardín<br />de las<br />horas</span></div>
+        <p class="book-card__genre">Narrativa</p>
+        <h3>El jardín de las horas</h3>
+        <p class="book-card__author">Martín Saavedra</p>
+      </article>
+      <article class="book-card">
+        <div class="book-cover book-cover--ink"><span>Cartas<br />al mar</span></div>
+        <p class="book-card__genre">Poesía</p>
+        <h3>Cartas al mar</h3>
+        <p class="book-card__author">Julia Ares</p>
+      </article>
+      <article class="book-card">
+        <div class="book-cover book-cover--gold"><span>La casa<br />de los<br />pájaros</span></div>
+        <p class="book-card__genre">Misterio</p>
+        <h3>La casa de los pájaros</h3>
+        <p class="book-card__author">Sofía Cárdenas</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--categories" aria-labelledby="categories-title">
+    <div class="section-heading section-heading--center">
+      <p class="eyebrow">Encontrá tu voz</p>
+      <h2 id="categories-title">Explorá por género</h2>
+      <p class="section-intro">Cada historia tiene su propio ritmo. Elegí el universo donde querés empezar.</p>
+    </div>
+
+    <div class="category-grid">
+      <a routerLink="/register" class="category-card"><span class="category-card__number">01</span><h3>Novela</h3><p>Mundos para habitar sin prisa.</p><span aria-hidden="true">↗</span></a>
+      <a routerLink="/register" class="category-card"><span class="category-card__number">02</span><h3>Poesía</h3><p>Palabras que dejan huella.</p><span aria-hidden="true">↗</span></a>
+      <a routerLink="/register" class="category-card"><span class="category-card__number">03</span><h3>Ensayo</h3><p>Ideas que abren conversación.</p><span aria-hidden="true">↗</span></a>
+      <a routerLink="/register" class="category-card"><span class="category-card__number">04</span><h3>Relatos</h3><p>Pequeños viajes memorables.</p><span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <section class="writing-callout" aria-labelledby="callout-title">
+    <div class="writing-callout__copy">
+      <p class="eyebrow">Tu próxima página empieza acá</p>
+      <h2 id="callout-title">Una idea puede convertirse en un mundo.</h2>
+      <p>No necesitás tener todo resuelto. Empezá con una frase y dejá que la historia encuentre su camino.</p>
+      <a routerLink="/register" class="button button--light">Crear mi proyecto</a>
+    </div>
+    <div class="writing-callout__ornament" aria-hidden="true"><span>“</span></div>
+  </section>
+</main>
 
 <app-footer />
