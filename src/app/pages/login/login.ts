@@ -8,10 +8,24 @@ import { RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-loginWithGoogle() {
+openRecoveryModal() {
 throw new Error('Method not implemented.');
 }
-   onSubmit(): void {
+  isRecoveryModalOpen = false;
+
+  openRecoveryModal(): void {
+    this.isRecoveryModalOpen = true;
+  }
+
+  closeRecoveryModal(): void {
+    this.isRecoveryModalOpen = false;
+  }
+
+  loginWithGoogle(): void {
+    // La integración con Google se añadirá cuando esté disponible el proveedor.
+  }
+
+  onSubmit(): void {
     // La integración de autenticación se añadirá cuando esté disponible el endpoint.
   }
 }
