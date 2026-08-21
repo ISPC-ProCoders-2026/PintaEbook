@@ -12,5 +12,10 @@ export const routes: Routes = [
   {
     path: 'login', component: Login
   },
+  {
+    path: 'register',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
   { path: 'about', component: About }
 ];
