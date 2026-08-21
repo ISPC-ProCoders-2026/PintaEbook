@@ -8,9 +8,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-openRecoveryModal() {
-throw new Error('Method not implemented.');
-}
   isRecoveryModalOpen = false;
 
   openRecoveryModal(): void {

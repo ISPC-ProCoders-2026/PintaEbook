@@ -6,7 +6,7 @@
       class="absolute inset-0 h-full w-full object-cover"
     >
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(46,9,11,0.52),rgba(46,9,11,0.82))]"></div>
-
+ 
     <!-- Marcador / Bookmark -->
     <div class="bookmark-card absolute top-0 left-10 z-20 flex flex-col items-center  bg-[#f7f4ee] px-5 pt-6 pb-4 text-center shadow-lg">
       <img src="/img/logos/logo_sin_fondo2.png" width="111" height="100" alt="Pinta Ebook" class="h-auto ">
@@ -15,7 +15,7 @@
         Volver a inicio
       </a>
     </div>
-
+ 
     <div class="relative z-10 mx-auto flex h-full max-w-2xl items-center justify-center px-12 py-14 text-center text-white">
       <div>
         <p class="text-[0.82rem] font-semibold uppercase tracking-[0.31em] text-[#d5a658]">Bienvenido de nuevo</p>
@@ -31,19 +31,17 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="hidden h-full lg:block">
     <div class="login-ribbon h-full" aria-hidden="true"></div>
   </div>
-
+ 
   <div class="relative flex h-full items-center justify-center px-6 py-8 sm:px-10 lg:px-16">
     <form class="w-full max-w-xl" (ngSubmit)="onSubmit()">
       <p class="text-[0.82rem] font-semibold uppercase tracking-[0.23em] text-[#ba8b45]">Acceso</p>
-      <h1 class="mt-5 font-[Georgia,Times_New_Roman,serif] text-[2rem] font-semibold leading-none text-[#3d1718]">Iniciar sesión</h1>
-      <p class="mt-5 text-xl text-[#66544c]">Accede a tu biblioteca y proyectos.</p>
       <h1 class="mt-3 font-[Georgia,Times_New_Roman,serif] text-[2.7rem] font-semibold leading-none text-[#3d1718]">Iniciar sesión</h1>
       <p class="mt-3 text-[1.02rem] text-[#66544c]">Accede a tu biblioteca y proyectos.</p>
-
+ 
       <div class="mt-6 space-y-4">
         <div>
           <label for="email" class="mb-1.5 block text-[0.8rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Correo electrónico</label>
@@ -64,7 +62,7 @@
             >
           </div>
         </div>
-
+ 
         <div>
           <label for="password" class="mb-1.5 block text-[0.8rem] font-semibold uppercase tracking-[0.13em] text-[#7c675e]">Contraseña</label>
           <div class="relative">
@@ -85,7 +83,7 @@
           </div>
         </div>
       </div>
-
+ 
       <div class="mt-4 flex flex-col gap-3 text-[0.94rem] text-[#6b5348] sm:flex-row sm:items-center sm:justify-between">
         <label class="inline-flex items-center gap-3">
           <input type="checkbox" class="h-4 w-4 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]">
@@ -101,16 +99,16 @@
           ¿Olvidaste tu contraseña?
         </button>
       </div>
-
+ 
       <button type="submit" class="mt-6 h-12 w-full rounded-xl bg-[#5d131a] text-[1.32rem] font-semibold text-white transition hover:bg-[#7e1f2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a]">
         Entrar
       </button>
-
+ 
       <div class="relative my-4 flex items-center justify-center">
         <div class="w-full border-t border-[#b69367]/40"></div>
         <span class="absolute bg-[#fcfaf7] px-4 text-[0.72rem] uppercase tracking-widest text-[#7c675e]">o</span>
       </div>
-
+ 
       <button
         type="button"
         (click)="loginWithGoogle()"
@@ -124,7 +122,7 @@
         </svg>
         Ingresar con Google
       </button>
-
+ 
       <p class="mt-6 text-center text-[1rem] text-[#624f46]">
         ¿Aún no tienes cuenta?
         <a routerLink="/register" class="font-semibold text-[#5d131a] underline-offset-3 transition hover:text-[#8c2832] hover:underline">Crear cuenta</a>
@@ -132,7 +130,7 @@
     </form>
   </div>
 </section>
-
+ 
 @if (isRecoveryModalOpen) {
   <div
     class="recovery-backdrop"
@@ -154,13 +152,13 @@
       >
         ×
       </button>
-
+ 
       <p class="recovery-kicker">Seguridad</p>
       <h2 id="recovery-title" class="recovery-title">Recuperar contraseña</h2>
       <p class="recovery-description">
         Ingresa tu correo electrónico registrado y te enviaremos instrucciones para restablecer tu acceso.
       </p>
-
+ 
       <form class="recovery-form" (ngSubmit)="onSubmit()" novalidate>
         <label for="recover-email" class="recovery-label">Correo electrónico</label>
         <input
@@ -172,12 +170,12 @@
           autocomplete="email"
           required
         >
-
+ 
         <button type="submit" class="recovery-submit">
           Enviar enlace
         </button>
       </form>
-
+ 
       <button type="button" class="recovery-secondary" (click)="closeRecoveryModal()">
         Volver al inicio de sesión
       </button>
