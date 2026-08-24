@@ -1,7 +1,7 @@
 .footer {
 	--footer-cream: #f2efe3;
-	--footer-ink: #2d312c;
-	--footer-burgundy: #560b14;
+	--footer-ink: #8C7A6B;
+	--footer-burgundy: #5E0B15;
 	--footer-gold: #bc8034;
 	background: var(--footer-cream);
 	color: var(--footer-ink);
@@ -63,7 +63,7 @@
 }
 
 .footer__intro {
-	color: #55584f;
+	color: var(--footer-ink);
 	font-size: 0.95rem;
 	line-height: 1.7;
 	margin-top: 1.25rem;
@@ -108,7 +108,7 @@
 }
 
 .footer__empty {
-	color: #55584f;
+	color: var(--footer-ink);
 	font-size: 0.9rem;
 	line-height: 1.7;
 	margin-top: 1.25rem;
@@ -132,14 +132,14 @@
 }
 
 .footer__bottom {
-	background: var(--footer-burgundy);
-	color: #f2efe3;
+	background: var(--footer-cream);
+	color: var(--footer-ink);
 	font-size: 0.75rem;
 	line-height: 1.5;
 }
 
 .footer__note {
-	color: #d9b37d;
+	color: var(--footer-ink);
 	font-family: 'Cormorant Garamond', Georgia, serif;
 	font-size: 1rem;
 	font-style: italic;

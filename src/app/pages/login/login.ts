@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../service/login/login';
@@ -18,7 +18,7 @@ export class Login {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    @Inject(AuthService) private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.nonNullable.group({
