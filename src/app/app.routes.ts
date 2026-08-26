@@ -5,6 +5,7 @@ import { Register } from './pages/register/register';
 import { About } from './pages/about/about';
 import { NotFound } from './pages/not-found/not-found';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { Credits } from './pages/credits/credits';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,9 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard', component: Dashboard
+  },
+  {
+    path: 'credits', component: Credits
   },
   { path: 'about', component: About },
   {
