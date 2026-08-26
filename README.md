@@ -1,58 +1,34 @@
-PintaEbook — Frontend
+# PintaEbook — Frontend
 
-Frontend de PintaEbook, una aplicación web orientada a la creación y gestión de ebooks. El frontend está desarrollado como una Single Page Application (SPA) utilizando Angular.
+Frontend de **PintaEbook**, una aplicación web orientada a la creación y gestión de ebooks. El frontend está desarrollado como una **Single Page Application (SPA)** utilizando **Angular**.
 
-Tecnologías
+## Tecnologías
 
-Angular 21.2.x
+- Angular 21.2.x
+- TypeScript 5.9.2
+- Tailwind CSS 4.3.3
+- PostCSS 8.5.26
+- RxJS 7.8.x
+- Vitest 4.0.8
+- Prettier 3.8.1
+- npm 11.10.0
 
-TypeScript 5.9.2
+El proyecto utiliza componentes **standalone** de Angular y el builder `@angular/build:application`.
 
-Tailwind CSS 4.3.3
-
-PostCSS 8.5.26
-
-RxJS 7.8.x
-
-Vitest 4.0.8
-
-Prettier 3.8.1
-
-npm 11.10.0
-
-
-
-El proyecto utiliza componentes standalone de Angular y el builder @angular/build:application.
-
-Arquitectura
+## Arquitectura
 
 La aplicación utiliza una arquitectura basada en componentes standalone y una organización por funcionalidades.
 
+- Las rutas se encuentran definidas en `src/app/app.routes.ts` y permiten acceder a las distintas páginas de la aplicación.
+- La comunicación con el backend se encuentra encapsulada en servicios.
+  - Actualmente, el servicio de autenticación se encuentra en: `src/app/service/login/login.ts`
+  - Los modelos utilizados para la autenticación se encuentran en: `src/app/models/auth.model.ts`
+- Los componentes reutilizables de la interfaz se encuentran dentro de: `src/app/shared/components/`
+  - Actualmente se utilizan componentes compartidos como **Navbar** y **Footer**.
 
+## Estructura del proyecto
 
-Las rutas se encuentran definidas en src/app/app.routes.ts y permiten acceder a las distintas páginas de la aplicación.
-
-
-
-La comunicación con el backend se encuentra encapsulada en servicios. Actualmente, el servicio de autenticación se encuentra en:
-
-src/app/service/login/login.ts
-
-
-Los modelos utilizados para la autenticación se encuentran en:
-
-src/app/models/auth.model.ts
-
-
-Los componentes reutilizables de la interfaz se encuentran dentro de:
-
-src/app/shared/components/
-
-
-Actualmente se utilizan componentes compartidos como Navbar y Footer.
-
-Estructura del proyecto
-
+```
 src/
 │
 ├── index.html
@@ -91,189 +67,142 @@ src/
         └── components/
             ├── footer/
             └── navbar/
+```
 
+Los recursos estáticos del proyecto se encuentran en `public/`.
 
-Los recursos estáticos del proyecto se encuentran en public/.
-
-Vistas
+## Vistas
 
 El frontend cuenta actualmente con las siguientes vistas:
 
+- **Home**: página principal de la aplicación.
+- **Login**: inicio de sesión mediante formulario.
+- **Register**: registro de usuarios.
+- **Dashboard**: panel principal del usuario.
+- **About**: información sobre el proyecto.
+- **Not Found**: página de error 404.
 
+Las vistas se encuentran organizadas dentro de `src/app/pages/`.
 
-Home: página principal de la aplicación.
+## Componentes compartidos
 
-Login: inicio de sesión mediante formulario.
-
-Register: registro de usuarios.
-
-Dashboard: panel principal del usuario.
-
-About: información sobre el proyecto.
-
-Not Found: página de error 404.
-
-
-
-Las vistas se encuentran organizadas dentro de src/app/pages/.
-
-Componentes compartidos
-
-El proyecto cuenta con componentes reutilizables ubicados en:
-
-src/app/shared/components/
-
+El proyecto cuenta con componentes reutilizables ubicados en: `src/app/shared/components/`
 
 Entre ellos se encuentran:
 
-
-
-Navbar
-
-Footer
-
-
+- Navbar
+- Footer
 
 Estos componentes permiten mantener elementos comunes de la interfaz entre las diferentes vistas.
 
-Estilos
+## Estilos
 
-El proyecto utiliza Tailwind CSS como framework de estilos.
+El proyecto utiliza **Tailwind CSS** como framework de estilos. La integración se realiza mediante PostCSS y se encuentra configurada a través de `.postcssrc.json`.
 
+- Los estilos globales se encuentran en: `src/styles.css`
+- Las páginas también cuentan con sus propios archivos CSS para estilos específicos.
 
+## Autenticación
 
-La integración se realiza mediante PostCSS y se encuentra configurada a través de .postcssrc.json.
+El frontend cuenta con un servicio de autenticación ubicado en: `src/app/service/login/login.ts`
 
+El servicio gestiona el inicio y cierre de sesión y mantiene el token recibido por el backend en `localStorage`.
 
+El modelo de autenticación se encuentra definido en: `src/app/models/auth.model.ts`
 
-Los estilos globales se encuentran en:
+La comunicación con el backend para el inicio de sesión utiliza una API REST:
 
-src/styles.css
-
-
-Las páginas también cuentan con sus propios archivos CSS para estilos específicos.
-
-Autenticación
-
-El frontend cuenta con un servicio de autenticación ubicado en:
-
-src/app/service/login/login.ts
-
-
-El servicio gestiona el inicio y cierre de sesión y mantiene el token recibido por el backend en localStorage.
-
-
-
-El modelo de autenticación se encuentra definido en:
-
-src/app/models/auth.model.ts
-
-
-La comunicación con el backend para el inicio de sesión utiliza una API REST.
-
+```
 POST {API_BASE_URL}/auth/login/
+```
 
-
-Configuración del entorno
+## Configuración del entorno
 
 La URL base de la API se configura mediante variables de entorno.
 
+El proyecto utiliza el archivo `.env` con la variable:
 
-
-El proyecto utiliza el archivo:
-
-.env
-
-
-con la variable:
-
+```
 API_BASE_URL=http://localhost:8000/api
+```
 
+El script `tools/generate-env.mjs` genera automáticamente el archivo:
 
-El script:
-
-tools/generate-env.mjs
-
-
-genera automáticamente el archivo:
-
+```
 src/environments/environment.generated.ts
-
+```
 
 La generación del entorno se ejecuta automáticamente antes de iniciar el proyecto y antes de realizar el build.
 
-Instalación
+## Instalación
 
-1. Clonar el repositorio
+### 1. Clonar el repositorio
 
-git clone https://github.com/ISPC-ProCoders-2026/PintaEbook.git
+```bash
+git clone ISPC-ProCoders-2026/PintaEbook.git
 cd PintaEbook
+```
 
+### 2. Instalar dependencias
 
-2. Instalar dependencias
-
+```bash
 npm install
+```
 
+### 3. Ejecutar el proyecto
 
-3. Ejecutar el proyecto
-
+```bash
 npm start
+```
 
+El comando `npm start` genera automáticamente la configuración del entorno y luego inicia el servidor de desarrollo de Angular.
 
-El comando npm start genera automáticamente la configuración del entorno y luego inicia el servidor de desarrollo de Angular.
+La aplicación estará disponible en: [http://localhost:4200](http://localhost:4200)
 
+> No es necesario ejecutar manualmente el script de generación del entorno.
 
+## Comandos disponibles
 
-La aplicación estará disponible en:
+### Desarrollo
 
-http://localhost:4200
-
-
-No es necesario ejecutar manualmente el script de generación del entorno.
-
-Comandos disponibles
-
-Desarrollo
-
+```bash
 npm start
-
+```
 
 Inicia el servidor de desarrollo de Angular.
 
-Build
+### Build
 
+```bash
 npm run build
-
+```
 
 Genera una compilación del proyecto.
 
-Build en modo desarrollo
+### Build en modo desarrollo
 
+```bash
 npm run watch
-
+```
 
 Compila el proyecto utilizando la configuración de desarrollo y observa los cambios realizados en los archivos.
 
-Tests
+### Tests
 
+```bash
 npm test
-
+```
 
 Ejecuta la configuración de pruebas del proyecto.
 
-Recursos
+## Recursos
 
-Los recursos visuales y archivos estáticos se encuentran en:
-
-public/
-
+Los recursos visuales y archivos estáticos se encuentran en: `public/`
 
 Actualmente incluye recursos utilizados por la interfaz, como logotipos e imágenes y videos utilizados en la página Home.
 
-Proyecto
+## Proyecto
 
-PintaEbook forma parte del proyecto académico FullStack II de la Tecnicatura Superior en Desarrollo de Software del ISPC.
-
-
+PintaEbook forma parte del proyecto académico **FullStack II** de la **Tecnicatura Superior en Desarrollo de Software** del **ISPC**.
 
 El frontend se desarrolla de manera independiente del backend y se comunica con este mediante una API REST.
