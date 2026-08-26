@@ -20,7 +20,7 @@ Cambios actualmente en desarrollo.
 
 ---
 
-## [0.1.0] — 2026-08-25
+## [0.0.1] — 2026-08-25
 
 Primera versión de la interfaz frontend de PintaEbook.
 
