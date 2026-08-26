@@ -1,0 +1,67 @@
+<!-- FAQ Section -->
+<section class="py-4 lg:py-10 bg-linear-to-b from-[#fdf8ed] to-[#faf0d8]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal active">
+           
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-950 mb-6">Preguntas frecuentes</h2>
+            <p class="text-ink-500 text-lg">Todo lo que necesitas saber sobre nuestros planes.</p>
+        </div>
+
+        <div class="space-y-4 reveal active">
+            <!-- FAQ 1 -->
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 0" (click)="toggleFAQ(0)">
+                <div class="flex items-center justify-between gap-4">
+                    <h4 class="font-semibold text-ink-900 text-lg">¿Puedo cambiar de plan en cualquier momento?</h4>
+                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">¡Sí! Puedes subir o bajar de plan cuando quieras. Si cambias a un plan superior, solo pagarás la diferencia proporcional. Si bajas de plan, el cambio se aplicará al final del período de facturación actual. Sin penalizaciones ni letra pequeña.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 1" (click)="toggleFAQ(1)">
+                <div class="flex items-center justify-between gap-4">
+                    <h4 class="font-semibold text-ink-900 text-lg">¿Hay un período de prueba gratuito?</h4>
+                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">El plan Lector es completamente gratuito para siempre. Los planes Escritor y Editorial incluyen una prueba gratuita de 14 días sin necesidad de tarjeta de crédito. Puedes explorar todas las funciones premium sin compromiso.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 2" (click)="toggleFAQ(2)">
+                <div class="flex items-center justify-between gap-4">
+                    <h4 class="font-semibold text-ink-900 text-lg">¿Qué métodos de pago aceptan?</h4>
+                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Aceptamos tarjetas de crédito y débito (Visa, Mastercard, American Express), PayPal, y transferencia bancaria para planes Editorial. Todos los pagos se procesan de forma segura con encriptación SSL de 256 bits.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 3" (click)="toggleFAQ(3)">
+                <div class="flex items-center justify-between gap-4">
+                    <h4 class="font-semibold text-ink-900 text-lg">¿Puedo cancelar mi suscripción?</h4>
+                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Por supuesto. Puedes cancelar en cualquier momento desde tu panel de cuenta con un solo clic. Tu acceso a las funciones premium continuará hasta el final del período de facturación. No hay compromisos de permanencia.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 4" (click)="toggleFAQ(4)">
+                <div class="flex items-center justify-between gap-4">
+                    <h4 class="font-semibold text-ink-900 text-lg">¿Ofrecen descuentos para estudiantes o instituciones?</h4>
+                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Sí, ofrecemos un 30% de descuento para estudiantes con correo institucional verificable. Para universidades, colegios y bibliotecas, tenemos planes institucionales personalizados. Ponte en contacto con nuestro equipo de ventas para más información.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

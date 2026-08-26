@@ -1,0 +1,5 @@
+/* Patrones SVG de fondo */
+
+.pattern-lines {
+  background-image: url('data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h80v80H0z" fill="none"/%3E%3Cpath d="M0 80L80 0" stroke="%23fff" stroke-width="0.5"/%3E%3C/svg%3E');
+}

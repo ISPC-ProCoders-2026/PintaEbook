@@ -1,12 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Navbar } from "../../shared/components/navbar/navbar";
-import { RouterLink } from '@angular/router';
 import { Footer } from "../../shared/components/footer/footer";
+import { Cta } from '../../shared/components/cta/cta';
+import { ProgressBar } from "../../shared/components/progress-bar/progress-bar";
 
 
 @Component({
   selector: 'app-about',
-  imports: [Navbar, RouterLink, Footer],
+  imports: [Navbar, Cta, Footer, ProgressBar],
   templateUrl: './about.html',
   styleUrl: './about.css',
 })
