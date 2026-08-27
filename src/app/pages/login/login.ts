@@ -1,8 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../service/login/login';
 import { LoginRequest } from '../../models/auth.model';
+import { environment } from '../../../environments/environment.generated';
+
+declare var google: any;
 
 @Component({
   selector: 'app-login',
@@ -10,7 +13,7 @@ import { LoginRequest } from '../../models/auth.model';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
   isRecoveryModalOpen = false;
   isLoading = false;
   errorMessage = '';
@@ -27,16 +30,50 @@ export class Login {
     });
   }
 
+  ngOnInit(): void {
+    this.initGoogleScript();
+  }
+
+  initGoogleScript(): void {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: environment.googleClientId,
+        callback: (resp: any) => this.handleGoogleResponse(resp)
+      });
+    }
+  }
+
+  handleGoogleResponse(response: any): void {
+    const idToken = response.credential;
+    
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.authService.loginWithGoogle(idToken).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.error?.detail || err.error?.message || 'Error al iniciar sesión con Google.';
+      }
+    });
+  }
+
+  triggerGoogleLogin(): void {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.prompt(); 
+      this.errorMessage = 'El servicio de Google no está disponible.';
+    }
+  }
+
   openRecoveryModal(): void {
     this.isRecoveryModalOpen = true;
   }
 
   closeRecoveryModal(): void {
     this.isRecoveryModalOpen = false;
-  }
-
-  loginWithGoogle(): void {
-    // La integración con Google se añadirá cuando esté disponible el proveedor.
   }
 
   onSubmit(): void {

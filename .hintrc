@@ -17,7 +17,9 @@
       "default",
       {
         "ignore": [
-          "backdrop-filter"
+          "backdrop-filter",
+          "scrollbar-width",
+          "scrollbar-width: none"
         ]
       }
     ],
@@ -26,6 +28,7 @@
       {
         "button-name": "off"
       }
-    ]
+    ],
+    "typescript-config/consistent-casing": "off"
   }
 }
