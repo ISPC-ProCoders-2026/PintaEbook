@@ -1,1 +1,144 @@
-<p>dashboard works!</p>
+<div class="dashboard-shell" [class.dashboard-shell--menu-open]="isSidebarOpen">
+  <aside class="sidebar" id="dashboard-sidebar" aria-label="Navegación del espacio de escritura">
+    <div class="sidebar__texture" aria-hidden="true"></div>
+    <div class="sidebar__spine" aria-hidden="true">
+      <span></span><i>✦</i><i>✦</i><i>✦</i><i>✦</i><span></span>
+    </div>
+
+    <div class="sidebar__content">
+      <a class="brand" href="/" aria-label="PintaEbook, ir al inicio">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 7.5c4.7-1.8 8.5-.5 13 2.2v18.8c-4.5-2.7-8.3-4-13-2.2zM31 7.5c-4.7-1.8-8.5-.5-13 2.2v18.8c4.5-2.7 8.3-4 13-2.2z"/><path d="M9 12.5c2.2-.4 4.2.2 6.4 1.2M27 12.5c-2.2-.4-4.2.2-6.4 1.2"/></svg>
+        </span>
+        <span>Pinta<span>Ebook</span></span>
+      </a>
+
+      <nav class="sidebar__nav">
+        <section class="nav-group" aria-labelledby="library-title">
+          <h2 id="library-title">Mis libros</h2>
+          @for (item of libraryNavigation; track item.id) {
+            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
+              </svg>
+              {{ item.label }}
+            </button>
+          }
+        </section>
+
+        <section class="nav-group" aria-labelledby="writing-title">
+          <h2 id="writing-title">Escritura</h2>
+          @for (item of writingNavigation; track item.id) {
+            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
+              </svg>
+              {{ item.label }}
+            </button>
+          }
+        </section>
+
+        <section class="nav-group" aria-labelledby="resources-title">
+          <h2 id="resources-title">Recursos</h2>
+          @for (item of resourceNavigation; track item.id) {
+            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
+              </svg>
+              {{ item.label }}
+            </button>
+          }
+        </section>
+
+        <section class="nav-group nav-group--account" aria-labelledby="account-title">
+          <h2 id="account-title">Cuenta</h2>
+          @for (item of accountNavigation; track item.id) {
+            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
+              </svg>
+              {{ item.label }}
+            </button>
+          }
+        </section>
+      </nav>
+
+      <button type="button" class="profile-card" (click)="setActiveSection('profile')" aria-label="Abrir perfil de Juan">
+        <span class="profile-card__initials">JU</span>
+        <span class="profile-card__text"><strong>Juan</strong><small>Escritor</small></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <div class="dashboard-page">
+    <header class="topbar">
+      <button type="button" class="menu-toggle" (click)="toggleSidebar()" [attr.aria-expanded]="isSidebarOpen" aria-controls="dashboard-sidebar" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="topbar__breadcrumb"><span>Mi espacio</span><b>Dashboard</b></div>
+      <div class="topbar__actions">
+        <button type="button" class="icon-button" aria-label="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg></button>
+        <button type="button" class="icon-button icon-button--notification" aria-label="Notificaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <section class="welcome" aria-labelledby="welcome-title">
+        <div>
+          <p class="eyebrow">Jueves, 27 de agosto</p>
+          <h1 id="welcome-title">Bienvenido editor.</h1>
+          <p>Volvé a tu proyecto y seguí escribiendo.</p>
+        </div>
+        <button type="button" class="primary-action" (click)="setActiveSection('new-ebook')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Crear nuevo ebook
+        </button>
+      </section>
+
+      <section class="stats" aria-label="Resumen de escritura">
+        <article class="stat-card">
+          <span class="stat-card__icon stat-card__icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5zM4 5.5v16"/><path d="M8 7h7M8 11h7"/></svg></span>
+          <span><small>Mis proyectos</small><strong>04</strong><em>+1 este mes</em></span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-card__icon stat-card__icon--gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V4h16v16z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+          <span><small>Palabras escritas</small><strong>12.480</strong><em>+840 esta semana</em></span>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="continue-card" aria-labelledby="continue-title">
+          <div class="continue-card__heading">
+            <div><p class="eyebrow">En progreso</p><h2 id="continue-title">Continuá escribiendo</h2></div>
+            <button type="button" class="text-button" (click)="setActiveSection('ebooks')">Ver todos <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="current-book">
+            <div class="book-cover" aria-hidden="true"><span>LA CASA<br>DE LAS<br>MEMORIAS</span><i>Una novela de Juan</i></div>
+            <div class="current-book__content">
+              <p class="current-book__chapter">Capítulo 06</p>
+              <h3>La casa de las memorias</h3>
+              <p>La última vez que editaste fue hace 2 horas.</p>
+              <div class="progress-label"><span>Progreso del manuscrito</span><strong>62%</strong></div>
+              <div class="progress" role="progressbar" aria-label="Progreso de La casa de las memorias" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62"><span></span></div>
+              <button type="button" class="continue-button" (click)="setActiveSection('editor')">Continuar en el editor <span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+        </article>
+
+        <aside class="goal-card" aria-labelledby="goal-title">
+          <div class="goal-card__ornament" aria-hidden="true">✦</div>
+          <p class="eyebrow">Meta semanal</p>
+          <h2 id="goal-title">Tu ritual de escritura</h2>
+          <p>Estás muy cerca. Una sesión más y alcanzás tu objetivo.</p>
+          <div class="goal-card__amount"><strong>1.240</strong><span>/ 2.000 palabras</span></div>
+          <div class="progress progress--gold" role="progressbar" aria-label="Meta semanal" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="1240"><span></span></div>
+          <div class="goal-card__days"><span class="day day--done">L</span><span class="day day--done">M</span><span class="day day--done">X</span><span class="day day--today">J</span><span class="day">V</span><span class="day">S</span><span class="day">D</span></div>
+        </aside>
+
+      </section>
+    </main>
+  </div>
+
+  <button type="button" class="menu-backdrop" (click)="toggleSidebar()" aria-label="Cerrar menú"></button>
+</div>
