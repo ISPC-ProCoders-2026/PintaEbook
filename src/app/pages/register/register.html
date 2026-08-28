@@ -1,4 +1,4 @@
-<section class="login-layout h-screen min-h-screen overflow-hidden text-[#2f1818] lg:grid lg:grid-cols-[1.05fr_auto_1fr]">
+<section class="login-layout min-h-screen overflow-x-hidden text-[#2f1818] lg:grid lg:h-screen lg:grid-cols-[1.05fr_auto_1fr] lg:overflow-hidden">
   <div class="relative hidden h-full overflow-hidden lg:block">
     <img
       src="/img/home/hero.jpg"
@@ -35,11 +35,17 @@
     <div class="login-ribbon h-full" aria-hidden="true"></div>
   </div>
 
-  <div class="relative flex h-full items-center justify-center px-6 py-8 sm:px-10 lg:px-16">
-    <form class="w-full max-w-xl" (ngSubmit)="onSubmit()">
+  <div class="relative flex items-center justify-center px-6 py-10 sm:px-10 lg:h-full lg:px-16 lg:py-8">
+    <form class="w-full max-w-xl" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
       <p class="text-[0.82rem] font-semibold uppercase tracking-[0.24em] text-[#ba8b45]">Registro</p>
       <h1 class="mt-3 font-[Georgia,Times_New_Roman,serif] text-[2.7rem] font-semibold leading-none text-[#3d1718]">Crear cuenta</h1>
       <p class="mt-3 text-[1.02rem] text-[#66544c]">Empieza a escribir tu próximo proyecto.</p>
+
+      @if (errorMessage) {
+        <div class="mt-4 rounded-xl border border-red-200 bg-red-50 p-3.5 text-sm font-medium text-red-800" role="alert">
+          {{ errorMessage }}
+        </div>
+      }
 
       <div class="mt-6 space-y-4">
         <div class="grid gap-4 sm:grid-cols-2">
@@ -48,6 +54,7 @@
             <input
               id="firstName"
               type="text"
+              formControlName="firstName"
               autocomplete="given-name"
               placeholder="Tu nombre"
               required
@@ -60,6 +67,7 @@
             <input
               id="lastName"
               type="text"
+              formControlName="lastName"
               autocomplete="family-name"
               placeholder="Tu apellido"
               required
@@ -81,11 +89,15 @@
               id="register-email"
               type="email"
               autocomplete="email"
+              formControlName="email"
               placeholder="tu@correo.com"
               required
               class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
             >
           </div>
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+            <p class="mt-1 text-xs font-medium text-red-600">Ingresa un correo electrónico válido.</p>
+          }
         </div>
 
         <div>
@@ -100,12 +112,16 @@
             <input
               id="register-password"
               type="password"
+              formControlName="password"
               autocomplete="new-password"
               placeholder="••••••••"
               required
               class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
             >
           </div>
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+            <p class="mt-1 text-xs font-medium text-red-600">La contraseña debe contener al menos 6 caracteres.</p>
+          }
         </div>
 
         <div>
@@ -120,22 +136,26 @@
             <input
               id="confirm-password"
               type="password"
+              formControlName="confirmPassword"
               autocomplete="new-password"
               placeholder="Repite tu contraseña"
               required
               class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
             >
           </div>
+          @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordsMismatch')) {
+            <p class="mt-1 text-xs font-medium text-red-600">Las contraseñas deben coincidir.</p>
+          }
         </div>
       </div>
 
       <label class="mt-4 flex items-center gap-3 text-[0.94rem] text-[#6b5348]">
-        <input type="checkbox" class="h-4 w-4 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]" required>
+        <input type="checkbox" formControlName="terms" class="h-4 w-4 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]">
         <span>Acepto los términos y condiciones</span>
       </label>
 
-      <button type="submit" class="mt-6 h-12 w-full rounded-xl bg-[#5d131a] text-[1.32rem] font-semibold text-white transition hover:bg-[#7e1f2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a]">
-        Registrarme
+      <button type="submit" [disabled]="isLoading" class="mt-6 h-12 w-full rounded-xl bg-[#5d131a] text-[1.32rem] font-semibold text-white transition hover:bg-[#7e1f2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a] disabled:cursor-not-allowed disabled:opacity-60">
+        {{ isLoading ? 'Creando cuenta...' : 'Registrarme' }}
       </button>
 
       <div class="relative my-4 flex items-center justify-center">
@@ -146,7 +166,9 @@
       <button
         type="button"
         (click)="registerWithGoogle()"
-        class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b5d24]"
+        [disabled]="isLoading"
+        class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b5d24] disabled:cursor-not-allowed disabled:opacity-60"
+        aria-label="Registrarse con Google"
       >
         <svg class="h-5 w-5" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
