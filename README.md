@@ -56,6 +56,7 @@ src/
     │   ├── home/
     │   ├── login/
     │   ├── not-found/
+        ├── credits/
     │   └── register/
     │
     ├── service/
