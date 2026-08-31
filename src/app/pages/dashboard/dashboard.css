@@ -82,26 +82,27 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 0 auto 8px;
+  margin: 0 0 10px -10px;
   text-decoration: none;
 }
 .brand__mark {
   display: grid;
   place-items: center;
-  width: 178px;
-  height: 58px;
+  width: 182px;
+  height: 60px;
   padding: 0;
   overflow: hidden;
-  border: 1px solid rgba(242, 239, 227, .37);
+  border: 1px solid #D9CAB3;
   border-radius: 8px;
-  background: rgba(33, 27, 23, .18);
-  box-shadow: inset 0 0 15px rgba(242, 239, 227, .08);
+  background: #D9CAB3;
+  box-shadow: inset 0 0 0 1px rgba(90, 46, 19, .12);
 }
 .brand__mark img {
   display: block;
   width: 150px;
   height: auto;
   object-fit: contain;
+  margin: 0 auto;
   transform: translateY(-1px);
 }
 
