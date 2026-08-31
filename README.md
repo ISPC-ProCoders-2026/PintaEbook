@@ -93,46 +93,8 @@ Entre ellos se encuentran:
 - Navbar
 - Footer
 
-Estos componentes permiten mantener elementos comunes de la interfaz entre las diferentes vistas.
 
-## Estilos
 
-El proyecto utiliza **Tailwind CSS** como framework de estilos. La integración se realiza mediante PostCSS y se encuentra configurada a través de `.postcssrc.json`.
-
-- Los estilos globales se encuentran en: `src/styles.css`
-- Las páginas también cuentan con sus propios archivos CSS para estilos específicos.
-
-## Autenticación
-
-El frontend cuenta con un servicio de autenticación ubicado en: `src/app/service/login/login.ts`
-
-El servicio gestiona el inicio y cierre de sesión y mantiene el token recibido por el backend en `localStorage`.
-
-El modelo de autenticación se encuentra definido en: `src/app/models/auth.model.ts`
-
-La comunicación con el backend para el inicio de sesión utiliza una API REST:
-
-```
-POST {API_BASE_URL}/auth/login/
-```
-
-## Configuración del entorno
-
-La URL base de la API se configura mediante variables de entorno.
-
-El proyecto utiliza el archivo `.env` con la variable:
-
-```
-API_BASE_URL=http://localhost:8000/api
-```
-
-El script `tools/generate-env.mjs` genera automáticamente el archivo:
-
-```
-src/environments/environment.generated.ts
-```
-
-La generación del entorno se ejecuta automáticamente antes de iniciar el proyecto y antes de realizar el build.
 
 ## Instalación
 
@@ -161,39 +123,7 @@ La aplicación estará disponible en: [http://localhost:4200](http://localhost:4
 
 > No es necesario ejecutar manualmente el script de generación del entorno.
 
-## Comandos disponibles
 
-### Desarrollo
-
-```bash
-npm start
-```
-
-Inicia el servidor de desarrollo de Angular.
-
-### Build
-
-```bash
-npm run build
-```
-
-Genera una compilación del proyecto.
-
-### Build en modo desarrollo
-
-```bash
-npm run watch
-```
-
-Compila el proyecto utilizando la configuración de desarrollo y observa los cambios realizados en los archivos.
-
-### Tests
-
-```bash
-npm test
-```
-
-Ejecuta la configuración de pruebas del proyecto.
 
 ## Recursos
 
