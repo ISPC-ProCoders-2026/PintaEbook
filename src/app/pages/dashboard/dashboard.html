@@ -8,9 +8,8 @@
     <div class="sidebar__content">
       <a class="brand" href="/" aria-label="PintaEbook, ir al inicio">
         <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 7.5c4.7-1.8 8.5-.5 13 2.2v18.8c-4.5-2.7-8.3-4-13-2.2zM31 7.5c-4.7-1.8-8.5-.5-13 2.2v18.8c4.5-2.7 8.3-4 13-2.2z"/><path d="M9 12.5c2.2-.4 4.2.2 6.4 1.2M27 12.5c-2.2-.4-4.2.2-6.4 1.2"/></svg>
+          <img src="/img/logos/logo1_acortado.png" alt="PintaEbook" width="160" height="56" />
         </span>
-        <span>Pinta<span>Ebook</span></span>
       </a>
 
       <nav class="sidebar__nav">
@@ -38,17 +37,7 @@
           }
         </section>
 
-        <section class="nav-group" aria-labelledby="resources-title">
-          <h2 id="resources-title">Recursos</h2>
-          @for (item of resourceNavigation; track item.id) {
-            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
-              </svg>
-              {{ item.label }}
-            </button>
-          }
-        </section>
+        
 
         <section class="nav-group nav-group--account" aria-labelledby="account-title">
           <h2 id="account-title">Cuenta</h2>
@@ -64,8 +53,8 @@
       </nav>
 
       <button type="button" class="profile-card" (click)="setActiveSection('profile')" aria-label="Abrir perfil de Juan">
-        <span class="profile-card__initials">JU</span>
-        <span class="profile-card__text"><strong>Juan</strong><small>Escritor</small></span>
+        <span class="profile-card__initials">!</span>
+        <span class="profile-card__text"><strong>Cerrar sesión</strong><small>Escritor</small></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
       </button>
     </div>
@@ -86,7 +75,6 @@
     <main class="dashboard-content">
       <section class="welcome" aria-labelledby="welcome-title">
         <div>
-          <p class="eyebrow">Jueves, 27 de agosto</p>
           <h1 id="welcome-title">Bienvenido editor.</h1>
           <p>Volvé a tu proyecto y seguí escribiendo.</p>
         </div>
