@@ -12,6 +12,7 @@ Frontend de **PintaEbook**, una aplicación web orientada a la creación y gesti
 - Vitest 4.0.8
 - Prettier 3.8.1
 - npm 11.10.0
+- Docker
 
 El proyecto utiliza componentes **standalone** de Angular y el builder `@angular/build:application`.
 
@@ -67,6 +68,9 @@ src/
     └── shared/
         └── components/
             ├── footer/
+            ├── cta/
+            ├── faqs/
+            ├── progress-bar/
             └── navbar/
 ```
 
