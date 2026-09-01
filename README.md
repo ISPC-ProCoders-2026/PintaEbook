@@ -12,6 +12,7 @@ Frontend de **PintaEbook**, una aplicación web orientada a la creación y gesti
 - Vitest 4.0.8
 - Prettier 3.8.1
 - npm 11.10.0
+- Docker Desktop 4.88.1
 
 El proyecto utiliza componentes **standalone** de Angular y el builder `@angular/build:application`.
 
@@ -80,6 +81,7 @@ El frontend cuenta actualmente con las siguientes vistas:
 - **Register**: registro de usuarios.
 - **Dashboard**: panel principal del usuario.
 - **About**: información sobre el proyecto.
+- **Credits**: Creditos y faqs del proyecto.
 - **Not Found**: página de error 404.
 
 Las vistas se encuentran organizadas dentro de `src/app/pages/`.
@@ -92,8 +94,9 @@ Entre ellos se encuentran:
 
 - Navbar
 - Footer
-
-
+- Cta
+- Progress-bar
+- Faqs
 
 
 ## Instalación
@@ -116,13 +119,20 @@ npm install
 ```bash
 npm start
 ```
+### 4. Una vez levantado por primera vez el proyecto, se crea una carpeta, environments, dentro del archivo: environment.generated.ts "configurar las credenciales": 
+
+├── environments/
+│   └── environment.generated.ts < Configurar las credenciales >
+
+- API_BASE_URL=http://localhost:8000/api 
+- GOOGLE_CLIENT_ID=1042090144205-hs489ota4otsl2f0e2l8qtk27ktegu5h.apps.googleusercontent.com
+
 
 El comando `npm start` genera automáticamente la configuración del entorno y luego inicia el servidor de desarrollo de Angular.
 
 La aplicación estará disponible en: [http://localhost:4200](http://localhost:4200)
 
 > No es necesario ejecutar manualmente el script de generación del entorno.
-
 
 
 ## Recursos
