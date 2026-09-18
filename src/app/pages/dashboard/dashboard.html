@@ -37,17 +37,19 @@
           }
         </section>
 
-        <section class="nav-group" aria-labelledby="resource-title">
-          <h2 id="resource-title">Planes</h2>
-          @for (item of resourceNavigation; track item.id) {
-            <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="handleResourceClick(item.id)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
-              </svg>
-              {{ item.label }}
-            </button>
-          }
-        </section>
+        @if (!isAdmin) {
+          <section class="nav-group" aria-labelledby="resource-title">
+            <h2 id="resource-title">Planes</h2>
+            @for (item of resourceNavigation; track item.id) {
+              <button type="button" class="nav-link" [class.nav-link--active]="activeSection === item.id" [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="handleResourceClick(item.id)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  @for (path of item.icon; track path) { <path [attr.d]="path"></path> }
+                </svg>
+                {{ item.label }}
+              </button>
+            }
+          </section>
+        }
 
         @if (isAdmin) {
           <section class="nav-group" aria-labelledby="admin-title">
