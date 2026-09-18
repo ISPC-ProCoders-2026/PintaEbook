@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
+import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
+
 
 type NavigationItem = {
   id: string;
@@ -8,12 +11,14 @@ type NavigationItem = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  standalone: true,
+  imports: [CreditsModal, NavbarPrivado],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
   isSidebarOpen = false;
+  isCreditsModalOpen = false;
   activeSection = 'dashboard';
 
   readonly libraryNavigation: NavigationItem[] = [
@@ -39,6 +44,17 @@ export class Dashboard {
   setActiveSection(section: string): void {
     this.activeSection = section;
     this.isSidebarOpen = false;
+  }
+
+  handleResourceClick(sectionId: string): void {
+    this.setActiveSection(sectionId);
+    if (sectionId === 'credits' || sectionId === 'buy-credits') {
+      this.isCreditsModalOpen = true;
+    }
+  }
+
+  closeCreditsModal(): void {
+    this.isCreditsModalOpen = false;
   }
 
   toggleSidebar(): void {

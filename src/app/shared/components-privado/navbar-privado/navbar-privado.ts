@@ -1,9 +1,19 @@
-import { Component } from '@angular/core';
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-navbar-privado',
+  selector: 'app-private-navbar',
+  standalone: true,
   imports: [],
   templateUrl: './navbar-privado.html',
-  styleUrl: './navbar-privado.css',
+  styleUrl: './navbar-privado.css'
 })
-export class NavbarPrivado {}
+export class NavbarPrivado {
+  @Input() isSidebarOpen: boolean = false;
+  @Input() sectionName: string = 'Dashboard';
+  @Output() toggleSidebarEvent = new EventEmitter<void>();
+
+  onToggleSidebar(): void {
+    this.toggleSidebarEvent.emit();
+  }
+}
