@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
+import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
+import { AuthService } from '../../service/login/login';
+
 
 type NavigationItem = {
   id: string;
@@ -8,12 +13,17 @@ type NavigationItem = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  standalone: true,
+  imports: [CreditsModal, NavbarPrivado],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
   isSidebarOpen = false;
+  isCreditsModalOpen = false;
   activeSection = 'dashboard';
 
   readonly libraryNavigation: NavigationItem[] = [
@@ -41,7 +51,31 @@ export class Dashboard {
     this.isSidebarOpen = false;
   }
 
+  handleResourceClick(sectionId: string): void {
+    this.setActiveSection(sectionId);
+    if (sectionId === 'credits' || sectionId === 'buy-credits') {
+      this.isCreditsModalOpen = true;
+    }
+  }
+
+  closeCreditsModal(): void {
+    this.isCreditsModalOpen = false;
+  }
+
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    void this.router.navigate(['/login']);
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  openAdminMetrics(): void {
+    void this.router.navigate(['/admin/metrics']);
   }
 }

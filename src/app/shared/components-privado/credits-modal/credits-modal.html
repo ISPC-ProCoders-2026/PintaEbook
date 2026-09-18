@@ -1,0 +1,138 @@
+<!-- Modal Backdrop -->
+<div 
+  *ngIf="isOpen" 
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in"
+  (click)="closeModalOnBackdrop($event)">
+  
+  <!-- Modal Content Container -->
+  <div class="relative w-full max-w-6xl my-8 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] text-white rounded-3xl shadow-2xl border border-gold-200/20 overflow-hidden transform transition-all">
+    
+    <!-- Botón para cerrar -->
+    <button 
+      (click)="close()" 
+      class="absolute top-5 right-5 z-20 p-2 rounded-full bg-white/10 text-white/80 hover:text-white hover:bg-white/20 transition-all cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Header / Hero del Modal -->
+    <div class="relative pt-12 pb-6 px-6 text-center">
+      <div class="absolute inset-0 opacity-[0.03] pattern-grid pointer-events-none"></div>
+      
+      <h2 class="font-display text-3xl sm:text-5xl font-bold text-white mb-4 leading-tight">
+        Elige el plan <br class="sm:hidden">
+        <span class="gold-shimmer">perfecto para ti</span>
+      </h2>
+      <p class="text-sm sm:text-base text-white/80 max-w-2xl mx-auto font-light">
+        Desde lectores apasionados hasta editoriales profesionales.
+      </p>
+
+      <!-- Selector de Facturación (Mensual / Anual) -->
+      <div class="flex items-center justify-center gap-4 mt-6">
+        <span class="text-sm transition-colors" [style.color]="isAnnual ? 'rgba(255, 255, 255, 0.6)' : '#FFFFFF'" [style.font-weight]="isAnnual ? '500' : '600'">Mensual</span>
+        
+        <button (click)="toggleBilling()" class="relative w-14 h-7 rounded-full transition-colors duration-300 cursor-pointer" [style.background-color]="isAnnual ? '#751b33' : '#d0cbc2'">
+          <div class="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300" [style.transform]="isAnnual ? 'translateX(28px)' : 'translateX(0)'"></div>
+        </button>
+        
+        <span class="text-sm transition-colors" [style.color]="isAnnual ? '#FFFFFF' : 'rgba(255, 255, 255, 0.6)'" [style.font-weight]="isAnnual ? '600' : '500'">
+          Anual <span class="text-amber-400 font-semibold">-20%</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Grid de Planes / Tarjetas -->
+    <div class="p-6 sm:p-10">
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Plan Lector -->
+        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-amber-400/50 transition-all flex flex-col justify-between hover:-translate-y-1">
+          <div>
+            <h3 class="font-display text-xl font-bold text-white mb-1">Lector</h3>
+            <p class="text-white/70 text-xs mb-6">Perfecto para empezar a explorar</p>
+            
+            <div class="mb-6">
+              <span class="font-display text-4xl font-bold text-white">Gratis</span>
+              <p class="text-white/60 text-xs mt-1">Para siempre</p>
+            </div>
+
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Biblioteca hasta 50 ebooks</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Lector básico con modos de lectura</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Resaltado y notas</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Sincronización en 2 dispositivos</li>
+            </ul>
+          </div>
+
+          <button (click)="close()" class="w-full py-3 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all text-sm cursor-pointer">
+            Comenzar gratis
+          </button>
+        </div>
+
+        <!-- Plan Escritor (Popular) -->
+        <div class="p-6 bg-linear-to-b from-[#631b2f] to-[#390a16] rounded-2xl border-2 border-amber-400/60 relative flex flex-col justify-between shadow-xl hover:-translate-y-1 transition-all">
+          <div class="absolute top-0 right-0 bg-amber-500 text-black font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-md">
+            Más popular
+          </div>
+          
+          <div>
+            <h3 class="font-display text-xl font-bold text-white mb-1">Escritor</h3>
+            <p class="text-white/70 text-xs mb-6">Para autores que quieren publicar</p>
+            
+            <div class="mb-6">
+              <span class="font-display text-4xl font-bold text-white">{{ isAnnual ? '€11' : '€14' }}</span>
+              <span class="text-white/70 text-xs">/mes</span>
+              <p class="text-amber-300 text-xs font-semibold mt-1" *ngIf="isAnnual">Ahorras €36 al año</p>
+            </div>
+
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Lector</strong></li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Biblioteca ilimitada</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Editor profesional completo</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Publicación en 5 tiendas</li>
+            </ul>
+          </div>
+
+          <button (click)="close()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-all shadow-lg text-sm cursor-pointer">
+            Elegir Escritor
+          </button>
+        </div>
+
+        <!-- Plan Editorial -->
+        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-amber-400/50 transition-all flex flex-col justify-between hover:-translate-y-1">
+          <div>
+            <h3 class="font-display text-xl font-bold text-white mb-1">Editorial</h3>
+            <p class="text-white/70 text-xs mb-6">Para equipos y sellos editoriales</p>
+            
+            <div class="mb-6">
+              <span class="font-display text-4xl font-bold text-white">{{ isAnnual ? '€31' : '€39' }}</span>
+              <span class="text-white/70 text-xs">/mes</span>
+              <p class="text-amber-300 text-xs font-semibold mt-1" *ngIf="isAnnual">Ahorras €96 al año</p>
+            </div>
+
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Escritor</strong></li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Colaboración en equipo (hasta 10)</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Analíticas avanzadas</li>
+              <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Soporte prioritario 24/7</li>
+            </ul>
+          </div>
+
+          <button (click)="close()" class="w-full py-3 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all text-sm cursor-pointer">
+            Contactar ventas
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Garantías / Trust Badges -->
+      <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 text-xs text-white/70">
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg> Garantía de 30 días</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Pago seguro SSL</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Cancela cuando quieras</span>
+      </div>
+    </div>
+
+  </div>
+</div>

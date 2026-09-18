@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 
-import { NotFound } from './not-found';
+import { CreditsModal } from './credits-modal';
 
-describe('NotFound', () => {
-  let component: NotFound;
-  let fixture: ComponentFixture<NotFound>;
+describe('CreditsModal', () => {
+  let component: CreditsModal;
+  let fixture: ComponentFixture<CreditsModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotFound],
-      providers: [provideRouter([])],
+      imports: [CreditsModal],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NotFound);
+    fixture = TestBed.createComponent(CreditsModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

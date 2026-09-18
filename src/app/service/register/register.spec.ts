@@ -51,7 +51,13 @@ describe('RegisterService', () => {
     const request = httpTesting.expectOne(`${apiUrl}/register/`);
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual(credentials);
-    request.flush({ access: 'access-token', refresh: 'refresh-token' });
+    request.flush({
+      access: 'access-token',
+      refresh: 'refresh-token',
+      user: { id: '1', email: credentials.email, role: { nombre_rol: 'ADMIN' } }
+    });
+
+    expect(localStorage.getItem('userRole')).toBe('ADMIN');
   });
 
   it('should register with Google using the credential token', () => {

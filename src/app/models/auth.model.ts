@@ -22,5 +22,7 @@ export interface AuthResponse {
     id: string;
     email: string;
     name?: string;
+    role?: string | { nombre_rol?: string };
+    role_name?: string;
   };
 }

@@ -33,11 +33,18 @@ export class AuthService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
+    const role = this.getUserRole(response);
+    if (role) {
+      localStorage.setItem('userRole', role);
+    } else {
+      localStorage.removeItem('userRole');
+    }
   }
 
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh');
+    localStorage.removeItem('userRole');
   }
 
   getToken(): string | null {
@@ -45,6 +52,46 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+
+    if (!token || this.isExpiredJwt(token)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  isAdmin(): boolean {
+    return this.isLoggedIn() && localStorage.getItem('userRole')?.toLowerCase() === 'admin';
+  }
+
+  private getUserRole(response: AuthResponse): string | undefined {
+    const role = response.user?.role;
+
+    if (typeof role === 'string') {
+      return role;
+    }
+
+    return role?.nombre_rol ?? response.user?.role_name;
+  }
+
+  private isExpiredJwt(token: string): boolean {
+    const payload = token.split('.')[1];
+
+    // Some backends issue opaque tokens. Their validity remains delegated to
+    // the API, while JWT access tokens can be checked locally for expiration.
+    if (!payload) {
+      return false;
+    }
+
+    try {
+      const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const decodedPayload = JSON.parse(atob(normalizedPayload)) as { exp?: number };
+
+      return typeof decodedPayload.exp === 'number' && decodedPayload.exp * 1000 <= Date.now();
+    } catch {
+      return true;
+    }
   }
 }
