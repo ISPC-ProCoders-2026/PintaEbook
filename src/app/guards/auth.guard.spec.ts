@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '../service/login/login';
 import { authGuard } from './auth.guard';
+import { adminGuard } from './admin.guard';
 import { guestGuard } from './guest.guard';
 
 describe('authentication route guards', () => {
@@ -54,6 +55,28 @@ describe('authentication route guards', () => {
 
     const result = TestBed.runInInjectionContext(() =>
       guestGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+    );
+
+    expect(router.serializeUrl(result as UrlTree)).toBe('/dashboard');
+  });
+
+  it('allows an authenticated administrator into an admin route', () => {
+    localStorage.setItem('token', 'access-token');
+    localStorage.setItem('userRole', 'admin');
+
+    const result = TestBed.runInInjectionContext(() =>
+      adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+    );
+
+    expect(result).toBe(true);
+  });
+
+  it('redirects a non-administrator away from an admin route', () => {
+    localStorage.setItem('token', 'access-token');
+    localStorage.setItem('userRole', 'writer');
+
+    const result = TestBed.runInInjectionContext(() =>
+      adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
     );
 
     expect(router.serializeUrl(result as UrlTree)).toBe('/dashboard');

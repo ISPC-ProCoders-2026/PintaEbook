@@ -75,7 +75,9 @@
     <app-private-navbar 
       [isSidebarOpen]="isSidebarOpen"
       [sectionName]="activeSection"
-      (toggleSidebarEvent)="toggleSidebar()">
+      [isAdmin]="isAdmin"
+      (toggleSidebarEvent)="toggleSidebar()"
+      (adminMetricsEvent)="openAdminMetrics()">
     </app-private-navbar>
 
     <main class="dashboard-content">

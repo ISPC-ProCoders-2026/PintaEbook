@@ -25,6 +25,7 @@ export class Dashboard {
   isSidebarOpen = false;
   isCreditsModalOpen = false;
   activeSection = 'dashboard';
+  readonly isAdmin = this.authService.isAdmin();
 
   readonly libraryNavigation: NavigationItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: ['M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5z', 'M9 20v-6h6v6'] },
@@ -69,5 +70,9 @@ export class Dashboard {
   logout(): void {
     this.authService.logout();
     void this.router.navigate(['/login']);
+  }
+
+  openAdminMetrics(): void {
+    void this.router.navigate(['/admin/metrics']);
   }
 }

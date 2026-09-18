@@ -33,11 +33,17 @@ export class AuthService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
+    if (response.user?.role) {
+      localStorage.setItem('userRole', response.user.role);
+    } else {
+      localStorage.removeItem('userRole');
+    }
   }
 
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh');
+    localStorage.removeItem('userRole');
   }
 
   getToken(): string | null {
@@ -53,6 +59,10 @@ export class AuthService {
     }
 
     return true;
+  }
+
+  isAdmin(): boolean {
+    return this.isLoggedIn() && localStorage.getItem('userRole')?.toLowerCase() === 'admin';
   }
 
   private isExpiredJwt(token: string): boolean {

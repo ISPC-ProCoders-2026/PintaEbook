@@ -33,5 +33,10 @@ export class RegisterService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
+    if (response.user?.role) {
+      localStorage.setItem('userRole', response.user.role);
+    } else {
+      localStorage.removeItem('userRole');
+    }
   }
 }
