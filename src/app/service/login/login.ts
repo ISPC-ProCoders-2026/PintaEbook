@@ -33,8 +33,9 @@ export class AuthService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
-    if (response.user?.role) {
-      localStorage.setItem('userRole', response.user.role);
+    const role = this.getUserRole(response);
+    if (role) {
+      localStorage.setItem('userRole', role);
     } else {
       localStorage.removeItem('userRole');
     }
@@ -63,6 +64,16 @@ export class AuthService {
 
   isAdmin(): boolean {
     return this.isLoggedIn() && localStorage.getItem('userRole')?.toLowerCase() === 'admin';
+  }
+
+  private getUserRole(response: AuthResponse): string | undefined {
+    const role = response.user?.role;
+
+    if (typeof role === 'string') {
+      return role;
+    }
+
+    return role?.nombre_rol ?? response.user?.role_name;
   }
 
   private isExpiredJwt(token: string): boolean {

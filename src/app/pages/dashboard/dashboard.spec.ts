@@ -45,4 +45,11 @@ describe('Dashboard', () => {
     expect(localStorage.getItem('refresh')).toBeNull();
     expect(navigatedTo).toEqual(['/login']);
   });
+
+  it('recognizes an administrator session', () => {
+    localStorage.setItem('token', 'access-token');
+    localStorage.setItem('userRole', 'ADMIN');
+
+    expect(component.isAdmin).toBe(true);
+  });
 });

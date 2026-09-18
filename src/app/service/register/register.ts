@@ -33,10 +33,21 @@ export class RegisterService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
-    if (response.user?.role) {
-      localStorage.setItem('userRole', response.user.role);
+    const role = this.getUserRole(response);
+    if (role) {
+      localStorage.setItem('userRole', role);
     } else {
       localStorage.removeItem('userRole');
     }
+  }
+
+  private getUserRole(response: AuthResponse): string | undefined {
+    const role = response.user?.role;
+
+    if (typeof role === 'string') {
+      return role;
+    }
+
+    return role?.nombre_rol ?? response.user?.role_name;
   }
 }

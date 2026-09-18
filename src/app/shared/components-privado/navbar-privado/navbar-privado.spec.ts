@@ -20,12 +20,4 @@ describe('NavbarPrivado', () => {
     expect(component).toBeTruthy();
   });
 
-  it('shows the metrics button only to administrators', () => {
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[aria-label="Ver métricas"]')).toBeNull();
-
-    fixture.componentRef.setInput('isAdmin', true);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[aria-label="Ver métricas"]')).toBeTruthy();
-  });
 });

@@ -54,10 +54,10 @@ describe('RegisterService', () => {
     request.flush({
       access: 'access-token',
       refresh: 'refresh-token',
-      user: { id: '1', email: credentials.email, role: 'admin' }
+      user: { id: '1', email: credentials.email, role: { nombre_rol: 'ADMIN' } }
     });
 
-    expect(localStorage.getItem('userRole')).toBe('admin');
+    expect(localStorage.getItem('userRole')).toBe('ADMIN');
   });
 
   it('should register with Google using the credential token', () => {

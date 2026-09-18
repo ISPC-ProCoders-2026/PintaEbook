@@ -49,6 +49,18 @@
           }
         </section>
 
+        @if (isAdmin) {
+          <section class="nav-group" aria-labelledby="admin-title">
+            <h2 id="admin-title">Administrador</h2>
+            <button type="button" class="nav-link" (click)="openAdminMetrics()" aria-label="Ver métricas">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7"/>
+              </svg>
+              Métricas
+            </button>
+          </section>
+        }
+
         <section class="nav-group nav-group--account" aria-labelledby="account-title">
           <h2 id="account-title">Cuenta</h2>
           @for (item of accountNavigation; track item.id) {
@@ -75,9 +87,7 @@
     <app-private-navbar 
       [isSidebarOpen]="isSidebarOpen"
       [sectionName]="activeSection"
-      [isAdmin]="isAdmin"
-      (toggleSidebarEvent)="toggleSidebar()"
-      (adminMetricsEvent)="openAdminMetrics()">
+      (toggleSidebarEvent)="toggleSidebar()">
     </app-private-navbar>
 
     <main class="dashboard-content">
