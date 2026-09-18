@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
+import { AuthService } from '../../service/login/login';
 
 
 type NavigationItem = {
@@ -17,6 +19,9 @@ type NavigationItem = {
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
   isSidebarOpen = false;
   isCreditsModalOpen = false;
   activeSection = 'dashboard';
@@ -59,5 +64,10 @@ export class Dashboard {
 
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    void this.router.navigate(['/login']);
   }
 }

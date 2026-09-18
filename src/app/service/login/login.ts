@@ -45,6 +45,32 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+
+    if (!token || this.isExpiredJwt(token)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  private isExpiredJwt(token: string): boolean {
+    const payload = token.split('.')[1];
+
+    // Some backends issue opaque tokens. Their validity remains delegated to
+    // the API, while JWT access tokens can be checked locally for expiration.
+    if (!payload) {
+      return false;
+    }
+
+    try {
+      const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const decodedPayload = JSON.parse(atob(normalizedPayload)) as { exp?: number };
+
+      return typeof decodedPayload.exp === 'number' && decodedPayload.exp * 1000 <= Date.now();
+    } catch {
+      return true;
+    }
   }
 }

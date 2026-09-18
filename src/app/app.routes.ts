@@ -6,6 +6,8 @@ import { About } from './pages/about/about';
 import { NotFound } from './pages/not-found/not-found';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Credits } from './pages/credits/credits';
+import { authGuard } from './guards/auth.guard';
+import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
   {
@@ -14,13 +16,24 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'login', component: Login
+    path: 'login',
+    component: Login,
+    canActivate: [guestGuard]
   },
   {
-    path: 'register', component: Register
+    path: 'register',
+    component: Register,
+    canActivate: [guestGuard]
   },
   {
-    path: 'dashboard', component: Dashboard
+    path: 'dashboard',
+    // Child routes added under Dashboard inherit this protection.
+    canActivateChild: [authGuard],
+    children: [
+      { path: '', component: Dashboard },
+      // Keeps direct access to a future dashboard sub-route private as well.
+      { path: '**', component: Dashboard }
+    ]
   },
   {
     path: 'credits', component: Credits
