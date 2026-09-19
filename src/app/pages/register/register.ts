@@ -1,9 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, inject, OnInit, Inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RegisterService } from '../../service/register/register';
 import { RegisterRequest } from '../../models/auth.model';
 import { environment } from '../../../environments/environment.generated';
+import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
+import { ThemeService } from '../../service/theme/theme';
 
 declare var google: any;
 
@@ -15,11 +17,12 @@ const matchingPasswordsValidator: ValidatorFn = (control: AbstractControl): Vali
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, ThemeToggle],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register implements OnInit {
+  readonly themeService = inject(ThemeService);
   isLoading = false;
   errorMessage = '';
   registerForm;

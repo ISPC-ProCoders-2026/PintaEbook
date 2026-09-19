@@ -1,19 +1,22 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, inject, OnInit, Inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../service/login/login';
 import { LoginRequest } from '../../models/auth.model';
 import { environment } from '../../../environments/environment.generated';
+import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
+import { ThemeService } from '../../service/theme/theme';
 
 declare var google: any;
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, ThemeToggle],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
+  readonly themeService = inject(ThemeService);
   isRecoveryModalOpen = false;
   isLoading = false;
   errorMessage = '';

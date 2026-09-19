@@ -1,4 +1,7 @@
 <section class="login-layout h-screen min-h-screen overflow-hidden text-[#2f1818] lg:grid lg:grid-cols-[1.05fr_auto_1fr]">
+  <div class="auth-theme-toggle">
+    <app-theme-toggle></app-theme-toggle>
+  </div>
   <div class="relative hidden h-full overflow-hidden lg:block">
     <img
       src="/img/home/hero.jpg"
@@ -9,7 +12,7 @@
 
     <!-- Marcador / Bookmark -->
     <div class="bookmark-card absolute top-0 left-10 z-20 flex flex-col items-center bg-[#f7f4ee] px-5 pt-6 pb-4 text-center shadow-lg">
-      <img src="/img/logos/logo_sin_fondo2.png" width="111" height="100" alt="Pinta Ebook" class="h-auto">
+      <img [src]="themeService.isDark() ? '/img/logos/logo_sin_fondo.png' : '/img/logos/logo_sin_fondo2.png'" width="111" height="100" alt="Pinta Ebook" class="bookmark-logo h-auto">
       <a routerLink="/" class="mt-2 inline-flex items-center gap-2 text-sm text-[#4e2e25] transition hover:text-[#7a4a3a]">
         <span aria-hidden="true">←</span>
         Volver a inicio
@@ -65,7 +68,7 @@
               formControlName="email"
               autocomplete="email"
               placeholder="tu@correo.com"
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730] dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]!"
             >
           </div>
           @if (loginForm.controls['email'].touched && loginForm.controls['email'].invalid) {
@@ -90,7 +93,7 @@
               formControlName="password"
               autocomplete="current-password"
               placeholder="••••••••"
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] dark:bg-[#2e211d]! dark:text-[#f2efe3]! focus:ring-4 focus:ring-[#d2a05730]"
             >
           </div>
           @if (loginForm.controls['password'].touched && loginForm.controls['password'].invalid) {
@@ -133,7 +136,7 @@
   <button
   type="button"
   (click)="triggerGoogleLogin()"
-  class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md..."
+  class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md... dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]! dark:hover:bg-[#3b2823]"
   >
   <svg class="h-5 w-5" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

@@ -1,5 +1,6 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ThemeToggle } from '../../components/theme-toggle/theme-toggle';
 
 type NavigationItem = {
   id: string;
@@ -10,7 +11,7 @@ type NavigationItem = {
 @Component({
   selector: 'app-private-navbar',
   standalone: true,
-  imports: [],
+  imports: [ThemeToggle],
   templateUrl: './navbar-privado.html',
   styleUrl: './navbar-privado.css'
 })

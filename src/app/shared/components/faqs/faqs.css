@@ -3,9 +3,18 @@
     color: #211b17;
 }
 
+:host-context(.dark) .faq-section {
+    background: linear-gradient(180deg, #211b17, #2e211d) !important;
+    color: #f2efe3;
+}
+
 .faq-heading h2 {
     color: #5e0b15;
     letter-spacing: .01em;
+}
+
+:host-context(.dark) .faq-heading h2 {
+    color: #f2efe3 !important;
 }
 
 .faq-heading h2::after {
@@ -23,6 +32,10 @@
     font-size: 1.25rem;
 }
 
+:host-context(.dark) .faq-heading p {
+    color: #c7b8aa !important;
+}
+
 /* FAQ accordion */
 .faq-item {
     position: relative;
@@ -36,6 +49,10 @@
 
 .faq-item:last-child {
     border-bottom: 1px solid rgba(140, 122, 107, .35) !important;
+}
+
+:host-context(.dark) .faq-item {
+    border-color: rgba(217, 202, 179, .24) !important;
 }
 
 .faq-item::before {
@@ -71,6 +88,11 @@
     background: rgba(255, 255, 255, .38) !important;
 }
 
+:host-context(.dark) .faq-item:hover,
+:host-context(.dark) .faq-item.open {
+    background: rgba(242, 239, 227, .08) !important;
+}
+
 .faq-item.open::after {
     background: #b88435;
 }
@@ -81,6 +103,10 @@
     font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: .01em;
+}
+
+:host-context(.dark) .faq-item h4 {
+    color: #f2efe3 !important;
 }
 
 .faq-answer {
@@ -99,6 +125,10 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+:host-context(.dark) .faq-icon {
+    color: #e5ab35 !important;
+}
+
 .faq-answer p {
     margin-top: 18px !important;
     padding-top: 18px !important;
@@ -106,5 +136,10 @@
     color: #6f5b4e;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem;
+}
+
+:host-context(.dark) .faq-answer p {
+    border-color: rgba(229, 171, 53, .3) !important;
+    color: #c7b8aa !important;
 }
 

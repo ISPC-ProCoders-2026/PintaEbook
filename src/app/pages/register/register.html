@@ -1,4 +1,7 @@
 <section class="login-layout min-h-screen overflow-x-hidden text-[#2f1818] lg:grid lg:h-screen lg:grid-cols-[1.05fr_auto_1fr] lg:overflow-hidden">
+  <div class="auth-theme-toggle">
+    <app-theme-toggle></app-theme-toggle>
+  </div>
   <div class="relative hidden h-full overflow-hidden lg:block">
     <img
       src="/img/home/hero.jpg"
@@ -8,7 +11,7 @@
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(46,9,11,0.52),rgba(46,9,11,0.82))]"></div>
 
     <div class="bookmark-card absolute top-0 left-10 z-20 flex flex-col items-center bg-[#f7f4ee] px-5 pt-6 pb-4 text-center shadow-lg">
-      <img src="/img/logos/logo_sin_fondo2.png" width="111" height="100" alt="Pinta Ebook" class="h-auto">
+      <img [src]="themeService.isDark() ? '/img/logos/logo_sin_fondo.png' : '/img/logos/logo_sin_fondo2.png'" width="111" height="100" alt="Pinta Ebook" class="bookmark-logo h-auto">
       <a routerLink="/" class="mt-2 inline-flex items-center gap-2 text-sm text-[#4e2e25] transition hover:text-[#7a4a3a]">
         <span aria-hidden="true">←</span>
         Volver a inicio
@@ -58,7 +61,7 @@
               autocomplete="given-name"
               placeholder="Tu nombre"
               required
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 px-4 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 px-4 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730] dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]!"
             >
           </div>
 
@@ -71,7 +74,7 @@
               autocomplete="family-name"
               placeholder="Tu apellido"
               required
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 px-4 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 px-4 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730] dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]!"
             >
           </div>
         </div>
@@ -92,7 +95,7 @@
               formControlName="email"
               placeholder="tu@correo.com"
               required
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730] dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]!"
             >
           </div>
           @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
@@ -116,7 +119,7 @@
               autocomplete="new-password"
               placeholder="••••••••"
               required
-              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730]"
+              class="h-12 w-full rounded-[0.9rem] border border-[#b69367] bg-white/95 pr-4 pl-10 text-[0.96rem] text-[#2f1818] outline-none transition focus:border-[#8b5d24] focus:ring-4 focus:ring-[#d2a05730] dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]!"
             >
           </div>
           @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
@@ -167,7 +170,7 @@
         type="button"
         (click)="registerWithGoogle()"
         [disabled]="isLoading"
-        class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b5d24] disabled:cursor-not-allowed disabled:opacity-60"
+        class="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[#b69367] bg-white/95 text-[0.96rem] font-semibold text-[#2f1818] transition hover:bg-white hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b5d24] disabled:cursor-not-allowed disabled:opacity-60 dark:border-[#725846] dark:bg-[#2e211d]! dark:text-[#f2efe3]! dark:hover:bg-[#3b2823]"
         aria-label="Registrarse con Google"
       >
         <svg class="h-5 w-5" viewBox="0 0 24 24">

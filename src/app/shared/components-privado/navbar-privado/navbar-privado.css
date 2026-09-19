@@ -6,6 +6,31 @@
   position: relative;
 }
 
+:host-context(.dark) .topbar {
+  border-color: rgba(217, 202, 179, .2);
+  background: rgba(46, 33, 29, .88);
+}
+
+:host-context(.dark) .topbar__breadcrumb {
+  color: #c7b8aa;
+}
+
+:host-context(.dark) .topbar__breadcrumb b {
+  color: #f2efe3;
+}
+
+:host-context(.dark) .icon-button,
+:host-context(.dark) .menu-toggle {
+  border-color: rgba(217, 202, 179, .25);
+  background: rgba(59, 40, 35, .82);
+  color: #e5ab35;
+}
+
+:host-context(.dark) .icon-button:hover,
+:host-context(.dark) .menu-toggle:hover {
+  background: #50372f;
+}
+
 * { box-sizing: border-box; }
 button { font: inherit; }
 

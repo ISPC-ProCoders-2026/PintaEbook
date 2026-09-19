@@ -3,10 +3,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    background-color: #fefcf7;
-    color: #211b17;
-    overflow-x: hidden;
+    background-color: var(--page-background);
+    color: var(--page-text);
+    overflow-x: clip;
 }
 
 /* Patrones SVG de fondo */
@@ -14,14 +13,6 @@
   background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
 }
 
-
-.font-display { font-family: 'Playfair Display', serif; }
-.font-reading { font-family: 'Cormorant Garamond', serif; }
-
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #faf0d8; }
-::-webkit-scrollbar-thumb { background: #b88435; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #946a2f; }
 
 .ornament-line {
     display: flex;
@@ -79,4 +70,22 @@
 /* Table row hover */
 .compare-row:hover {
     background: rgba(249, 238, 206, 0.3);
+}
+
+:host-context(.dark) .credits-hero,
+:host-context(.dark) .credits-plans {
+    background-image: linear-gradient(135deg, #4a0b17, #1b0b0c 55%, #211b17) !important;
+}
+
+:host-context(.dark) .credits-plans .bg-white\/5 {
+    background-color: rgba(242, 239, 227, .08) !important;
+}
+
+:host-context(.dark) .credits-plans .border-white\/10,
+:host-context(.dark) .credits-plans .border-white\/20 {
+    border-color: rgba(242, 239, 227, .2) !important;
+}
+
+:host-context(.dark) .credits-plans .hover\:bg-white\/10:hover {
+    background-color: rgba(242, 239, 227, .14) !important;
 }
