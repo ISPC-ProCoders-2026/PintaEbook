@@ -13,8 +13,6 @@ import { AuthService } from '../../../service/login/login';
 export class AdminMetrics {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
-  isSidebarOpen = false;
-
   backToDashboard(): void {
     void this.router.navigate(['/dashboard']);
   }
@@ -24,7 +22,11 @@ export class AdminMetrics {
     void this.router.navigate(['/login']);
   }
 
-  toggleSidebar(): void {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  handleNavigation(section: string): void {
+    if (section === 'dashboard') this.backToDashboard();
+  }
+
+  handleBrandClick(): void {
+    this.backToDashboard();
   }
 }

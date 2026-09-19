@@ -1,111 +1,51 @@
-<div class="metrics-page" [class.metrics-page--menu-open]="isSidebarOpen">
-  <aside class="sidebar" aria-label="Navegación del espacio de escritura">
-    <div class="sidebar__texture" aria-hidden="true"></div>
-    <div class="sidebar__spine" aria-hidden="true"><span></span><i>✦</i><i>✦</i><i>✦</i><span></span></div>
-    <div class="sidebar__content">
-      <button type="button" class="brand" (click)="backToDashboard()" aria-label="PintaEbook, ir al dashboard">
-        <span class="brand__mark">
-          <img src="/img/logos/logo1_acortado.png" alt="PintaEbook" width="160" height="56" />
-        </span>
-      </button>
-
-      <nav class="sidebar__nav">
-        <section class="nav-group">
-          <h2>Mis libros</h2>
-          <button type="button" class="nav-link" (click)="backToDashboard()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5z"/><path d="M9 20v-6h6v6"/></svg> Dashboard</button>
-          <button type="button" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 4.5V20.5M8.5 6H15"/></svg> Mis Ebooks</button>
-        </section>
-        <section class="nav-group">
-          <h2>Escritura</h2>
-          <button type="button" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg> Nuevo Ebook</button>
-          <button type="button" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 20 4.2-1 10.4-10.4a2.1 2.1 0 0 0-3-3L5.2 15.9z"/><path d="m13.8 7.4 2.8 2.8"/></svg> Editor</button>
-        </section>
-        <section class="nav-group">
-          <h2>Administrador</h2>
-          <button type="button" class="nav-link nav-link--active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7"/></svg> Métricas</button>
-        </section>
-        <section class="nav-group nav-group--account">
-          <h2>Cuenta</h2>
-          <button type="button" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg> Perfil</button>
-          <button type="button" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.1 2.1-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-3v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L6.6 17l.1-.1A1.7 1.7 0 0 0 7 15a1.7 1.7 0 0 0-1.5-1H5.3v-3h.2A1.7 1.7 0 0 0 7 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 2.1-2.1.1.1A1.7 1.7 0 0 0 10.7 6a1.7 1.7 0 0 0 1-1.5v-.2h3v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2v3h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg> Configuración</button>
-        </section>
-      </nav>
-
-      <button type="button" class="profile-card" (click)="logout()" aria-label="Cerrar sesión">
-        <span class="profile-card__initials">!</span>
-        <span class="profile-card__text"><strong>Cerrar sesión</strong><small>Administrador</small></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
-      </button>
-    </div>
-  </aside>
-
+<div class="metrics-page">
   <div class="metrics-workspace">
     <app-private-navbar
-      [isSidebarOpen]="isSidebarOpen"
+      [isAdmin]="true"
       sectionName="Métricas"
-      (toggleSidebarEvent)="toggleSidebar()">
+      (navigationEvent)="handleNavigation($event)"
+      (logoutEvent)="logout()"
+      (brandClickEvent)="handleBrandClick()">
     </app-private-navbar>
+
     <main class="metrics-content">
-    <header class="metrics-header">
-      <div>
-        <p class="eyebrow">Administración</p>
-        <h1>Métricas de Pinta Ebook</h1>
-        <p>Resumen estático de la actividad general de la plataforma.</p>
-      </div>
-    </header>
+      <header class="metrics-header">
+        <div>
+          <p class="eyebrow">Administración</p>
+          <h1>Métricas de Pinta Ebook</h1>
+          <p>Resumen estático de la actividad general de la plataforma.</p>
+        </div>
+      </header>
 
-    <section class="metrics-grid" aria-label="Resumen de métricas">
-      <article class="metric-card">
-        <span>Usuarios registrados</span>
-        <strong>1.284</strong>
-        <small>+12,4% este mes</small>
-      </article>
-      <article class="metric-card">
-        <span>Ebooks creados</span>
-        <strong>3.642</strong>
-        <small>+186 esta semana</small>
-      </article>
-      <article class="metric-card">
-        <span>Autores activos</span>
-        <strong>427</strong>
-        <small>33 conectados hoy</small>
-      </article>
-      <article class="metric-card metric-card--highlight">
-        <span>Créditos consumidos</span>
-        <strong>8.950</strong>
-        <small>Últimos 30 días</small>
-      </article>
-    </section>
+      <section class="metrics-grid" aria-label="Resumen de métricas">
+        <article class="metric-card"><span>Usuarios registrados</span><strong>1.284</strong><small>+12,4% este mes</small></article>
+        <article class="metric-card"><span>Ebooks creados</span><strong>3.642</strong><small>+186 esta semana</small></article>
+        <article class="metric-card"><span>Autores activos</span><strong>427</strong><small>33 conectados hoy</small></article>
+        <article class="metric-card metric-card--highlight"><span>Créditos consumidos</span><strong>8.950</strong><small>Últimos 30 días</small></article>
+      </section>
 
-    <section class="metrics-details">
-      <article class="panel">
-        <div class="panel__heading">
-          <div>
-            <p class="eyebrow">Crecimiento</p>
-            <h2>Usuarios nuevos</h2>
+      <section class="metrics-details">
+        <article class="panel">
+          <div class="panel__heading">
+            <div><p class="eyebrow">Crecimiento</p><h2>Usuarios nuevos</h2></div>
+            <strong>+18,6%</strong>
           </div>
-          <strong>+18,6%</strong>
-        </div>
-        <div class="bar-chart" aria-label="Crecimiento semanal de usuarios">
-          <span style="height: 36%"></span><span style="height: 52%"></span><span style="height: 43%"></span>
-          <span style="height: 67%"></span><span style="height: 58%"></span><span style="height: 82%"></span>
-          <span style="height: 74%"></span>
-        </div>
-        <div class="chart-labels"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
-      </article>
+          <div class="bar-chart" aria-label="Crecimiento semanal de usuarios">
+            <span style="height: 36%"></span><span style="height: 52%"></span><span style="height: 43%"></span><span style="height: 67%"></span><span style="height: 58%"></span><span style="height: 82%"></span><span style="height: 74%"></span>
+          </div>
+          <div class="chart-labels"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+        </article>
 
-      <article class="panel">
-        <p class="eyebrow">Actividad reciente</p>
-        <h2>Estado de la plataforma</h2>
-        <ul class="activity-list">
-          <li><span class="activity-dot"></span><p><strong>147 ebooks publicados</strong><small>Durante los últimos 7 días</small></p></li>
-          <li><span class="activity-dot"></span><p><strong>96,8% de disponibilidad</strong><small>Servicios operativos</small></p></li>
-          <li><span class="activity-dot"></span><p><strong>34 nuevas suscripciones</strong><small>Planes activos este mes</small></p></li>
-        </ul>
-      </article>
-    </section>
+        <article class="panel">
+          <p class="eyebrow">Actividad reciente</p>
+          <h2>Estado de la plataforma</h2>
+          <ul class="activity-list">
+            <li><span class="activity-dot"></span><p><strong>147 ebooks publicados</strong><small>Durante los últimos 7 días</small></p></li>
+            <li><span class="activity-dot"></span><p><strong>96,8% de disponibilidad</strong><small>Servicios operativos</small></p></li>
+            <li><span class="activity-dot"></span><p><strong>34 nuevas suscripciones</strong><small>Planes activos este mes</small></p></li>
+          </ul>
+        </article>
+      </section>
     </main>
   </div>
-
-  <button type="button" class="menu-backdrop" (click)="toggleSidebar()" aria-label="Cerrar menú"></button>
 </div>
