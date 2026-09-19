@@ -1,6 +1,88 @@
 
+.faq-section {
+    color: #211b17;
+}
+
+.faq-heading h2 {
+    color: #5e0b15;
+    letter-spacing: .01em;
+}
+
+.faq-heading h2::after {
+    display: block;
+    width: 74px;
+    height: 1px;
+    margin: 18px auto 0;
+    content: '';
+    background: linear-gradient(90deg, transparent, #b88435, transparent);
+}
+
+.faq-heading p {
+    color: #8c7a6b;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+}
 
 /* FAQ accordion */
+.faq-item {
+    position: relative;
+    padding: 22px 10px 22px 72px !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(140, 122, 107, .35) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    transition: background-color .3s ease, padding .3s ease;
+}
+
+.faq-item:last-child {
+    border-bottom: 1px solid rgba(140, 122, 107, .35) !important;
+}
+
+.faq-item::before {
+    position: absolute;
+    top: 23px;
+    left: 10px;
+    color: #b88435;
+    content: counter(faq-item, decimal-leading-zero);
+    counter-increment: faq-item;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.faq-item::after {
+    position: absolute;
+    top: 27px;
+    left: 48px;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #b88435;
+    content: '';
+    transform: rotate(45deg);
+    transition: background-color .3s ease;
+}
+
+.space-y-4 {
+    counter-reset: faq-item;
+}
+
+.faq-item:hover,
+.faq-item.open {
+    background: rgba(255, 255, 255, .38) !important;
+}
+
+.faq-item.open::after {
+    background: #b88435;
+}
+
+.faq-item h4 {
+    color: #211b17;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: .01em;
+}
+
 .faq-answer {
     max-height: 0;
     overflow: hidden;
@@ -13,6 +95,16 @@
     transform: rotate(45deg);
 }
 .faq-icon {
+    color: #8f1d37 !important;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-answer p {
+    margin-top: 18px !important;
+    padding-top: 18px !important;
+    border-color: rgba(184, 132, 53, .3) !important;
+    color: #6f5b4e;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
 }
 
