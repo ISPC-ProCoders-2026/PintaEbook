@@ -88,7 +88,7 @@ export class NewEbook implements AfterViewInit, OnDestroy {
     if (!this.editor) return;
 
     const output = await this.editor.save();
-    this.wordCount = output.blocks.reduce((total, block) => {
+    this.wordCount = output.blocks.reduce((total: number, block: { data: { text?: unknown } }) => {
       const text = String((block.data as { text?: string }).text ?? '')
         .replace(/<[^>]*>/g, ' ')
         .trim();
