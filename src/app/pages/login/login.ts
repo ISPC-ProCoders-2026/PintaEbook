@@ -19,7 +19,9 @@ export class Login implements OnInit {
   readonly themeService = inject(ThemeService);
   isRecoveryModalOpen = false;
   isLoading = false;
+  isGoogleLoginInProgress = false;
   errorMessage = '';
+  googleMessage = '';
   loginForm: FormGroup;
 
   constructor(
@@ -48,27 +50,43 @@ export class Login implements OnInit {
 
   handleGoogleResponse(response: any): void {
     const idToken = response.credential;
+
+    if (!idToken) {
+      this.googleMessage = '';
+      this.errorMessage = 'No recibimos la confirmación de Google. Intentá nuevamente.';
+      return;
+    }
     
     this.isLoading = true;
+    this.isGoogleLoginInProgress = true;
     this.errorMessage = '';
+    this.googleMessage = 'Estamos iniciando sesión con tu cuenta de Google...';
 
     this.authService.loginWithGoogle(idToken).subscribe({
       next: () => {
         this.isLoading = false;
+        this.isGoogleLoginInProgress = false;
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         this.isLoading = false;
+        this.isGoogleLoginInProgress = false;
+        this.googleMessage = '';
         this.errorMessage = err.error?.detail || err.error?.message || 'Error al iniciar sesión con Google.';
       }
     });
   }
 
   triggerGoogleLogin(): void {
-    if (typeof google !== 'undefined') {
-      google.accounts.id.prompt(); 
-      this.errorMessage = 'El servicio de Google no está disponible.';
+    if (typeof google === 'undefined' || !google.accounts?.id) {
+      this.googleMessage = '';
+      this.errorMessage = 'No pudimos abrir Google en este momento. Revisá tu conexión e intentá nuevamente.';
+      return;
     }
+
+    this.errorMessage = '';
+    this.googleMessage = 'Elegí la cuenta de Google con la que querés continuar.';
+    google.accounts.id.prompt();
   }
 
   openRecoveryModal(): void {
@@ -86,7 +104,9 @@ export class Login implements OnInit {
     }
 
     this.isLoading = true;
+    this.isGoogleLoginInProgress = false;
     this.errorMessage = '';
+    this.googleMessage = '';
 
     const credentials: LoginRequest = this.loginForm.getRawValue();
 

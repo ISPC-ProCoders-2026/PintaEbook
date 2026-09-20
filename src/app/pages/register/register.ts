@@ -24,7 +24,9 @@ const matchingPasswordsValidator: ValidatorFn = (control: AbstractControl): Vali
 export class Register implements OnInit {
   readonly themeService = inject(ThemeService);
   isLoading = false;
+  isGoogleRegistrationInProgress = false;
   errorMessage = '';
+  googleMessage = '';
   registerForm;
 
   constructor(
@@ -60,24 +62,34 @@ export class Register implements OnInit {
   }
 
   registerWithGoogle(): void {
-    if (typeof google === 'undefined') {
-      this.errorMessage = 'El servicio de Google no está disponible.';
+    if (typeof google === 'undefined' || !google.accounts?.id) {
+      this.googleMessage = '';
+      this.errorMessage = 'No pudimos abrir Google en este momento. Revisá tu conexión e intentá nuevamente.';
       return;
     }
 
+    this.errorMessage = '';
+    this.googleMessage = 'Elegí la cuenta de Google con la que querés registrarte.';
     google.accounts.id.prompt();
   }
 
   private submitGoogleRegistration(idToken: string): void {
     this.isLoading = true;
+    this.isGoogleRegistrationInProgress = true;
     this.errorMessage = '';
+    this.googleMessage = 'Estamos creando tu cuenta con Google...';
 
     this.registerService.registerWithGoogle(idToken).subscribe({
       next: () => {
         this.isLoading = false;
+        this.isGoogleRegistrationInProgress = false;
         this.router.navigate(['/dashboard']);
       },
-      error: (error) => this.handleError(error, 'Error al registrarse con Google.'),
+      error: (error) => {
+        this.isGoogleRegistrationInProgress = false;
+        this.googleMessage = '';
+        this.handleError(error, 'Error al registrarse con Google.');
+      },
     });
   }
 
@@ -88,7 +100,9 @@ export class Register implements OnInit {
     }
 
     this.isLoading = true;
+    this.isGoogleRegistrationInProgress = false;
     this.errorMessage = '';
+    this.googleMessage = '';
 
     const formValue = this.registerForm.getRawValue();
     const credentials: RegisterRequest = {
