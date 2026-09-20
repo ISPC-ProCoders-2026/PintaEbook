@@ -2,13 +2,14 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
+import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
 import { AuthService } from '../../service/login/login';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CreditsModal, NavbarPrivado],
+  imports: [CreditsModal, NavbarPrivado, MyEbooks],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

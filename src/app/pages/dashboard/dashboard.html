@@ -8,6 +8,9 @@
       (brandClickEvent)="setActiveSection('dashboard')">
     </app-private-navbar>
 
+    @if (activeSection === 'ebooks') {
+      <app-my-ebooks></app-my-ebooks>
+    } @else {
     <main class="dashboard-content">
       <section class="welcome" aria-labelledby="welcome-title">
         <div>
@@ -61,6 +64,7 @@
         </aside>
       </section>
     </main>
+    }
   </div>
 
 </div>
