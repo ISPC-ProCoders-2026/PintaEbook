@@ -10,6 +10,8 @@
 
     @if (activeSection === 'ebooks') {
       <app-my-ebooks></app-my-ebooks>
+    } @else if (activeSection === 'profile') {
+      <app-profile></app-profile>
     } @else {
     <main class="dashboard-content">
       <section class="welcome" aria-labelledby="welcome-title">

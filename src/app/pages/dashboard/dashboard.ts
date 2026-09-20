@@ -3,13 +3,14 @@ import { Router } from '@angular/router';
 import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
 import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
+import { Profile } from '../../shared/components-privado/profile/profile';
 import { AuthService } from '../../service/login/login';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CreditsModal, NavbarPrivado, MyEbooks],
+  imports: [CreditsModal, NavbarPrivado, MyEbooks, Profile],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
