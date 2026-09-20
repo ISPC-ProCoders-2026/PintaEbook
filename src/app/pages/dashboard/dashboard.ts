@@ -5,12 +5,13 @@ import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/na
 import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
 import { Profile } from '../../shared/components-privado/profile/profile';
 import { AuthService } from '../../service/login/login';
+import { NewEbook } from '../../shared/components-privado/new-ebooks/new-ebook';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CreditsModal, NavbarPrivado, MyEbooks, Profile],
+  imports: [CreditsModal, NavbarPrivado, MyEbooks, Profile, NewEbook],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
