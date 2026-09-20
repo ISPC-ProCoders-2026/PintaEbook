@@ -22,25 +22,26 @@
       <button type="button" class="ebooks-primary-action">Crear mi primer ebook</button>
     </section>
   } @else {
-    <section class="ebooks-toolbar" aria-label="Herramientas de biblioteca">
+    <section class="ebooks-toolbar" aria-label="Búsqueda avanzada de ebooks">
       <label class="ebooks-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
-        <input type="search" placeholder="Buscar ebook..." aria-label="Buscar ebook" />
+        <input type="search" [(ngModel)]="searchTerm" placeholder="Buscar ebook..." aria-label="Buscar ebook" />
       </label>
       <div class="ebooks-filters">
         <label class="ebooks-select">
           <span>Estado</span>
-          <select aria-label="Filtrar por estado"><option>Todos</option><option>En progreso</option><option>Borrador</option><option>Finalizado</option></select>
+          <select [(ngModel)]="selectedStatus" aria-label="Filtrar por estado"><option>Todos</option><option>En progreso</option><option>Borrador</option><option>Finalizado</option></select>
         </label>
         <label class="ebooks-select ebooks-select--order">
           <span>Ordenar</span>
-          <select aria-label="Ordenar ebooks"><option>Última edición</option><option>Título</option></select>
+          <select [(ngModel)]="sortBy" aria-label="Ordenar ebooks"><option>Última edición</option><option>Título</option></select>
         </label>
       </div>
     </section>
 
     <section class="ebooks-list" aria-label="Listado de ebooks">
-      @for (ebook of ebooks; track ebook.title) {
+      @if (filteredEbooks.length) {
+        @for (ebook of filteredEbooks; track ebook.title) {
         <article class="ebook-card">
           <div class="ebook-cover" [class]="'ebook-cover ' + ebook.coverClass" aria-hidden="true">
             <span class="ebook-cover__frame"></span>
@@ -60,6 +61,13 @@
           </div>
           <button type="button" class="ebook-open-action">Abrir <span aria-hidden="true">→</span></button>
         </article>
+        }
+      } @else {
+        <div class="ebooks-no-results" role="status">
+          <strong>No encontramos ebooks con esos filtros.</strong>
+          <span>Prueba otra combinación de búsqueda.</span>
+          <button type="button" class="ebooks-clear-filters" (click)="clearFilters()">Limpiar filtros</button>
+        </div>
       }
     </section>
   }
