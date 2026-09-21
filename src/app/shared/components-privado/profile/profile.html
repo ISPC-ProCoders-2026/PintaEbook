@@ -1,0 +1,45 @@
+<main class="profile-content">
+  <section class="profile-heading" aria-labelledby="profile-title">
+    <div>
+      <p class="profile-eyebrow">Mi espacio</p>
+      <h1 id="profile-title">Perfil</h1>
+      <p>Los datos que acompañan tu recorrido editorial.</p>
+    </div>
+  </section>
+
+  @if (isLoading) {
+    <section class="profile-loading" aria-label="Cargando perfil">
+      <span class="profile-loading__avatar"></span>
+      <div><span></span><span></span><span></span></div>
+    </section>
+  } @else if (hasError) {
+    <section class="profile-message" role="alert">
+      <span aria-hidden="true">!</span>
+      <div><h2>No pudimos cargar tu perfil</h2><p>Intentá nuevamente en unos minutos.</p></div>
+    </section>
+  } @else if (profile) {
+    <section class="profile-layout" aria-label="Información del perfil">
+      <article class="profile-identity">
+        <div class="profile-identity__ornament" aria-hidden="true">✦</div>
+        <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
+        <p class="profile-eyebrow">{{ profile.role === 'ADMIN' ? 'Administrador' : 'Autor' }}</p>
+        <h2>{{ fullName }}</h2>
+        <p class="profile-identity__email">{{ profile.email }}</p>
+        <span class="profile-member">Miembro desde {{ memberSince }}</span>
+      </article>
+
+      <article class="profile-details" aria-labelledby="profile-details-title">
+        <div class="profile-details__heading">
+          <div><p class="profile-eyebrow">Datos personales</p><h2 id="profile-details-title">Tu información</h2></div>
+          <span class="profile-details__seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/><path d="m8 12 2.5 2.5L16.5 8.5"/></svg></span>
+        </div>
+        <dl class="profile-data">
+          <div><dt>Nombre</dt><dd>{{ profile.first_name }}</dd></div>
+          <div><dt>Apellido</dt><dd>{{ profile.last_name }}</dd></div>
+          <div class="profile-data__wide"><dt>Correo electrónico</dt><dd>{{ profile.email }}</dd></div>
+          <div><dt>Rol</dt><dd>{{ profile.role === 'ADMIN' ? 'Administrador' : 'Autor' }}</dd></div>
+        </dl>
+      </article>
+    </section>
+  }
+</main>

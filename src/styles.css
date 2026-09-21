@@ -1,4 +1,107 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	color-scheme: light;
+	--font-body: 'Inter', Arial, sans-serif;
+	--font-display: 'Playfair Display', Georgia, serif;
+	--font-reading: 'Cormorant Garamond', Georgia, serif;
+
+	--color-ink-950: #211b17;
+	--color-ink-900: #3a2b23;
+	--color-ink-500: #77685a;
+	--color-burgundy-950: #3b080f;
+	--color-burgundy-900: #5e0b15;
+	--color-burgundy-800: #721220;
+	--color-gold-700: #946a2f;
+	--color-gold-600: #b88435;
+	--color-gold-400: #e5ab35;
+	--color-gold-100: #f2da96;
+	--color-paper: #fefcf7;
+	--color-cream: #f2efe3;
+	--color-paper-deep: #faf0d8;
+	--color-border: #d9cab3;
+
+	--page-background: var(--color-paper);
+	--page-text: var(--color-ink-950);
+	--surface-background: #ffffff;
+	--surface-muted: var(--color-paper-deep);
+	--surface-border: var(--color-border);
+	--scrollbar-track: var(--color-paper-deep);
+	--scrollbar-thumb: var(--color-gold-600);
+}
+
+:root[data-theme='dark'],
+.dark {
+	color-scheme: dark;
+	--page-background: #211b17;
+	--page-text: #f2efe3;
+	--surface-background: #2e211d;
+	--surface-muted: #3b2823;
+	--surface-border: #725846;
+	--scrollbar-track: #2e211d;
+	--scrollbar-thumb: #d49a4e;
+}
+
+html {
+	min-width: 320px;
+	background: var(--page-background);
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	overflow-x: hidden;
+	background: var(--page-background);
+	color: var(--page-text);
+	font-family: var(--font-body);
+}
+
+h1, h2, h3 {
+	font-family: var(--font-display);
+}
+
+.font-display {
+	font-family: var(--font-display);
+}
+
+.font-reading {
+	font-family: var(--font-reading);
+}
+
+:root.dark app-login .login-layout input,
+:root.dark app-register .login-layout input {
+	border-color: #725846 !important;
+	background-color: #2e211d !important;
+	color: #f2efe3 !important;
+}
+
+:root.dark app-login .login-layout input::placeholder,
+:root.dark app-register .login-layout input::placeholder {
+	color: #a99586 !important;
+}
+
+:root.dark app-login .login-layout button[type='button']:not(app-theme-toggle button),
+:root.dark app-register .login-layout button[type='button']:not(app-theme-toggle button) {
+	color: #f2efe3;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background: var(--scrollbar-thumb);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-gold-700);
+}
 

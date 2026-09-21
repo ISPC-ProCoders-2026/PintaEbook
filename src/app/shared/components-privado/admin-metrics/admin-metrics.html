@@ -1,0 +1,51 @@
+<div class="metrics-page">
+  <div class="metrics-workspace">
+    <app-private-navbar
+      [isAdmin]="true"
+      sectionName="Métricas"
+      (navigationEvent)="handleNavigation($event)"
+      (logoutEvent)="logout()"
+      (brandClickEvent)="handleBrandClick()">
+    </app-private-navbar>
+
+    <main class="metrics-content">
+      <header class="metrics-header">
+        <div>
+          <p class="eyebrow">Administración</p>
+          <h1>Métricas de Pinta Ebook</h1>
+          <p>Resumen estático de la actividad general de la plataforma.</p>
+        </div>
+      </header>
+
+      <section class="metrics-grid" aria-label="Resumen de métricas">
+        <article class="metric-card"><span>Usuarios registrados</span><strong>1.284</strong><small>+12,4% este mes</small></article>
+        <article class="metric-card"><span>Ebooks creados</span><strong>3.642</strong><small>+186 esta semana</small></article>
+        <article class="metric-card"><span>Autores activos</span><strong>427</strong><small>33 conectados hoy</small></article>
+        <article class="metric-card metric-card--highlight"><span>Créditos consumidos</span><strong>8.950</strong><small>Últimos 30 días</small></article>
+      </section>
+
+      <section class="metrics-details">
+        <article class="panel">
+          <div class="panel__heading">
+            <div><p class="eyebrow">Crecimiento</p><h2>Usuarios nuevos</h2></div>
+            <strong>+18,6%</strong>
+          </div>
+          <div class="bar-chart" aria-label="Crecimiento semanal de usuarios">
+            <span style="height: 36%"></span><span style="height: 52%"></span><span style="height: 43%"></span><span style="height: 67%"></span><span style="height: 58%"></span><span style="height: 82%"></span><span style="height: 74%"></span>
+          </div>
+          <div class="chart-labels"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+        </article>
+
+        <article class="panel">
+          <p class="eyebrow">Actividad reciente</p>
+          <h2>Estado de la plataforma</h2>
+          <ul class="activity-list">
+            <li><span class="activity-dot"></span><p><strong>147 ebooks publicados</strong><small>Durante los últimos 7 días</small></p></li>
+            <li><span class="activity-dot"></span><p><strong>96,8% de disponibilidad</strong><small>Servicios operativos</small></p></li>
+            <li><span class="activity-dot"></span><p><strong>34 nuevas suscripciones</strong><small>Planes activos este mes</small></p></li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+</div>

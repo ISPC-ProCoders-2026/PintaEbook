@@ -12,7 +12,6 @@ Frontend de **PintaEbook**, una aplicación web orientada a la creación y gesti
 - Vitest 4.0.8
 - Prettier 3.8.1
 - npm 11.10.0
-- Docker Desktop 4.88.1
 
 El proyecto utiliza componentes **standalone** de Angular y el builder `@angular/build:application`.
 
@@ -57,6 +56,7 @@ src/
     │   ├── home/
     │   ├── login/
     │   ├── not-found/
+        ├── credits/
     │   └── register/
     │
     ├── service/
@@ -67,6 +67,9 @@ src/
     └── shared/
         └── components/
             ├── footer/
+            ├── cta/
+            ├── faqs/
+            ├── progress-bar/
             └── navbar/
 ```
 
@@ -99,40 +102,63 @@ Entre ellos se encuentran:
 - Faqs
 
 
-## Instalación
+## Instalación y ejecución
 
-### 1. Clonar el repositorio
+La forma recomendada de levantar el proyecto desde cero es utilizar Docker. Esto evita problemas de dependencias y deja preparado el entorno de desarrollo.
+
+### Requisitos previos
+
+- Docker Desktop instalado y en ejecución.
+- Git instalado.
+- El backend disponible en `http://localhost:8000/` para utilizar el login, el registro y el resto de las funciones conectadas a la API.
+
+### Opción 1: ejecutar con Docker
+
+#### 1. Clonar el repositorio
 
 ```bash
-git clone ISPC-ProCoders-2026/PintaEbook.git
+git clone https://github.com/ISPC-ProCoders-2026/PintaEbook.git
 cd PintaEbook
 ```
 
-### 2. Instalar dependencias
+#### 2. Configurar las variables de entorno
 
-```bash
-npm install
+Crea el archivo `.env` a partir del archivo de ejemplo incluido en el proyecto.
+
+**Windows (PowerShell/CMD):**
+
+```powershell
+copy .env.example .env
 ```
 
-### 3. Ejecutar el proyecto
+**Linux/macOS:**
 
 ```bash
-npm start
+cp .env.example .env
 ```
-### 4. Una vez levantado por primera vez el proyecto, se crea una carpeta, environments, dentro del archivo: environment.generated.ts "configurar las credenciales": 
 
-├── environments/
-│   └── environment.generated.ts < Configurar las credenciales >
+Abre el archivo `.env` y verifica que contenga los valores correctos:
 
-- API_BASE_URL=http://localhost:8000/api 
-- GOOGLE_CLIENT_ID=1042090144205-hs489ota4otsl2f0e2l8qtk27ktegu5h.apps.googleusercontent.com
+```env
+API_BASE_URL=http://localhost:8000/api
+GOOGLE_CLIENT_ID=1042090144205-hs489ota4otsl2f0e2l8qtk27ktegu5h.apps.googleusercontent.com
+```
 
+#### 3. Construir y levantar el contenedor
 
-El comando `npm start` genera automáticamente la configuración del entorno y luego inicia el servidor de desarrollo de Angular.
+Con Docker Desktop abierto, ejecuta:
 
-La aplicación estará disponible en: [http://localhost:4200](http://localhost:4200)
+```bash
+docker compose up -d --build
+```
 
-> No es necesario ejecutar manualmente el script de generación del entorno.
+Durante la construcción, un script lee el archivo `.env` y genera automáticamente `src/environments/environment.generated.ts`.
+
+#### 4. Acceder a la aplicación
+
+Cuando el contenedor esté listo, abre [http://localhost:4200](http://localhost:4200) en el navegador.
+
+> **Importante:** el backend también debe estar levantado en [http://localhost:8000](http://localhost:8000) para que funcionen correctamente el login, el registro y las demás funciones que utilizan la API.
 
 
 ## Recursos

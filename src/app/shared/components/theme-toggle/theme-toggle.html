@@ -1,0 +1,21 @@
+<button
+  type="button"
+  class="group inline-flex h-9 w-16 items-center rounded-full border border-[#b88435]/40 bg-[#f2efe3]/70 p-1 text-[#5e0b15] shadow-sm transition-colors hover:border-[#b88435] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b88435] dark:border-[#e5ab35]/40 dark:bg-[#3b2823] dark:text-[#f2efe3] dark:hover:bg-[#50372f]"
+  [attr.aria-pressed]="themeService.isDark()"
+  [attr.aria-label]="themeService.isDark() ? 'Activar modo claro' : 'Activar modo oscuro'"
+  [attr.title]="themeService.isDark() ? 'Activar modo claro' : 'Activar modo oscuro'"
+  (click)="themeService.toggle()">
+  <span
+    class="grid h-7 w-7 place-items-center rounded-full bg-[#b88435] text-[#211b17] shadow transition-transform duration-300 group-hover:bg-[#e5ab35] dark:translate-x-7 dark:bg-[#e5ab35]"
+    [class.translate-x-7]="themeService.isDark()">
+    @if (themeService.isDark()) {
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2M5.64 5.64l1.42 1.42m9.9 9.9 1.42 1.42M3 12h2m14 0h2M5.64 18.36l1.42-1.42m9.9-9.9 1.42-1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
+      </svg>
+    } @else {
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z" />
+      </svg>
+    }
+  </span>
+</button>

@@ -1,0 +1,79 @@
+<main class="new-ebook" aria-labelledby="new-ebook-title">
+  <header class="new-ebook__header">
+    <div>
+      <p class="eyebrow">Escritura / Nuevo proyecto</p>
+      <h1 id="new-ebook-title">Crear E-book</h1>
+      <p class="new-ebook__intro">Dale forma a tu próxima historia, bloque a bloque.</p>
+    </div>
+    <div class="new-ebook__actions">
+      @if (saveMessage) {
+        <span class="save-message" role="status">{{ saveMessage }}</span>
+      }
+      <button type="button" class="button button--quiet" (click)="saveDraft()">Guardar como borrador</button>
+      <button type="button" class="button button--primary" (click)="publishEbook()">Publicar E-book <span aria-hidden="true">→</span></button>
+    </div>
+  </header>
+
+  <section class="editor-layout" aria-label="Editor de E-book">
+    <aside class="details-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Ficha del libro</p>
+        <span class="panel-heading__number">01</span>
+      </div>
+      <label class="field">
+        <span>Título del E-book</span>
+        <input type="text" value="Los Espejos de Papel" aria-label="Título del E-book" />
+      </label>
+      <label class="field">
+        <span>Autor</span>
+        <input type="text" value="Juan" aria-label="Autor" />
+      </label>
+      <label class="field">
+        <span>Descripción breve</span>
+        <textarea rows="5" aria-label="Descripción breve">Una historia sobre memoria, silencio y las verdades que guardan los libros.</textarea>
+      </label>
+      <label class="field">
+        <span>Género</span>
+        <select aria-label="Género">
+          <option>Ficción literaria</option>
+          <option>Novela</option>
+          <option>Ensayo</option>
+          <option>Poesía</option>
+        </select>
+      </label>
+      <div class="cover-placeholder" aria-label="Portada del E-book">
+        <span class="cover-placeholder__symbol">E</span>
+        <span>Agregar portada</span>
+        <small>JPG o PNG · 1600 × 2560 px</small>
+      </div>
+    </aside>
+
+    <section class="writing-panel">
+      <div class="writing-panel__topline">
+        <div>
+          <p class="eyebrow">Manuscrito</p>
+          <span class="writing-panel__status"><i></i> Guardado localmente</span>
+        </div>
+        <span class="writing-panel__count">{{ wordCount }} palabras</span>
+      </div>
+      <div class="editor-frame">
+        <div class="editor-toolbar" aria-label="Herramientas de formato">
+          <button type="button" aria-label="Párrafo" title="Párrafo"><span class="toolbar-letter">T</span></button>
+          <button type="button" aria-label="Título 1" title="Título 1"><span>H<sub>1</sub></span></button>
+          <button type="button" aria-label="Título 2" title="Título 2"><span>H<sub>2</sub></span></button>
+          <button type="button" class="toolbar-button--quote" aria-label="Cita" title="Cita">“</button>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <button type="button" aria-label="Código" title="Código"><span>&lt; &gt;</span></button>
+          <span class="toolbar-spacer"></span>
+          <span class="toolbar-font">Cormorant Garamond <b>16px</b></span>
+          <button type="button" class="toolbar-icon" aria-label="Más herramientas" title="Más herramientas">▣</button>
+        </div>
+        <div id="ebook-editor" class="editorjs-holder"></div>
+        <div class="editor-prompt">
+          <input type="text" placeholder="Pregunta o pide cambios al asistente..." aria-label="Pregunta al asistente" />
+          <button type="button" aria-label="Enviar pregunta al asistente">↑</button>
+        </div>
+      </div>
+    </section>
+  </section>
+</main>
