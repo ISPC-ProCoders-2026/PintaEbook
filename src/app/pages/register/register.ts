@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, Inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RegisterService } from '../../service/register/register';
@@ -88,7 +89,7 @@ export class Register implements OnInit {
       error: (error) => {
         this.isGoogleRegistrationInProgress = false;
         this.googleMessage = '';
-        this.handleError(error, 'Error al registrarse con Google.');
+        this.handleError(error, 'No pudimos crear tu cuenta con Google.');
       },
     });
   }
@@ -117,12 +118,54 @@ export class Register implements OnInit {
         this.isLoading = false;
         this.router.navigate(['/dashboard']);
       },
-      error: (error) => this.handleError(error, 'Error al crear la cuenta.'),
+      error: (error) => this.handleError(error, 'No pudimos crear tu cuenta.'),
     });
   }
 
-  private handleError(error: any, fallback: string): void {
+  private handleError(error: unknown, fallback: string): void {
     this.isLoading = false;
-    this.errorMessage = error.error?.detail || error.error?.message || fallback;
+
+    if (!(error instanceof HttpErrorResponse)) {
+      this.errorMessage = fallback;
+      return;
+    }
+
+    if (error.status === 0) {
+      this.errorMessage = 'No pudimos conectarnos con el servidor. Revisa tu conexión e intenta nuevamente.';
+      return;
+    }
+
+    const responseText = this.getResponseText(error.error).toLowerCase();
+    if (error.status === 409 || /already exists|already registered|email exists|correo ya/.test(responseText)) {
+      this.errorMessage = 'Ya existe una cuenta con ese correo. Intenta iniciar sesión o usa otro correo.';
+      return;
+    }
+
+    if (error.status === 400) {
+      this.errorMessage = 'Revisa los datos ingresados. Si el problema continúa, intenta nuevamente.';
+      return;
+    }
+
+    if (error.status === 429) {
+      this.errorMessage = 'Hiciste demasiados intentos. Espera un momento y vuelve a intentarlo.';
+      return;
+    }
+
+    this.errorMessage = fallback;
+  }
+
+  private getResponseText(response: unknown): string {
+    if (typeof response === 'string') {
+      return response;
+    }
+
+    if (response && typeof response === 'object') {
+      const body = response as { detail?: unknown; message?: unknown; email?: unknown };
+      return [body.detail, body.message, body.email]
+        .filter((value): value is string => typeof value === 'string')
+        .join(' ');
+    }
+
+    return '';
   }
 }
