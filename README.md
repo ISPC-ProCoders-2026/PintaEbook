@@ -160,18 +160,6 @@ Cuando el contenedor esté listo, abre [http://localhost:4200](http://localhost:
 
 > **Importante:** el backend también debe estar levantado en [http://localhost:8000](http://localhost:8000) para que funcionen correctamente el login, el registro y las demás funciones que utilizan la API.
 
-### Opción 2: ejecutar en local
-
-Si las dependencias ya están instaladas, puedes iniciar el servidor de desarrollo con:
-
-```bash
-npm start
-```
-
-Este comando genera automáticamente la configuración del entorno y luego inicia el servidor de Angular. No es necesario ejecutar manualmente el script de generación del entorno.
-
-La aplicación estará disponible en [http://localhost:4200](http://localhost:4200).
-
 
 ## Recursos
 
