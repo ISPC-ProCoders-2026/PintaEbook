@@ -6,6 +6,11 @@
   
   <!-- Modal Content Container -->
   <div class="relative w-full max-w-6xl my-8 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] text-white rounded-3xl shadow-2xl border border-gold-200/20 overflow-hidden transform transition-all">
+    @if (isLoading) {
+      <div class="book-loader-overlay">
+        <app-book-loader [message]="loadingMessage"></app-book-loader>
+      </div>
+    }
     
     <!-- Botón para cerrar -->
     <button 

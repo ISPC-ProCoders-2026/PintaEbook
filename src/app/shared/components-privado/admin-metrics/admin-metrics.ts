@@ -25,9 +25,16 @@ export class AdminMetrics {
   handleNavigation(section: string): void {
     if (section === 'dashboard') this.backToDashboard();
     if (section === 'purchases') void this.router.navigate(['/admin/purchases']);
+    if (['ebooks', 'new-ebook', 'editor', 'profile', 'settings', 'credits', 'buy-credits'].includes(section)) {
+      this.openDashboardSection(section);
+    }
   }
 
   handleBrandClick(): void {
     this.backToDashboard();
+  }
+
+  private openDashboardSection(section: string): void {
+    void this.router.navigate(['/dashboard'], { queryParams: { section } });
   }
 }

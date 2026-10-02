@@ -1,5 +1,7 @@
 <main class="new-ebook" aria-labelledby="new-ebook-title">
-  @if (!showEditor) {
+  @if (isLoading) {
+    <app-book-loader [message]="loadingMessage"></app-book-loader>
+  } @else if (!showEditor) {
     <section class="ebook-setup" aria-labelledby="ebook-setup-title">
       <div class="ebook-setup__intro">
         <p class="eyebrow">Escritura / Nuevo proyecto</p>

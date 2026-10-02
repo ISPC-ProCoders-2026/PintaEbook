@@ -8,7 +8,9 @@
       (brandClickEvent)="setActiveSection('dashboard')">
     </app-private-navbar>
 
-    @if (activeSection === 'ebooks') {
+    @if (isOpeningEbook) {
+      <app-book-loader message="Estamos abriendo tu E-book..."></app-book-loader>
+    } @else if (activeSection === 'ebooks') {
       <app-my-ebooks (openEbook)="openEbook($event)"></app-my-ebooks>
     } @else if (activeSection === 'profile') {
       <app-profile></app-profile>

@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, Input, OnDestroy, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { EbookSummary } from '../my-ebooks/my-ebooks';
+import { BookLoader } from '../book-loader/book-loader';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
@@ -9,13 +10,14 @@ import Quote from '@editorjs/quote';
 @Component({
   selector: 'app-new-ebook',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, BookLoader],
   templateUrl: './new-ebook.html',
   styleUrl: './new-ebook.css'
 })
 export class NewEbook implements AfterViewInit, OnDestroy {
   @Input() existingEbook: EbookSummary | null = null;
   private readonly formBuilder = inject(FormBuilder);
+  private readonly changeDetector = inject(ChangeDetectorRef);
   private editor?: EditorJS;
   readonly setupForm = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
@@ -25,6 +27,9 @@ export class NewEbook implements AfterViewInit, OnDestroy {
     contentType: ['Novela', Validators.required]
   });
   showEditor = false;
+  isLoading = false;
+  loadingMessage = 'Estamos preparando tu espacio de escritura...';
+  private loadingTimer?: number;
   saveMessage = '';
   wordCount = 0;
 
@@ -46,12 +51,21 @@ export class NewEbook implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.showEditor = true;
-    queueMicrotask(() => this.initializeEditor());
+    this.isLoading = true;
+    this.loadingTimer = window.setTimeout(() => {
+      this.showEditor = true;
+      this.isLoading = false;
+      this.changeDetector.detectChanges();
+      window.setTimeout(() => this.initializeEditor(), 0);
+    }, 450);
   }
 
   private initializeEditor(): void {
     if (this.editor) return;
+    if (!document.getElementById('ebook-editor')) {
+      window.setTimeout(() => this.initializeEditor(), 0);
+      return;
+    }
 
     const { title, description } = this.setupForm.getRawValue();
     this.editor = new EditorJS({
@@ -103,12 +117,13 @@ export class NewEbook implements AfterViewInit, OnDestroy {
       }
     });
 
-    void this.updateWordCount();
+    void this.editor.isReady.then(() => this.updateWordCount());
   }
 
   async saveDraft(): Promise<void> {
     if (!this.editor) return;
 
+    await this.editor.isReady;
     await this.editor.save();
     this.saveMessage = 'Borrador guardado localmente';
     window.setTimeout(() => this.saveMessage = '', 2500);
@@ -117,6 +132,7 @@ export class NewEbook implements AfterViewInit, OnDestroy {
   async publishEbook(): Promise<void> {
     if (!this.editor) return;
 
+    await this.editor.isReady;
     await this.editor.save();
     this.saveMessage = 'E-book preparado para publicar';
     window.setTimeout(() => this.saveMessage = '', 2500);
@@ -125,6 +141,7 @@ export class NewEbook implements AfterViewInit, OnDestroy {
   private async updateWordCount(): Promise<void> {
     if (!this.editor) return;
 
+    await this.editor.isReady;
     const output = await this.editor.save();
     this.wordCount = output.blocks.reduce((total: number, block: { data: { text?: unknown } }) => {
       const text = String((block.data as { text?: string }).text ?? '')
@@ -135,6 +152,11 @@ export class NewEbook implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.editor?.destroy();
+    window.clearTimeout(this.loadingTimer);
+    if (this.editor) {
+      void this.editor.isReady
+        .then(() => this.editor?.destroy())
+        .catch(() => undefined);
+    }
   }
 }

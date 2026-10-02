@@ -1,7 +1,8 @@
 
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BookLoader } from '../book-loader/book-loader';
 
 type CreditPackage = {
   name: string;
@@ -15,11 +16,12 @@ export type CreditPurchaseMode = 'credits' | 'plans';
 @Component({
   selector: 'app-credits-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BookLoader],
   templateUrl: './credits-modal.html',
   styleUrls: ['./credits-modal.css']
 })
 export class CreditsModal {
+  private readonly changeDetector = inject(ChangeDetectorRef);
   @Input() isOpen: boolean = false;
   @Input() mode: CreditPurchaseMode = 'credits';
   @Output() closeEvent = new EventEmitter<void>();
@@ -33,6 +35,9 @@ export class CreditsModal {
   cardNumber = '';
   expiration = '';
   securityCode = '';
+  isLoading = false;
+  loadingMessage = 'Estamos preparando tu selección...';
+  private loadingTimer?: number;
 
   readonly creditPackages: CreditPackage[] = [
     { name: 'Carga inicial', credits: 100, price: 1500 },
@@ -42,8 +47,17 @@ export class CreditsModal {
   ];
 
   selectPlan(plan: CreditPackage): void {
-    this.selectedPlan = plan;
-    this.checkoutSubmitted = false;
+    this.loadingMessage = plan.monthlyPrice !== undefined
+      ? 'Estamos preparando tu plan...'
+      : 'Estamos preparando tus créditos...';
+    this.isLoading = true;
+    window.clearTimeout(this.loadingTimer);
+    this.loadingTimer = window.setTimeout(() => {
+      this.selectedPlan = plan;
+      this.checkoutSubmitted = false;
+      this.isLoading = false;
+      this.changeDetector.detectChanges();
+    }, 450);
   }
 
   get selectedPrice(): number {
@@ -75,6 +89,8 @@ export class CreditsModal {
   }
 
   close(): void {
+    window.clearTimeout(this.loadingTimer);
+    this.isLoading = false;
     this.backToPlans();
     this.closeEvent.emit();
   }
