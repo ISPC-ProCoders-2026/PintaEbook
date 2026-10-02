@@ -13,6 +13,49 @@
   animation: shimmer 3s linear infinite;
 }
 
+.credit-option-card,
+.plan-option-card,
+.credit-custom-card {
+  border: 1px solid rgba(217, 202, 179, .2);
+  border-radius: 11px;
+  background: rgba(255, 252, 245, .06);
+  box-shadow: 0 11px 25px rgba(0, 0, 0, .12);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.credit-option-card,
+.plan-option-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.credit-option-card:hover,
+.plan-option-card:hover {
+  border-color: rgba(188, 128, 52, .58);
+  box-shadow: 0 14px 27px rgba(0, 0, 0, .18);
+  transform: translateY(-1px);
+}
+
+.credit-custom-card {
+  padding: 20px;
+  border-style: dashed;
+  background: rgba(255, 252, 245, .04);
+}
+
+.plan-option-card--featured {
+  position: relative;
+  border-color: rgba(188, 128, 52, .65);
+  background: linear-gradient(145deg, rgba(99, 27, 47, .95), rgba(57, 10, 22, .95));
+}
+
+.checkout-form {
+  border-color: rgba(188, 128, 52, .42);
+  border-radius: 11px;
+  background: rgba(255, 252, 245, .06);
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }

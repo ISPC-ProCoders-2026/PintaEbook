@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CreditPurchaseMode, CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
 import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
 import { Profile } from '../../shared/components-privado/profile/profile';
@@ -15,12 +15,21 @@ import { NewEbook } from '../../shared/components-privado/new-ebooks/new-ebook';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   isCreditsModalOpen = false;
+  creditsModalMode: CreditPurchaseMode = 'credits';
   activeSection = 'dashboard';
+
+  ngOnInit(): void {
+    this.activatedRoute.queryParamMap.subscribe((params) => {
+      const section = params.get('section');
+      if (section) this.setActiveSection(section);
+    });
+  }
 
   setActiveSection(section: string): void {
     this.activeSection = section;
@@ -28,8 +37,12 @@ export class Dashboard {
 
   handleNavigation(section: string): void {
     this.setActiveSection(section);
-    if (section === 'credits' || section === 'buy-credits') this.isCreditsModalOpen = true;
+    if (section === 'credits' || section === 'buy-credits') {
+      this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
+      this.isCreditsModalOpen = true;
+    }
     if (section === 'metrics') this.openAdminMetrics();
+    if (section === 'purchases') this.openPurchases();
   }
 
   closeCreditsModal(): void {
@@ -47,5 +60,9 @@ export class Dashboard {
 
   openAdminMetrics(): void {
     void this.router.navigate(['/admin/metrics']);
+  }
+
+  openPurchases(): void {
+    void this.router.navigate([this.isAdmin ? '/admin/purchases' : '/purchases']);
   }
 }

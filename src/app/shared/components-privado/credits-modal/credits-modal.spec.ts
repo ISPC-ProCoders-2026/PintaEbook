@@ -33,4 +33,12 @@ describe('CreditsModal', () => {
 
     expect(component.checkoutSubmitted).toBe(true);
   });
+
+  it('should select a custom credit amount with a provisional price', () => {
+    component.customCredits = 750;
+    component.selectCustomCredits();
+
+    expect(component.selectedPlan?.credits).toBe(750);
+    expect(component.selectedPrice).toBe(9000);
+  });
 });

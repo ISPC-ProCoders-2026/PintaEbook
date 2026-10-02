@@ -49,7 +49,14 @@ export const routes: Routes = [
     canActivate: [adminGuard]
   },
   {
-    path: 'credits', component: Credits
+    path: 'purchases',
+    component: AdminPurchases,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'credits',
+    component: Credits,
+    canActivate: [authGuard]
   },
   { path: 'about', component: About },
   {

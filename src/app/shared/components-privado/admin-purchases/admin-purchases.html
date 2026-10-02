@@ -1,7 +1,7 @@
 <div class="purchases-page">
   <div class="purchases-workspace">
     <app-private-navbar
-      [isAdmin]="true"
+      [isAdmin]="isAdminView"
       sectionName="Compras"
       (navigationEvent)="handleNavigation($event)"
       (logoutEvent)="logout()"
@@ -11,9 +11,9 @@
     <main class="purchases-content">
       <header class="purchases-header">
         <div>
-          <p class="eyebrow">Administración</p>
-          <h1>Consulta de compras</h1>
-          <p>Revisá créditos acreditados y operaciones pendientes de validación.</p>
+          <p class="eyebrow">{{ isAdminView ? 'Administración' : 'Mi cuenta' }}</p>
+          <h1>{{ isAdminView ? 'Consulta de compras' : 'Historial de compras' }}</h1>
+          <p>{{ isAdminView ? 'Revisá créditos acreditados y operaciones pendientes de validación.' : 'Consultá tus compras de créditos y el estado de cada operación.' }}</p>
         </div>
         <span class="static-badge">Vista estática</span>
       </header>
@@ -45,3 +45,9 @@
     </main>
   </div>
 </div>
+
+<app-credits-modal
+  [isOpen]="isCreditsModalOpen"
+  [mode]="creditsModalMode"
+  (closeEvent)="closeCreditsModal()">
+</app-credits-modal>

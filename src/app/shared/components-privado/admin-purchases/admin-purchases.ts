@@ -5,18 +5,26 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../service/login/login';
 import { NavbarPrivado } from '../navbar-privado/navbar-privado';
+import { CreditPurchaseMode, CreditsModal } from '../credits-modal/credits-modal';
 import { Purchase, PurchaseStatus } from '../../../models/purchase.model';
 
 @Component({
   selector: 'app-admin-purchases',
   standalone: true,
-  imports: [DecimalPipe, FormsModule, NavbarPrivado],
+  imports: [DecimalPipe, FormsModule, NavbarPrivado, CreditsModal],
   templateUrl: './admin-purchases.html',
   styleUrl: './admin-purchases.css'
 })
 export class AdminPurchases {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+
+  isCreditsModalOpen = false;
+  creditsModalMode: CreditPurchaseMode = 'credits';
+
+  get isAdminView(): boolean {
+    return this.authService.isAdmin();
+  }
 
   searchTerm = '';
   selectedStatus: 'Todos' | PurchaseStatus = 'Todos';
@@ -58,8 +66,26 @@ export class AdminPurchases {
     void this.router.navigate(['/login']);
   }
 
+  closeCreditsModal(): void {
+    this.isCreditsModalOpen = false;
+  }
+
   handleNavigation(section: string): void {
-    if (section === 'dashboard') this.backToDashboard();
+    if (section === 'dashboard') this.openDashboardSection('dashboard');
     if (section === 'metrics') void this.router.navigate(['/admin/metrics']);
+    if (section === 'credits' || section === 'buy-credits') {
+      this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
+      this.isCreditsModalOpen = true;
+    }
+    if (section === 'purchases') {
+      void this.router.navigate([this.isAdminView ? '/admin/purchases' : '/purchases']);
+    }
+    if (['ebooks', 'new-ebook', 'editor', 'profile', 'settings'].includes(section)) {
+      this.openDashboardSection(section);
+    }
+  }
+
+  private openDashboardSection(section: string): void {
+    void this.router.navigate(['/dashboard'], { queryParams: { section } });
   }
 }
