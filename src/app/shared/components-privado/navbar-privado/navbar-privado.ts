@@ -65,4 +65,8 @@ export class NavbarPrivado {
   openAdminMetrics(): void {
     this.setActiveSection('metrics');
   }
+
+  openAdminPurchases(): void {
+    this.setActiveSection('purchases');
+  }
 }

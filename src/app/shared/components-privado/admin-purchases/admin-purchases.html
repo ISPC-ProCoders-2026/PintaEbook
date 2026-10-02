@@ -1,0 +1,47 @@
+<div class="purchases-page">
+  <div class="purchases-workspace">
+    <app-private-navbar
+      [isAdmin]="true"
+      sectionName="Compras"
+      (navigationEvent)="handleNavigation($event)"
+      (logoutEvent)="logout()"
+      (brandClickEvent)="backToDashboard()">
+    </app-private-navbar>
+
+    <main class="purchases-content">
+      <header class="purchases-header">
+        <div>
+          <p class="eyebrow">Administración</p>
+          <h1>Consulta de compras</h1>
+          <p>Revisá créditos acreditados y operaciones pendientes de validación.</p>
+        </div>
+        <span class="static-badge">Vista estática</span>
+      </header>
+
+      <section class="purchases-toolbar" aria-label="Filtros de compras">
+        <label class="purchases-search">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" [(ngModel)]="searchTerm" placeholder="Buscar por ID..." aria-label="Buscar por ID de compra" />
+        </label>
+        <label class="purchases-select"><span>Estado</span><select [(ngModel)]="selectedStatus"><option>Todos</option><option>Aprobada</option><option>Pendiente</option><option>Rechazada</option></select></label>
+        <label class="purchases-select"><span>Ordenar por</span><select [(ngModel)]="sortBy"><option>Fecha</option><option>Monto</option><option>Créditos</option></select></label>
+      </section>
+
+      <section class="purchases-panel" aria-labelledby="purchases-list-title">
+        <div class="purchases-panel__heading"><div><p class="eyebrow">Operaciones registradas</p><h2 id="purchases-list-title">Historial de compras</h2></div><span>{{ filteredPurchases.length }} operaciones</span></div>
+        <div class="purchases-table-wrapper">
+          <table class="purchases-table">
+            <thead><tr><th>ID</th><th>Fecha</th><th>Créditos</th><th>Monto</th><th>Estado</th></tr></thead>
+            <tbody>
+              @for (purchase of filteredPurchases; track purchase.id) {
+                <tr><td data-label="ID"><strong>{{ purchase.id }}</strong></td><td data-label="Fecha">{{ purchase.date }}</td><td data-label="Créditos">{{ purchase.credits | number }}</td><td data-label="Monto">{{ formatAmount(purchase.amount) }}</td><td data-label="Estado"><span class="status" [class]="'status status--' + purchase.status.toLocaleLowerCase()">{{ purchase.status }}</span></td></tr>
+              } @empty {
+                <tr><td class="purchases-empty" colspan="5">No encontramos compras con esos filtros.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

@@ -24,6 +24,7 @@ export class AdminMetrics {
 
   handleNavigation(section: string): void {
     if (section === 'dashboard') this.backToDashboard();
+    if (section === 'purchases') void this.router.navigate(['/admin/purchases']);
   }
 
   handleBrandClick(): void {

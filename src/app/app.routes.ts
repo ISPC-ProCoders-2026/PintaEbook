@@ -7,6 +7,7 @@ import { NotFound } from './pages/not-found/not-found';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Credits } from './pages/credits/credits';
 import { AdminMetrics } from './shared/components-privado/admin-metrics/admin-metrics';
+import { AdminPurchases } from './shared/components-privado/admin-purchases/admin-purchases';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { guestGuard } from './guards/guest.guard';
@@ -40,6 +41,11 @@ export const routes: Routes = [
   {
     path: 'admin/metrics',
     component: AdminMetrics,
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'admin/purchases',
+    component: AdminPurchases,
     canActivate: [adminGuard]
   },
   {

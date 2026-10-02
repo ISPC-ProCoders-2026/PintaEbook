@@ -44,6 +44,10 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7"/></svg>
               Métricas
             </button>
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === 'purchases'" (click)="openAdminPurchases()" aria-label="Consultar compras">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+              Compras
+            </button>
           </section>
         }
         <section class="nav-group nav-group--account" aria-labelledby="account-title">
