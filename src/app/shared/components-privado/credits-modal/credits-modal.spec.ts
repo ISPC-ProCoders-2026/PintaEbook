@@ -19,4 +19,18 @@ describe('CreditsModal', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should open the checkout form for a selected plan', () => {
+    component.selectPlan({ name: 'Escritor', credits: 500, monthlyPrice: 14 });
+
+    expect(component.selectedPlan?.name).toBe('Escritor');
+    expect(component.selectedPrice).toBe(14);
+  });
+
+  it('should mark the purchase as pending after submitting the static form', () => {
+    component.selectPlan({ name: 'Escritor', credits: 500, monthlyPrice: 14 });
+    component.submitPurchase();
+
+    expect(component.checkoutSubmitted).toBe(true);
+  });
 });
