@@ -23,6 +23,10 @@ export class AdminPurchases {
   creditsModalMode: CreditPurchaseMode = 'credits';
 
   get isAdminView(): boolean {
+    return this.router.url.startsWith('/admin/purchases');
+  }
+
+  get isAdminUser(): boolean {
     return this.authService.isAdmin();
   }
 
@@ -31,19 +35,21 @@ export class AdminPurchases {
   sortBy: 'Fecha' | 'Monto' | 'Créditos' = 'Fecha';
 
   readonly purchases: Purchase[] = [
-    { id: 'ARC-1048', date: '28/09/2026', credits: 500, amount: 19.99, status: 'Aprobada' },
-    { id: 'ARC-1047', date: '27/09/2026', credits: 1000, amount: 34.99, status: 'Pendiente' },
-    { id: 'ARC-1046', date: '26/09/2026', credits: 250, amount: 11.99, status: 'Aprobada' },
-    { id: 'ARC-1045', date: '25/09/2026', credits: 500, amount: 19.99, status: 'Rechazada' },
-    { id: 'ARC-1044', date: '24/09/2026', credits: 1000, amount: 34.99, status: 'Aprobada' }
+    { id: 'ARC-1048', date: '28/09/2026', credits: 500, amount: 19.99, status: 'Aprobada', userId: 'user-1', userName: 'Ana Pérez' },
+    { id: 'ARC-1047', date: '27/09/2026', credits: 1000, amount: 34.99, status: 'Pendiente', userId: 'user-2', userName: 'Lucas Gómez' },
+    { id: 'ARC-1046', date: '26/09/2026', credits: 250, amount: 11.99, status: 'Aprobada', userId: 'user-1', userName: 'Ana Pérez' },
+    { id: 'ARC-1045', date: '25/09/2026', credits: 500, amount: 19.99, status: 'Rechazada', userId: 'user-3', userName: 'Sofía Díaz' },
+    { id: 'ARC-1044', date: '24/09/2026', credits: 1000, amount: 34.99, status: 'Aprobada', userId: 'user-2', userName: 'Lucas Gómez' },
+    { id: 'ARC-1043', date: '23/09/2026', credits: 500, amount: 19.99, status: 'Aprobada', userId: 'admin-1', userName: 'Administrador' }
   ];
 
   get filteredPurchases(): Purchase[] {
     const search = this.searchTerm.trim().toLocaleLowerCase();
     const filtered = this.purchases.filter((purchase) => {
+      const belongsToCurrentUser = this.isAdminView || purchase.userId === this.authService.getUserId();
       const matchesSearch = !search || purchase.id.toLocaleLowerCase().includes(search);
       const matchesStatus = this.selectedStatus === 'Todos' || purchase.status === this.selectedStatus;
-      return matchesSearch && matchesStatus;
+      return belongsToCurrentUser && matchesSearch && matchesStatus;
     });
 
     return [...filtered].sort((first, second) => {
@@ -70,6 +76,11 @@ export class AdminPurchases {
     this.isCreditsModalOpen = false;
   }
 
+  openPurchaseMode(mode: CreditPurchaseMode): void {
+    this.creditsModalMode = mode;
+    this.isCreditsModalOpen = true;
+  }
+
   handleNavigation(section: string): void {
     if (section === 'dashboard') this.openDashboardSection('dashboard');
     if (section === 'metrics') void this.router.navigate(['/admin/metrics']);
@@ -77,8 +88,11 @@ export class AdminPurchases {
       this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
       this.isCreditsModalOpen = true;
     }
+    if (section === 'purchase-history') {
+      void this.router.navigate(['/purchases']);
+    }
     if (section === 'purchases') {
-      void this.router.navigate([this.isAdminView ? '/admin/purchases' : '/purchases']);
+      void this.router.navigate(['/admin/purchases']);
     }
     if (['ebooks', 'new-ebook', 'editor', 'profile', 'settings'].includes(section)) {
       this.openDashboardSection(section);

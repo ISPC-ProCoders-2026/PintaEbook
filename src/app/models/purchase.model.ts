@@ -6,4 +6,6 @@ export interface Purchase {
   credits: number;
   amount: number;
   status: PurchaseStatus;
+  userId: string;
+  userName: string;
 }

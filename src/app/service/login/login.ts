@@ -33,6 +33,9 @@ export class AuthService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
+    if (response.user?.id) {
+      localStorage.setItem('userId', response.user.id);
+    }
     const role = this.getUserRole(response);
     if (role) {
       localStorage.setItem('userRole', role);
@@ -45,6 +48,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userId');
   }
 
   getToken(): string | null {
@@ -64,6 +68,10 @@ export class AuthService {
 
   isAdmin(): boolean {
     return this.isLoggedIn() && localStorage.getItem('userRole')?.toLowerCase() === 'admin';
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId');
   }
 
   private getUserRole(response: AuthResponse): string | undefined {

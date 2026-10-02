@@ -41,3 +41,48 @@ h1 { color: #5e0b15; font-size: clamp(38px, 5vw, 54px); line-height: .9; }
 .nav-link--active { background: linear-gradient(90deg, rgba(144, 50, 61, .92), rgba(144, 50, 61, .73)); color: #fff; box-shadow: inset 1px 0 rgba(242, 239, 227, .17), 0 5px 14px rgba(33, 27, 23, .12); }
 .nav-link--active svg { color: #f4ddac; }
 .profile-card > svg { width: 18px; margin-left: auto; color: #dec78f; }
+
+:host-context(.dark) .metrics-page {
+  background: linear-gradient(135deg, #2e211d, #241916 55%, #3b2823);
+  color: #f2efe3;
+}
+
+:host-context(.dark) .metrics-header p:not(.eyebrow),
+:host-context(.dark) .metric-card span,
+:host-context(.dark) .chart-labels,
+:host-context(.dark) .activity-list small {
+  color: #c7b8aa;
+}
+
+:host-context(.dark) h1,
+:host-context(.dark) .metric-card strong,
+:host-context(.dark) .panel h2,
+:host-context(.dark) .activity-list strong {
+  color: #f2efe3;
+}
+
+:host-context(.dark) .metric-card,
+:host-context(.dark) .panel {
+  border-color: rgba(217, 202, 179, .2);
+  background: rgba(59, 40, 35, .76);
+  box-shadow: 0 12px 27px rgba(0, 0, 0, .18);
+}
+
+:host-context(.dark) .metric-card small,
+:host-context(.dark) .panel__heading > strong {
+  color: #e9c27f;
+}
+
+:host-context(.dark) .metric-card--highlight {
+  border-color: rgba(188, 128, 52, .65);
+  background: linear-gradient(145deg, #6b1521, #3f0910);
+}
+
+:host-context(.dark) .bar-chart {
+  border-bottom-color: rgba(217, 202, 179, .22);
+}
+
+:host-context(.dark) .activity-dot {
+  border-color: #d9cab3;
+  box-shadow: 0 0 0 4px rgba(217, 202, 179, .08);
+}

@@ -56,6 +56,11 @@
     box-shadow: 0 0 0 1px rgba(184, 132, 53, 0.3), 0 20px 60px rgba(57, 10, 22, 0.12);
 }
 
+.pricing-card,
+.pricing-action {
+    border-radius: 6px;
+}
+
 #reading-progress {
     position: fixed;
     top: 0;

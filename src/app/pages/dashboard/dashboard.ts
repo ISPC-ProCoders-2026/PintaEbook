@@ -42,7 +42,7 @@ export class Dashboard implements OnInit {
       this.isCreditsModalOpen = true;
     }
     if (section === 'metrics') this.openAdminMetrics();
-    if (section === 'purchases') this.openPurchases();
+    if (section === 'purchase-history') this.openPurchases();
   }
 
   closeCreditsModal(): void {
@@ -63,6 +63,6 @@ export class Dashboard implements OnInit {
   }
 
   openPurchases(): void {
-    void this.router.navigate([this.isAdmin ? '/admin/purchases' : '/purchases']);
+    void this.router.navigate(['/purchases']);
   }
 }

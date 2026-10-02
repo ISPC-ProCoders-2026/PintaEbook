@@ -49,7 +49,7 @@
               <p class="text-white/70 text-xs mt-1">créditos para cargar</p>
               <p class="text-white text-xl font-bold mt-5">{{ creditPackage.price | currency:'ARS':'symbol':'1.0-0' }}</p>
             </div>
-            <button type="button" (click)="selectPlan(creditPackage)" class="w-full py-3 mt-6 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-all text-sm cursor-pointer">
+            <button type="button" (click)="selectPlan(creditPackage)" class="purchase-action-button w-full py-3 mt-6 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-all text-sm cursor-pointer">
               Comprar créditos
             </button>
           </article>
@@ -60,7 +60,7 @@
               <span class="block mb-2">Cantidad personalizada</span>
               <input type="number" min="1" max="10000" step="1" [(ngModel)]="customCredits" class="w-full rounded-xl border border-white/20 bg-black/20 px-4 py-3 text-white outline-none focus:border-amber-400" />
             </label>
-            <button type="button" (click)="selectCustomCredits()" class="py-3 px-5 border border-amber-400/60 text-amber-200 font-bold rounded-xl hover:bg-white/10 transition-all text-sm cursor-pointer">
+            <button type="button" (click)="selectCustomCredits()" class="purchase-action-button py-3 px-5 border border-amber-400/60 text-amber-200 font-bold hover:bg-white/10 transition-all text-sm cursor-pointer">
               Comprar cantidad personalizada
             </button>
           </div>
@@ -90,7 +90,7 @@
             </ul>
           </div>
 
-          <button (click)="selectPlan({ name: 'Lector', credits: 100, monthlyPrice: 0 })" class="w-full py-3 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all text-sm cursor-pointer">
+          <button (click)="selectPlan({ name: 'Lector', credits: 100, monthlyPrice: 0 })" class="purchase-action-button w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm cursor-pointer">
             Comenzar gratis
           </button>
         </div>
@@ -119,7 +119,7 @@
             </ul>
           </div>
 
-          <button (click)="selectPlan({ name: 'Escritor', credits: 500, monthlyPrice: 14 })" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-all shadow-lg text-sm cursor-pointer">
+          <button (click)="selectPlan({ name: 'Escritor', credits: 500, monthlyPrice: 14 })" class="purchase-action-button w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-all shadow-lg text-sm cursor-pointer">
             Elegir Escritor
           </button>
         </div>
@@ -144,7 +144,7 @@
             </ul>
           </div>
 
-          <button (click)="selectPlan({ name: 'Editorial', credits: 1500, monthlyPrice: 39 })" class="w-full py-3 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all text-sm cursor-pointer">
+          <button (click)="selectPlan({ name: 'Editorial', credits: 1500, monthlyPrice: 39 })" class="purchase-action-button w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm cursor-pointer">
             Contactar ventas
           </button>
         </div>

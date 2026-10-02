@@ -55,8 +55,7 @@ export const routes: Routes = [
   },
   {
     path: 'credits',
-    component: Credits,
-    canActivate: [authGuard]
+    component: Credits
   },
   { path: 'about', component: About },
   {

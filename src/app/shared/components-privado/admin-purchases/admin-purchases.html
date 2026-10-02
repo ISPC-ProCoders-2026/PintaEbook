@@ -1,8 +1,8 @@
 <div class="purchases-page">
   <div class="purchases-workspace">
     <app-private-navbar
-      [isAdmin]="isAdminView"
-      sectionName="Compras"
+      [isAdmin]="isAdminUser"
+      [sectionName]="isAdminView ? 'Compras' : 'Historial de compras'"
       (navigationEvent)="handleNavigation($event)"
       (logoutEvent)="logout()"
       (brandClickEvent)="backToDashboard()">
@@ -15,13 +15,24 @@
           <h1>{{ isAdminView ? 'Consulta de compras' : 'Historial de compras' }}</h1>
           <p>{{ isAdminView ? 'Revisá créditos acreditados y operaciones pendientes de validación.' : 'Consultá tus compras de créditos y el estado de cada operación.' }}</p>
         </div>
-        <span class="static-badge">Vista estática</span>
+        <div class="purchases-header__actions">
+          <button type="button" class="purchase-primary-action" (click)="openPurchaseMode('credits')">Comprar créditos</button>
+          <button type="button" class="purchase-primary-action" (click)="openPurchaseMode('plans')">Comprar planes</button>
+        </div>
       </header>
 
       <section class="purchases-toolbar" aria-label="Filtros de compras">
         <label class="purchases-search">
-          <span aria-hidden="true">⌕</span>
-          <input type="search" [(ngModel)]="searchTerm" placeholder="Buscar por ID..." aria-label="Buscar por ID de compra" />
+          <span class="purchases-field-label">Buscar</span>
+          <span class="purchases-search-control">
+            <span class="purchases-search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 4 4"></path>
+              </svg>
+            </span>
+            <input type="search" [(ngModel)]="searchTerm" placeholder="Buscar por ID..." aria-label="Buscar por ID de compra" />
+          </span>
         </label>
         <label class="purchases-select"><span>Estado</span><select [(ngModel)]="selectedStatus"><option>Todos</option><option>Aprobada</option><option>Pendiente</option><option>Rechazada</option></select></label>
         <label class="purchases-select"><span>Ordenar por</span><select [(ngModel)]="sortBy"><option>Fecha</option><option>Monto</option><option>Créditos</option></select></label>
@@ -31,12 +42,12 @@
         <div class="purchases-panel__heading"><div><p class="eyebrow">Operaciones registradas</p><h2 id="purchases-list-title">Historial de compras</h2></div><span>{{ filteredPurchases.length }} operaciones</span></div>
         <div class="purchases-table-wrapper">
           <table class="purchases-table">
-            <thead><tr><th>ID</th><th>Fecha</th><th>Créditos</th><th>Monto</th><th>Estado</th></tr></thead>
+            <thead><tr><th>ID</th>@if (isAdminView) { <th>Usuario</th> }<th>Fecha</th><th>Créditos</th><th>Monto</th><th>Estado</th></tr></thead>
             <tbody>
               @for (purchase of filteredPurchases; track purchase.id) {
-                <tr><td data-label="ID"><strong>{{ purchase.id }}</strong></td><td data-label="Fecha">{{ purchase.date }}</td><td data-label="Créditos">{{ purchase.credits | number }}</td><td data-label="Monto">{{ formatAmount(purchase.amount) }}</td><td data-label="Estado"><span class="status" [class]="'status status--' + purchase.status.toLocaleLowerCase()">{{ purchase.status }}</span></td></tr>
+                <tr><td data-label="ID"><strong>{{ purchase.id }}</strong></td>@if (isAdminView) { <td data-label="Usuario">{{ purchase.userName }}</td> }<td data-label="Fecha">{{ purchase.date }}</td><td data-label="Créditos">{{ purchase.credits | number }}</td><td data-label="Monto">{{ formatAmount(purchase.amount) }}</td><td data-label="Estado"><span class="status" [class]="'status status--' + purchase.status.toLocaleLowerCase()">{{ purchase.status }}</span></td></tr>
               } @empty {
-                <tr><td class="purchases-empty" colspan="5">No encontramos compras con esos filtros.</td></tr>
+                <tr><td class="purchases-empty" [attr.colspan]="isAdminView ? 6 : 5">No encontramos compras con esos filtros.</td></tr>
               }
             </tbody>
           </table>

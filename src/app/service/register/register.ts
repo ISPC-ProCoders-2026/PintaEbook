@@ -33,6 +33,9 @@ export class RegisterService {
     if (response.refresh) {
       localStorage.setItem('refresh', response.refresh);
     }
+    if (response.user?.id) {
+      localStorage.setItem('userId', response.user.id);
+    }
     const role = this.getUserRole(response);
     if (role) {
       localStorage.setItem('userRole', role);
