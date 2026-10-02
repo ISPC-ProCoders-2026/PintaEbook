@@ -1,5 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+export interface EbookSummary {
+  title: string;
+  description: string;
+  status: string;
+  updatedAt: string;
+  progress: number;
+  coverClass: string;
+  coverKicker: string;
+}
 
 @Component({
   selector: 'app-my-ebooks',
@@ -9,6 +19,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './my-ebooks.css',
 })
 export class MyEbooks {
+  @Output() openEbook = new EventEmitter<EbookSummary>();
+
   // Maqueta local: esta bandera permite previsualizar el estado vacío sin lógica de datos.
   readonly displayEmptyState = false;
 

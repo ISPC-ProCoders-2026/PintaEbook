@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CreditPurchaseMode, CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
 import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
+import { EbookSummary } from '../../shared/components-privado/my-ebooks/my-ebooks';
 import { Profile } from '../../shared/components-privado/profile/profile';
 import { AuthService } from '../../service/login/login';
 import { NewEbook } from '../../shared/components-privado/new-ebooks/new-ebook';
@@ -23,6 +24,7 @@ export class Dashboard implements OnInit {
   isCreditsModalOpen = false;
   creditsModalMode: CreditPurchaseMode = 'credits';
   activeSection = 'dashboard';
+  selectedEbook: EbookSummary | null = null;
 
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe((params) => {
@@ -41,8 +43,14 @@ export class Dashboard implements OnInit {
       this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
       this.isCreditsModalOpen = true;
     }
+
     if (section === 'metrics') this.openAdminMetrics();
     if (section === 'purchase-history') this.openPurchases();
+  }
+
+  openEbook(ebook: EbookSummary): void {
+    this.selectedEbook = ebook;
+    this.activeSection = 'editor';
   }
 
   closeCreditsModal(): void {

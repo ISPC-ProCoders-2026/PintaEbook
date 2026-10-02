@@ -59,7 +59,7 @@
             <div class="ebook-progress-label"><span>Progreso del manuscrito</span><strong>{{ ebook.progress }}%</strong></div>
             <div class="ebook-progress" role="progressbar" [attr.aria-label]="'Progreso de ' + ebook.title" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="ebook.progress"><span [style.width.%]="ebook.progress"></span></div>
           </div>
-          <button type="button" class="ebook-open-action">Abrir <span aria-hidden="true">→</span></button>
+          <button type="button" class="ebook-open-action" (click)="openEbook.emit(ebook)">Abrir <span aria-hidden="true">→</span></button>
         </article>
         }
       } @else {

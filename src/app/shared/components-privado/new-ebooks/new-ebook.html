@@ -1,4 +1,66 @@
 <main class="new-ebook" aria-labelledby="new-ebook-title">
+  @if (!showEditor) {
+    <section class="ebook-setup" aria-labelledby="ebook-setup-title">
+      <div class="ebook-setup__intro">
+        <p class="eyebrow">Escritura / Nuevo proyecto</p>
+        <h1 id="ebook-setup-title">Preparate para crear tu E-book</h1>
+        <p class="new-ebook__intro">Contanos algunos detalles y después vas a poder desarrollar tu historia en el editor.</p>
+      </div>
+
+      <form class="ebook-setup__form" [formGroup]="setupForm" (ngSubmit)="startEbook()">
+        <div class="panel-heading">
+          <p class="eyebrow">Ficha inicial</p>
+          <span class="panel-heading__number">01</span>
+        </div>
+        <div class="ebook-setup__fields">
+          <label class="field">
+            <span>Título del E-book</span>
+            <input type="text" formControlName="title" placeholder="Ej: Los Espejos de Papel" />
+            @if (setupForm.controls.title.touched && setupForm.controls.title.invalid) {
+              <small class="field-error">Ingresá un título para continuar.</small>
+            }
+          </label>
+          <label class="field">
+            <span>Autor</span>
+            <input type="text" formControlName="author" placeholder="Tu nombre o seudónimo" />
+            @if (setupForm.controls.author.touched && setupForm.controls.author.invalid) {
+              <small class="field-error">Ingresá el nombre del autor.</small>
+            }
+          </label>
+          <label class="field field--wide">
+            <span>Descripción breve</span>
+            <textarea rows="4" formControlName="description" placeholder="¿De qué trata tu E-book?"></textarea>
+            @if (setupForm.controls.description.touched && setupForm.controls.description.invalid) {
+              <small class="field-error">Agregá una breve descripción.</small>
+            }
+          </label>
+          <label class="field">
+            <span>Género</span>
+            <select formControlName="genre">
+              <option>Ficción literaria</option>
+              <option>Novela</option>
+              <option>Ensayo</option>
+              <option>Poesía</option>
+              <option>Autoayuda</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Tipo de contenido</span>
+            <select formControlName="contentType">
+              <option>Novela</option>
+              <option>Cuento</option>
+              <option>Guía práctica</option>
+              <option>Poemario</option>
+            </select>
+          </label>
+        </div>
+        <div class="ebook-setup__actions">
+          <span class="ebook-setup__hint">Podés modificar estos datos más adelante.</span>
+          <button type="submit" class="button button--primary">Comenzar a escribir <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+  } @else {
   <header class="new-ebook__header">
     <div>
       <p class="eyebrow">Escritura / Nuevo proyecto</p>
@@ -22,23 +84,24 @@
       </div>
       <label class="field">
         <span>Título del E-book</span>
-        <input type="text" value="Los Espejos de Papel" aria-label="Título del E-book" />
+        <input type="text" [value]="setupForm.controls.title.value" aria-label="Título del E-book" />
       </label>
       <label class="field">
         <span>Autor</span>
-        <input type="text" value="Juan" aria-label="Autor" />
+        <input type="text" [value]="setupForm.controls.author.value" aria-label="Autor" />
       </label>
       <label class="field">
         <span>Descripción breve</span>
-        <textarea rows="5" aria-label="Descripción breve">Una historia sobre memoria, silencio y las verdades que guardan los libros.</textarea>
+        <textarea rows="5" aria-label="Descripción breve">{{ setupForm.controls.description.value }}</textarea>
       </label>
       <label class="field">
         <span>Género</span>
-        <select aria-label="Género">
+        <select [value]="setupForm.controls.genre.value" aria-label="Género">
           <option>Ficción literaria</option>
           <option>Novela</option>
           <option>Ensayo</option>
           <option>Poesía</option>
+          <option>Autoayuda</option>
         </select>
       </label>
       <div class="cover-placeholder" aria-label="Portada del E-book">
@@ -76,4 +139,5 @@
       </div>
     </section>
   </section>
+  }
 </main>

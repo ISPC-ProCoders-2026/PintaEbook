@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, inject } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { EbookSummary } from '../my-ebooks/my-ebooks';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
@@ -7,15 +9,51 @@ import Quote from '@editorjs/quote';
 @Component({
   selector: 'app-new-ebook',
   standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './new-ebook.html',
   styleUrl: './new-ebook.css'
 })
 export class NewEbook implements AfterViewInit, OnDestroy {
+  @Input() existingEbook: EbookSummary | null = null;
+  private readonly formBuilder = inject(FormBuilder);
   private editor?: EditorJS;
+  readonly setupForm = this.formBuilder.nonNullable.group({
+    title: ['', [Validators.required, Validators.maxLength(120)]],
+    author: ['', [Validators.required, Validators.maxLength(80)]],
+    description: ['', [Validators.required, Validators.maxLength(500)]],
+    genre: ['Ficción literaria', Validators.required],
+    contentType: ['Novela', Validators.required]
+  });
+  showEditor = false;
   saveMessage = '';
   wordCount = 0;
 
   ngAfterViewInit(): void {
+    if (this.existingEbook) {
+      this.setupForm.patchValue({
+        title: this.existingEbook.title,
+        description: this.existingEbook.description
+      });
+      this.showEditor = true;
+    }
+    if (!this.showEditor) return;
+    this.initializeEditor();
+  }
+
+  startEbook(): void {
+    if (this.setupForm.invalid) {
+      this.setupForm.markAllAsTouched();
+      return;
+    }
+
+    this.showEditor = true;
+    queueMicrotask(() => this.initializeEditor());
+  }
+
+  private initializeEditor(): void {
+    if (this.editor) return;
+
+    const { title, description } = this.setupForm.getRawValue();
     this.editor = new EditorJS({
       holder: 'ebook-editor',
       placeholder: 'Comienza a escribir tu historia aquí...',
@@ -42,20 +80,20 @@ export class NewEbook implements AfterViewInit, OnDestroy {
           {
             type: 'header',
             data: {
-              text: 'Capítulo III: Los Espejos de Papel',
+              text: title,
               level: 1
             }
           },
           {
             type: 'paragraph',
             data: {
-              text: '<b>Era</b> una tarde templada en la biblioteca de los manuscritos olvidados. El crujido de las páginas al pasar desvelaba no solo historias ajenas, sino las resonancias más íntimas de una memoria que de una memoria que se negaba a diluirse entre las sombras del atardecer.'
+              text: description
             }
           },
           {
             type: 'paragraph',
             data: {
-              text: 'Cada volumen se asentaba sobre el papel vitela con la serenidad de una verdad inapelable. Al levantar la mirada hacia el gran ventanal del atrio, la penumbra filtraba destellos cobrizos sobre los anaqueles más altos.'
+              text: 'Comenzá a desarrollar tu idea en este espacio. Podés editar este texto y agregar nuevos bloques al manuscrito.'
             }
           }
         ]
