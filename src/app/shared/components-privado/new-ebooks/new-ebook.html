@@ -79,40 +79,6 @@
   </header>
 
   <section class="editor-layout" aria-label="Editor de E-book">
-    <aside class="details-panel">
-      <div class="panel-heading">
-        <p class="eyebrow">Ficha del libro</p>
-        <span class="panel-heading__number">01</span>
-      </div>
-      <label class="field">
-        <span>Título del E-book</span>
-        <input type="text" [value]="setupForm.controls.title.value" aria-label="Título del E-book" />
-      </label>
-      <label class="field">
-        <span>Autor</span>
-        <input type="text" [value]="setupForm.controls.author.value" aria-label="Autor" />
-      </label>
-      <label class="field">
-        <span>Descripción breve</span>
-        <textarea rows="5" aria-label="Descripción breve">{{ setupForm.controls.description.value }}</textarea>
-      </label>
-      <label class="field">
-        <span>Género</span>
-        <select [value]="setupForm.controls.genre.value" aria-label="Género">
-          <option>Ficción literaria</option>
-          <option>Novela</option>
-          <option>Ensayo</option>
-          <option>Poesía</option>
-          <option>Autoayuda</option>
-        </select>
-      </label>
-      <div class="cover-placeholder" aria-label="Portada del E-book">
-        <span class="cover-placeholder__symbol">E</span>
-        <span>Agregar portada</span>
-        <small>JPG o PNG · 1600 × 2560 px</small>
-      </div>
-    </aside>
-
     <section class="writing-panel">
       <div class="writing-panel__topline">
         <div>

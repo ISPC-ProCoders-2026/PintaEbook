@@ -40,8 +40,7 @@ h1 { margin: 0; color: var(--bordeaux); font-family: 'Playfair Display', Georgia
 .button--primary:hover { background: var(--rose); }
 .save-message { color: var(--rose); font-size: 11px; font-weight: 600; }
 
-.editor-layout { display: grid; grid-template-columns: 255px minmax(0, 1fr); align-items: start; gap: 27px; }
-.details-panel { padding: 23px 20px; border: 1px solid rgba(140, 122, 107, .26); border-radius: 8px; background: rgba(255, 252, 245, .58); box-shadow: 0 12px 26px rgba(33, 27, 23, .04); }
+.editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; }
 .panel-heading { display: flex; align-items: start; justify-content: space-between; padding-bottom: 18px; margin-bottom: 19px; border-bottom: 1px solid rgba(140, 122, 107, .2); }
 .panel-heading .eyebrow { margin: 0; color: var(--bordeaux); }
 .panel-heading__number { color: var(--bronze); font-family: 'Playfair Display', Georgia, serif; font-size: 20px; }
@@ -51,9 +50,6 @@ h1 { margin: 0; color: var(--bordeaux); font-family: 'Playfair Display', Georgia
 .field input, .field select { height: 36px; padding: 0 10px; }
 .field textarea { min-height: 84px; padding: 10px; resize: vertical; line-height: 1.45; }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--bronze); box-shadow: 0 0 0 3px rgba(188, 128, 52, .12); }
-.cover-placeholder { display: grid; min-height: 150px; place-items: center; align-content: center; gap: 5px; margin-top: 23px; border: 1px dashed rgba(188, 128, 52, .65); border-radius: 5px; background: linear-gradient(145deg, rgba(217, 202, 179, .42), rgba(242, 239, 227, .34)); color: var(--bordeaux); font-family: 'Playfair Display', Georgia, serif; font-size: 14px; text-align: center; }
-.cover-placeholder__symbol { display: grid; width: 44px; height: 55px; place-items: center; margin-bottom: 3px; border: 1px solid var(--bronze); background: var(--bordeaux); box-shadow: 4px 4px 0 var(--oak); color: var(--cream); font-size: 25px; }
-.cover-placeholder small { color: var(--taupe); font-family: 'Inter', Arial, sans-serif; font-size: 8px; }
 
 .writing-panel { min-width: 0; }
 .writing-panel__topline { display: flex; align-items: end; justify-content: space-between; min-height: 42px; margin-bottom: 13px; }
@@ -85,6 +81,6 @@ h1 { margin: 0; color: var(--bordeaux); font-family: 'Playfair Display', Georgia
 .editor-prompt input { min-width: 0; flex: 1; height: 100%; padding: 0 13px; border: 0; border-radius: 8px; outline: 0; background: rgba(242, 239, 227, .95); color: var(--ink); font-size: 11px; }.editor-prompt input::placeholder { color: var(--taupe); font-weight: 600; }
 .editor-prompt button { display: grid; width: 28px; height: 28px; place-items: center; margin-left: 6px; border: 0; border-radius: 7px; background: var(--bordeaux); color: var(--cream); cursor: pointer; font-size: 18px; line-height: 1; }
 
-@media (max-width: 900px) { .editor-layout { grid-template-columns: 215px minmax(0, 1fr); gap: 18px; }.details-panel { padding: 18px 15px; }.toolbar-font { display: none; } }
-@media (max-width: 700px) { .new-ebook { padding: 28px 17px 45px; }.new-ebook__header { align-items: start; flex-direction: column; gap: 19px; margin-bottom: 25px; }.new-ebook__actions { justify-content: start; width: 100%; }.ebook-setup__fields { grid-template-columns: 1fr; }.field--wide { grid-column: auto; }.ebook-setup__actions { align-items: stretch; flex-direction: column; }.button { flex: 1; padding: 0 10px; }.editor-layout { grid-template-columns: 1fr; }.details-panel { order: 2; }.writing-panel { order: 1; }.editor-frame { min-height: 530px; }.editor-toolbar { padding: 0 8px; overflow-x: auto; }.editor-toolbar button { flex: 0 0 auto; width: 29px; }.toolbar-divider { margin: 0 3px; }.editor-prompt { right: 14px; bottom: 13px; left: 14px; } }
+@media (max-width: 900px) { .toolbar-font { display: none; } }
+@media (max-width: 700px) { .new-ebook { padding: 28px 17px 45px; }.new-ebook__header { align-items: start; flex-direction: column; gap: 19px; margin-bottom: 25px; }.new-ebook__actions { justify-content: start; width: 100%; }.ebook-setup__fields { grid-template-columns: 1fr; }.field--wide { grid-column: auto; }.ebook-setup__actions { align-items: stretch; flex-direction: column; }.button { flex: 1; padding: 0 10px; }.editor-frame { min-height: 530px; }.editor-toolbar { padding: 0 8px; overflow-x: auto; }.editor-toolbar button { flex: 0 0 auto; width: 29px; }.toolbar-divider { margin: 0 3px; }.editor-prompt { right: 14px; bottom: 13px; left: 14px; } }
 @media (max-width: 390px) { .new-ebook__actions { display: grid; grid-template-columns: 1fr 1fr; }.save-message { grid-column: 1 / -1; }.button { width: 100%; }.editorjs-holder { padding-right: 15px; padding-left: 15px; }.editor-prompt input { font-size: 10px; } }
