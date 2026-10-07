@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, inject }
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { EbookSummary } from '../my-ebooks/my-ebooks';
 import { BookLoader } from '../book-loader/book-loader';
+import { EbooksService } from '../../../service/ebooks/ebooks';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
@@ -18,19 +19,21 @@ export class NewEbook implements AfterViewInit, OnDestroy {
   @Input() existingEbook: EbookSummary | null = null;
   private readonly formBuilder = inject(FormBuilder);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly ebooksService = inject(EbooksService);
   private editor?: EditorJS;
   readonly setupForm = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
-    author: ['', [Validators.required, Validators.maxLength(80)]],
     description: ['', [Validators.required, Validators.maxLength(500)]],
+    promptIdea: ['', [Validators.required, Validators.maxLength(1000)]],
+    quantityChapters: [3, [Validators.required, Validators.min(1), Validators.max(10)]],
     genre: ['Ficción literaria', Validators.required],
     contentType: ['Novela', Validators.required]
   });
   showEditor = false;
   isLoading = false;
   loadingMessage = 'Estamos preparando tu espacio de escritura...';
-  private loadingTimer?: number;
   saveMessage = '';
+  formError = '';
   wordCount = 0;
 
   ngAfterViewInit(): void {
@@ -51,13 +54,28 @@ export class NewEbook implements AfterViewInit, OnDestroy {
       return;
     }
 
+    this.formError = '';
     this.isLoading = true;
-    this.loadingTimer = window.setTimeout(() => {
-      this.showEditor = true;
-      this.isLoading = false;
-      this.changeDetector.detectChanges();
-      window.setTimeout(() => this.initializeEditor(), 0);
-    }, 450);
+    this.loadingMessage = 'Estamos creando tu E-book...';
+
+    const { title, description, promptIdea, quantityChapters, genre, contentType } = this.setupForm.getRawValue();
+    this.ebooksService.createEbook({
+      title,
+      description,
+      prompt_idea: `${promptIdea}\nGénero: ${genre}. Tipo de contenido: ${contentType}.`,
+      quantity_chapters: quantityChapters
+    }).subscribe({
+      next: () => {
+        this.showEditor = true;
+        this.isLoading = false;
+        this.changeDetector.detectChanges();
+        window.setTimeout(() => this.initializeEditor(), 0);
+      },
+      error: (error: { error?: { detail?: string }; message?: string }) => {
+        this.isLoading = false;
+        this.formError = error.error?.detail ?? error.message ?? 'No se pudo crear el E-book. Intentá nuevamente.';
+      }
+    });
   }
 
   private initializeEditor(): void {
@@ -152,7 +170,6 @@ export class NewEbook implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.clearTimeout(this.loadingTimer);
     if (this.editor) {
       void this.editor.isReady
         .then(() => this.editor?.destroy())

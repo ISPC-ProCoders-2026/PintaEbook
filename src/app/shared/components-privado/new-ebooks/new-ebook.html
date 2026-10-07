@@ -22,18 +22,25 @@
               <small class="field-error">Ingresá un título para continuar.</small>
             }
           </label>
-          <label class="field">
-            <span>Autor</span>
-            <input type="text" formControlName="author" placeholder="Tu nombre o seudónimo" />
-            @if (setupForm.controls.author.touched && setupForm.controls.author.invalid) {
-              <small class="field-error">Ingresá el nombre del autor.</small>
-            }
-          </label>
           <label class="field field--wide">
             <span>Descripción breve</span>
             <textarea rows="4" formControlName="description" placeholder="¿De qué trata tu E-book?"></textarea>
             @if (setupForm.controls.description.touched && setupForm.controls.description.invalid) {
               <small class="field-error">Agregá una breve descripción.</small>
+            }
+          </label>
+          <label class="field field--wide">
+            <span>Idea o temática principal</span>
+            <textarea rows="3" formControlName="promptIdea" placeholder="¿Qué querés desarrollar en tu E-book?"></textarea>
+            @if (setupForm.controls.promptIdea.touched && setupForm.controls.promptIdea.invalid) {
+              <small class="field-error">Contanos la idea principal de tu E-book.</small>
+            }
+          </label>
+          <label class="field">
+            <span>Cantidad de capítulos</span>
+            <input type="number" min="1" max="10" formControlName="quantityChapters" />
+            @if (setupForm.controls.quantityChapters.touched && setupForm.controls.quantityChapters.invalid) {
+              <small class="field-error">Elegí entre 1 y 10 capítulos.</small>
             }
           </label>
           <label class="field">
@@ -57,8 +64,15 @@
           </label>
         </div>
         <div class="ebook-setup__actions">
-          <span class="ebook-setup__hint">Podés modificar estos datos más adelante.</span>
-          <button type="submit" class="button button--primary">Comenzar a escribir <span aria-hidden="true">→</span></button>
+          <div>
+            <span class="ebook-setup__hint">La generación consume 100 créditos.</span>
+            @if (formError) {
+              <small class="form-error" role="alert">{{ formError }}</small>
+            }
+          </div>
+          <button type="submit" class="button button--primary" [disabled]="isLoading">
+            {{ isLoading ? 'Creando...' : 'Comenzar a escribir' }} <span aria-hidden="true">→</span>
+          </button>
         </div>
       </form>
     </section>

@@ -49,10 +49,12 @@ h1 { margin: 0; color: var(--bordeaux); font-family: 'Playfair Display', Georgia
 .ebook-setup__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 24px; }
 .field--wide { grid-column: 1 / -1; }
 .field-error { color: var(--rose); font-size: 10px; }
+.form-error { display: block; max-width: 420px; margin-top: 7px; color: var(--rose); font-size: 11px; }
 .ebook-setup__actions { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 15px; border-top: 1px solid rgba(140, 122, 107, .2); }
 .ebook-setup__hint { color: var(--taupe); font-size: 11px; }
 .new-ebook__actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 9px; }
 .button { min-height: 40px; padding: 0 15px; border: 1px solid transparent; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 700; transition: transform .2s ease, background .2s ease; }
+.button:disabled { cursor: wait; opacity: .65; transform: none; }
 .button:hover { transform: translateY(-2px); }
 .button--quiet { border-color: rgba(140, 122, 107, .3); background: rgba(242, 239, 227, .5); color: var(--bordeaux); }
 .button--primary { border-color: var(--bordeaux); background: var(--bordeaux); color: var(--cream); }
