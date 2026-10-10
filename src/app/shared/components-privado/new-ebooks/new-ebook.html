@@ -1,7 +1,5 @@
 <main class="new-ebook" aria-labelledby="new-ebook-title">
-  @if (isLoading) {
-    <app-book-loader [message]="loadingMessage"></app-book-loader>
-  } @else if (!showEditor) {
+  @if (!showEditor) {
     <section class="ebook-setup" aria-labelledby="ebook-setup-title">
       <div class="ebook-setup__intro">
         <p class="eyebrow">Escritura / Nuevo proyecto</p>
@@ -30,17 +28,17 @@
             }
           </label>
           <label class="field field--wide">
-            <span>Idea o temática principal</span>
-            <textarea rows="3" formControlName="promptIdea" placeholder="¿Qué querés desarrollar en tu E-book?"></textarea>
-            @if (setupForm.controls.promptIdea.touched && setupForm.controls.promptIdea.invalid) {
-              <small class="field-error">Contanos la idea principal de tu E-book.</small>
+            <span>Prompt principal</span>
+            <textarea rows="3" formControlName="prompt" placeholder="¿Qué querés desarrollar en tu E-book? (mínimo 10 caracteres)"></textarea>
+            @if (setupForm.controls.prompt.touched && setupForm.controls.prompt.invalid) {
+              <small class="field-error">Escribí una consigna de al menos 10 caracteres.</small>
             }
           </label>
           <label class="field">
             <span>Cantidad de capítulos</span>
-            <input type="number" min="1" max="10" formControlName="quantityChapters" />
-            @if (setupForm.controls.quantityChapters.touched && setupForm.controls.quantityChapters.invalid) {
-              <small class="field-error">Elegí entre 1 y 10 capítulos.</small>
+            <input type="number" min="1" max="15" formControlName="num_chapters" />
+            @if (setupForm.controls.num_chapters.touched && setupForm.controls.num_chapters.invalid) {
+              <small class="field-error">Elegí entre 1 y 15 capítulos.</small>
             }
           </label>
           <label class="field">
@@ -65,16 +63,48 @@
         </div>
         <div class="ebook-setup__actions">
           <div>
-            <span class="ebook-setup__hint">La generación consume 100 créditos.</span>
+            <span class="ebook-setup__hint">La generación cuesta 100 créditos.</span>
             @if (formError) {
               <small class="form-error" role="alert">{{ formError }}</small>
             }
           </div>
           <button type="submit" class="button button--primary" [disabled]="isLoading">
-            {{ isLoading ? 'Creando...' : 'Comenzar a escribir' }} <span aria-hidden="true">→</span>
+            {{ isLoading ? 'Generando...' : 'Generar E-book (100 créditos)' }} <span aria-hidden="true">→</span>
           </button>
         </div>
       </form>
+
+      @if (isPreviewLoading) {
+        <section class="ebook-preview__state" role="status" aria-live="polite">
+          Cargando la vista previa de tu E-book...
+        </section>
+      } @else if (previewError) {
+        <section class="ebook-preview__state ebook-preview__state--error" role="alert">
+          {{ previewError }}
+        </section>
+      } @else if (generatedEbook) {
+        <section class="ebook-preview" aria-labelledby="ebook-preview-title">
+          <header class="ebook-preview__header">
+            <div>
+              <p class="eyebrow">Obra generada</p>
+              <h2 id="ebook-preview-title">{{ generatedEbook.title }}</h2>
+              <p>Tu E-book también aparecerá en Mis E-books.</p>
+            </div>
+            <span>{{ generatedEbook.chapters.length }} capítulos</span>
+          </header>
+          @for (chapter of generatedEbook.chapters; track chapter.chapter_id) {
+            <article class="ebook-preview__chapter">
+              <h3>{{ chapter.title }}</h3>
+              @for (section of chapter.sections; track section.section_id) {
+                <section class="ebook-preview__section">
+                  <h4>{{ section.title }}</h4>
+                  <div class="ebook-preview__html" [innerHTML]="section.content_html"></div>
+                </section>
+              }
+            </article>
+          }
+        </section>
+      }
     </section>
   } @else {
   <header class="new-ebook__header">
@@ -121,5 +151,26 @@
       </div>
     </section>
   </section>
+  }
+
+  @if (showProgressModal) {
+    <div class="generation-backdrop" role="presentation">
+      <section class="generation-modal" role="dialog" aria-modal="true" aria-labelledby="generation-title">
+        <span class="generation-modal__spark" aria-hidden="true">✦</span>
+        <p class="eyebrow">Pinta Ebook / Generación asistida</p>
+        <h2 id="generation-title">{{ generationProgress.error ? 'No pudimos terminar el libro' : 'Tu E-book está tomando forma' }}</h2>
+        <p class="generation-modal__message" role="status" aria-live="polite">{{ generationProgress.status_message }}</p>
+        <div class="generation-progress" role="progressbar" aria-label="Progreso de generación" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="generationProgress.progress">
+          <span [style.width.%]="generationProgress.progress"></span>
+        </div>
+        <div class="generation-modal__meta">
+          <strong>{{ generationProgress.progress }}%</strong>
+          <span>Estamos organizando capítulos y secciones</span>
+        </div>
+        @if (generationProgress.error) {
+          <button type="button" class="button button--primary generation-modal__close" (click)="closeProgressModal()">Cerrar</button>
+        }
+      </section>
+    </div>
   }
 </main>

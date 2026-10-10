@@ -1,8 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EbookSummary } from '../my-ebooks/my-ebooks';
-import { BookLoader } from '../book-loader/book-loader';
 import { EbooksService } from '../../../service/ebooks/ebooks';
+import { EbookContent, GenerationProgress } from '../../../models/ebook.model';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
@@ -11,30 +12,40 @@ import Quote from '@editorjs/quote';
 @Component({
   selector: 'app-new-ebook',
   standalone: true,
-  imports: [ReactiveFormsModule, BookLoader],
+  imports: [ReactiveFormsModule],
   templateUrl: './new-ebook.html',
   styleUrl: './new-ebook.css'
 })
 export class NewEbook implements AfterViewInit, OnDestroy {
   @Input() existingEbook: EbookSummary | null = null;
+  @Output() generationSucceeded = new EventEmitter<void>();
   private readonly formBuilder = inject(FormBuilder);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly ebooksService = inject(EbooksService);
   private editor?: EditorJS;
   readonly setupForm = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
     description: ['', [Validators.required, Validators.maxLength(500)]],
-    promptIdea: ['', [Validators.required, Validators.maxLength(1000)]],
-    quantityChapters: [3, [Validators.required, Validators.min(1), Validators.max(10)]],
+    prompt: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
+    num_chapters: [5, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(1), Validators.max(15)]],
     genre: ['Ficción literaria', Validators.required],
     contentType: ['Novela', Validators.required]
   });
   showEditor = false;
   isLoading = false;
-  loadingMessage = 'Estamos preparando tu espacio de escritura...';
   saveMessage = '';
   formError = '';
   wordCount = 0;
+  showProgressModal = false;
+  generatedEbook: EbookContent | null = null;
+  isPreviewLoading = false;
+  previewError = '';
+  generationProgress: GenerationProgress = {
+    progress: 0,
+    status_message: 'Conectando...',
+    completed: false
+  };
 
   ngAfterViewInit(): void {
     if (this.existingEbook) {
@@ -55,27 +66,105 @@ export class NewEbook implements AfterViewInit, OnDestroy {
     }
 
     this.formError = '';
+    this.generatedEbook = null;
+    this.previewError = '';
     this.isLoading = true;
-    this.loadingMessage = 'Estamos creando tu E-book...';
+    this.showProgressModal = true;
+    this.generationProgress = {
+      progress: 0,
+      status_message: 'Conectando...',
+      completed: false
+    };
 
-    const { title, description, promptIdea, quantityChapters, genre, contentType } = this.setupForm.getRawValue();
-    this.ebooksService.createEbook({
+    const { title, description, prompt, num_chapters, genre, contentType } = this.setupForm.getRawValue();
+    const promptWithContext = [
+      `Descripción: ${description}`,
+      `Consigna principal: ${prompt}`,
+      `Género: ${genre}.`,
+      `Tipo de contenido: ${contentType}.`
+    ].join('\n');
+
+    this.ebooksService.generateEbook({
       title,
       description,
-      prompt_idea: `${promptIdea}\nGénero: ${genre}. Tipo de contenido: ${contentType}.`,
-      quantity_chapters: quantityChapters
-    }).subscribe({
-      next: () => {
-        this.showEditor = true;
-        this.isLoading = false;
-        this.changeDetector.detectChanges();
-        window.setTimeout(() => this.initializeEditor(), 0);
+      prompt: promptWithContext,
+      num_chapters
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: ({ ebook_id }) => {
+        this.generationProgress = {
+          progress: 0,
+          status_message: 'Solicitud recibida. Iniciando la generación...',
+          completed: false,
+          ebook_id
+        };
+        this.ebooksService.watchGenerationProgress(ebook_id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (progress) => this.handleProgress(progress),
+            error: () => this.failGeneration('Se perdió la conexión con el progreso del libro.')
+          });
       },
       error: (error: { error?: { detail?: string }; message?: string }) => {
         this.isLoading = false;
+        this.showProgressModal = false;
         this.formError = error.error?.detail ?? error.message ?? 'No se pudo crear el E-book. Intentá nuevamente.';
       }
     });
+  }
+
+  closeProgressModal(): void {
+    if (!this.generationProgress.completed) return;
+    this.showProgressModal = false;
+    this.isLoading = false;
+  }
+
+  private handleProgress(progress: GenerationProgress): void {
+    this.generationProgress = progress;
+    this.changeDetector.markForCheck();
+
+    if (progress.error) {
+      this.failGeneration(progress.error);
+      return;
+    }
+
+    if (progress.completed && progress.ebook_id) {
+      this.isLoading = false;
+      this.showProgressModal = false;
+      this.generationSucceeded.emit();
+      this.loadGeneratedEbook(progress.ebook_id);
+    }
+  }
+
+  private loadGeneratedEbook(ebookId: string): void {
+    this.isPreviewLoading = true;
+    this.previewError = '';
+
+    this.ebooksService.getEbookContent(ebookId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (ebook) => {
+          this.generatedEbook = ebook;
+          this.isPreviewLoading = false;
+          this.changeDetector.markForCheck();
+        },
+        error: () => {
+          this.previewError = 'El E-book se creó, pero no pudimos cargar la vista previa. Podés volver a intentarlo desde Mis E-books.';
+          this.isPreviewLoading = false;
+          this.changeDetector.markForCheck();
+        }
+      });
+  }
+
+  private failGeneration(message: string): void {
+    this.isLoading = false;
+    this.formError = message;
+    this.generationProgress = {
+      ...this.generationProgress,
+      completed: true,
+      error: message,
+      status_message: message
+    };
+    this.changeDetector.markForCheck();
   }
 
   private initializeEditor(): void {

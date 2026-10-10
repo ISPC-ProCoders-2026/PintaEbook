@@ -29,6 +29,8 @@ export class Dashboard implements OnDestroy, OnInit {
   selectedEbook: EbookSummary | null = null;
   isOpeningEbook = false;
   private openingEbookTimer?: number;
+  successMessage = '';
+  private successToastTimer?: number;
 
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe((params) => {
@@ -63,8 +65,20 @@ export class Dashboard implements OnDestroy, OnInit {
     }, 450);
   }
 
+  handleGenerationSuccess(): void {
+    // La generación se inicia en "Nuevo Ebook"; dejarla allí permite revisar
+    // la obra. Mis E-books consultará la colección al abrirse.
+    this.successMessage = 'E-book creado con éxito';
+    window.clearTimeout(this.successToastTimer);
+    this.successToastTimer = window.setTimeout(() => {
+      this.successMessage = '';
+      this.changeDetector.markForCheck();
+    }, 5000);
+  }
+
   ngOnDestroy(): void {
     window.clearTimeout(this.openingEbookTimer);
+    window.clearTimeout(this.successToastTimer);
   }
 
   closeCreditsModal(): void {

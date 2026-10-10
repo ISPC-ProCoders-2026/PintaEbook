@@ -11,11 +11,11 @@
     @if (isOpeningEbook) {
       <app-book-loader message="Estamos abriendo tu E-book..."></app-book-loader>
     } @else if (activeSection === 'ebooks') {
-      <app-my-ebooks (openEbook)="openEbook($event)"></app-my-ebooks>
+      <app-my-ebooks (openEbook)="openEbook($event)" (createEbook)="setActiveSection('new-ebook')"></app-my-ebooks>
     } @else if (activeSection === 'profile') {
       <app-profile></app-profile>
     } @else if (activeSection === 'new-ebook') {
-      <app-new-ebook></app-new-ebook>
+      <app-new-ebook (generationSucceeded)="handleGenerationSuccess()"></app-new-ebook>
     } @else if (activeSection === 'editor') {
       <app-new-ebook [existingEbook]="selectedEbook"></app-new-ebook>
     } @else {
@@ -56,7 +56,7 @@
               <p>La última vez que editaste fue hace 2 horas.</p>
               <div class="progress-label"><span>Progreso del manuscrito</span><strong>62%</strong></div>
               <div class="progress" role="progressbar" aria-label="Progreso de La casa de las memorias" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62"><span></span></div>
-              <button type="button" class="continue-button" (click)="setActiveSection('editor')">Continuar en el editor <span aria-hidden="true">→</span></button>
+              <button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Ver mis E-books <span aria-hidden="true">→</span></button>
             </div>
           </div>
         </article>
@@ -74,6 +74,10 @@
     </main>
     }
   </div>
+
+  @if (successMessage) {
+    <div class="dashboard-toast" role="status" aria-live="polite">{{ successMessage }}</div>
+  }
 
 </div>
 

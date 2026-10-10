@@ -5,13 +5,23 @@
       <h1 id="ebooks-title">Mis Ebooks</h1>
       <p>Gestioná tus proyectos y continuá escribiendo.</p>
     </div>
-    <button type="button" class="ebooks-primary-action">
+    <button type="button" class="ebooks-primary-action" (click)="createEbook.emit()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
       Crear nuevo ebook
     </button>
   </section>
 
-  @if (displayEmptyState) {
+  @if (isLoading) {
+    <section class="ebooks-empty-state" role="status" aria-live="polite">
+      <p>Cargando tus E-books...</p>
+    </section>
+  } @else if (loadError) {
+    <section class="ebooks-empty-state" role="alert">
+      <h2>No pudimos cargar tu biblioteca</h2>
+      <p>{{ loadError }}</p>
+      <button type="button" class="ebooks-primary-action" (click)="loadEbooks()">Reintentar</button>
+    </section>
+  } @else if (!ebooks.length) {
     <section class="ebooks-empty-state" aria-labelledby="empty-ebooks-title">
       <span class="ebooks-empty-state__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v17H7.5A2.5 2.5 0 0 0 5 21.5zM5 4.5v17"/><path d="M9 7h6M9 11h6"/></svg>
@@ -19,7 +29,7 @@
       <p class="ebooks-heading__eyebrow">Tu biblioteca</p>
       <h2 id="empty-ebooks-title">Todavía no tenés ebooks</h2>
       <p>Empezá tu primer proyecto y convertí tus ideas en una historia.</p>
-      <button type="button" class="ebooks-primary-action">Crear mi primer ebook</button>
+      <button type="button" class="ebooks-primary-action" (click)="createEbook.emit()">Crear mi primer ebook</button>
     </section>
   } @else {
     <section class="ebooks-toolbar" aria-label="Búsqueda avanzada de ebooks">
@@ -30,7 +40,7 @@
       <div class="ebooks-filters">
         <label class="ebooks-select">
           <span>Estado</span>
-          <select [(ngModel)]="selectedStatus" aria-label="Filtrar por estado"><option>Todos</option><option>En progreso</option><option>Borrador</option><option>Finalizado</option></select>
+          <select [(ngModel)]="selectedStatus" aria-label="Filtrar por estado"><option>Todos</option><option>En progreso</option><option>Finalizado</option><option>Fallido</option></select>
         </label>
         <label class="ebooks-select ebooks-select--order">
           <span>Ordenar</span>
@@ -41,7 +51,7 @@
 
     <section class="ebooks-list" aria-label="Listado de ebooks">
       @if (filteredEbooks.length) {
-        @for (ebook of filteredEbooks; track ebook.title) {
+        @for (ebook of filteredEbooks; track ebook.ebook_id) {
         <article class="ebook-card">
           <div class="ebook-cover" [class]="'ebook-cover ' + ebook.coverClass" aria-hidden="true">
             <span class="ebook-cover__frame"></span>
@@ -51,7 +61,7 @@
           </div>
           <div class="ebook-card__body">
             <div class="ebook-card__topline">
-              <span class="ebook-status" [class.ebook-status--draft]="ebook.status === 'Borrador'" [class.ebook-status--complete]="ebook.status === 'Finalizado'">{{ ebook.status }}</span>
+              <span class="ebook-status" [class.ebook-status--draft]="ebook.status === 'En progreso'" [class.ebook-status--complete]="ebook.status === 'Finalizado'" [class.ebook-status--failed]="ebook.status === 'Fallido'">{{ ebook.status }}</span>
               <span class="ebook-card__updated">{{ ebook.updatedAt }}</span>
             </div>
             <h2>{{ ebook.title }}</h2>
@@ -59,7 +69,7 @@
             <div class="ebook-progress-label"><span>Progreso del manuscrito</span><strong>{{ ebook.progress }}%</strong></div>
             <div class="ebook-progress" role="progressbar" [attr.aria-label]="'Progreso de ' + ebook.title" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="ebook.progress"><span [style.width.%]="ebook.progress"></span></div>
           </div>
-          <button type="button" class="ebook-open-action" (click)="openEbook.emit(ebook)">Abrir <span aria-hidden="true">→</span></button>
+          <button type="button" class="ebook-open-action" (click)="openEbook.emit(ebook)">Abrir Editor <span aria-hidden="true">→</span></button>
         </article>
         }
       } @else {
