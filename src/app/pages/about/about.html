@@ -2,27 +2,28 @@
 
 <main id="main-content" tabindex="-1">
 
-<app-progress-bar></app-progress-bar>
+<app-progress-bar aria-hidden="true"></app-progress-bar>
 
 <!-- Hero Section -->
-<section class="about-hero relative pt-20 pb-20 lg:pt-28 lg:pb-28 overflow-hidden">
-  <div class="absolute inset-0 bg-linear-to-br from-[#631b2f] via-[#390a16] to-[#211b17]"></div>
-  <div class="absolute inset-0 opacity-[0.03] pattern-grid"></div>
+<section aria-labelledby="about-title" class="about-hero relative pt-20 pb-20 lg:pt-28 lg:pb-28 overflow-hidden">
+  <div aria-hidden="true" class="absolute inset-0 bg-linear-to-br from-[#631b2f] via-[#390a16] to-[#211b17]"></div>
+  <div aria-hidden="true" class="absolute inset-0 opacity-[0.03] pattern-grid"></div>
 
   <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center reveal">
-        <h1 aria-label="PintaEbook" class="font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-[#211b17] mb-6 leading-[1.1]">
-          <span class="gold-shimmer inline-flex items-center justify-center">
+        <h1 tabindex="0" id="about-title" class="font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-[#211b17] mb-6 leading-[1.1]">
+          <span class="sr-only">Sobre nosotros: PintaEbook</span>
+          <span aria-hidden="true" class="gold-shimmer inline-flex items-center justify-center">
             <span>Pinta</span>
             <img
               src="/img/logos/logo_sin_fondo.png"
-              alt="E"
+              alt=""
               class="h-[2.4em] w-auto mx-[-0.70em] -rotate-8 transition-transform"
             />
             <span>book</span>
           </span>
         </h1>
-      <p class="text-lg lg:text-xl text-white leading-relaxed max-w-3xl mx-auto font-light">
+      <p tabindex="0" class="text-lg lg:text-xl text-white leading-relaxed max-w-3xl mx-auto font-light">
         Somos un equipo apasionado por la literatura, la tecnología y el diseño. 
         Creemos que cada historia merece ser contada y cada autor merece las mejores herramientas para hacerlo.
       </p>
@@ -31,38 +32,38 @@
 </section>
 
 <!-- Our Story Section -->
-<section class="about-story py-20 lg:py-28 bg-linear-to-b from-white to-[#faf0d8] relative">
+<section aria-labelledby="about-story-title" class="about-story py-20 lg:py-28 bg-linear-to-b from-white to-[#faf0d8] relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-16 items-center">
       <div class="reveal">
         <div class="ornament-line justify-start mb-6">
-          <span class="text-[#b87021] text-lg uppercase tracking-[0.3em] font-semibold">Nuestra historia</span>
+          <span class="section-eyebrow text-lg uppercase tracking-[0.3em] font-semibold">Nuestra historia</span>
         </div>
-        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#211b17] mb-6 leading-tight">
+        <h2 tabindex="0" id="about-story-title" class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#211b17] mb-6 leading-tight">
           Del sueño de un escritor<br>
           a una <span class="text-[#751b33]">plataforma global</span>
         </h2>
-        <p class="text-[#5f5247] leading-relaxed mb-6 text-lg">
+        <p tabindex="0" class="text-[#5f5247] leading-relaxed mb-6 text-lg">
           Pinta Ebook nació en 2026, cuando nuestro fundador Francisco toro, un escritor frustrado por la complejidad de publicar su primera novela, decidió crear la plataforma que él mismo había deseado tener.
         </p>
-        <p class="text-[#5f5247] leading-relaxed mb-6">
+        <p tabindex="0" class="text-[#5f5247] leading-relaxed mb-6">
           Lo que comenzó como un editor de texto sencillo se convirtió rápidamente en un ecosistema completo: editor profesional, lector inmersivo, diseñador de portadas, sistema de publicación y analíticas integradas.
         </p>
-        <p class="text-[#5f5247] leading-relaxed">
+        <p tabindex="0" class="text-[#5f5247] leading-relaxed">
           Hoy, más de 12,000 autores en 45 países confían en Pinta Ebook para dar vida a sus obras. Desde poetas emergentes hasta editoriales consolidadas, nuestra plataforma se adapta a cada necesidad creativa.
         </p>
       </div>
 
       <div class="reveal relative">
         <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-[#211b17]/10">
-          <img src="http://static.photos/workspace/1024x576/42" alt="Nuestro equipo trabajando" class="w-full h-auto object-cover">
-          <div class="absolute inset-0 bg-linear-to-t from-[#211b17]/60 via-transparent to-transparent"></div>
+          <img src="https://static.photos/workspace/1024x576/42" alt="" loading="lazy" width="1024" height="576" class="w-full h-auto object-cover">
+          <div aria-hidden="true" class="absolute inset-0 bg-linear-to-t from-[#211b17]/60 via-transparent to-transparent"></div>
         </div>
-        <div class="absolute -bottom-8 -left-8 bg-white rounded-2xl shadow-xl p-6 border border-[#f9eece] animate-float hidden lg:block">
+        <div tabindex="0" role="group" aria-label="Más de 12.000 autores activos" class="about-stat about-stat--authors lg:absolute lg:-bottom-8 lg:-left-8 bg-white rounded-2xl shadow-xl p-6 border border-[#f9eece]">
           <p class="stat-number font-display text-3xl font-bold text-[#751b33]">12K+</p>
           <p class="text-sm text-[#77685a]">Autores activos</p>
         </div>
-        <div class="absolute -top-6 -right-6 bg-white rounded-2xl shadow-xl p-6 border border-[#f9eece] animate-float hidden lg:block" style="animation-delay: -3s">
+        <div tabindex="0" role="group" aria-label="Presencia en 45 países" class="about-stat about-stat--countries lg:absolute lg:-top-6 lg:-right-6 bg-white rounded-2xl shadow-xl p-6 border border-[#f9eece]">
           <p class="stat-number font-display text-3xl font-bold text-[#96511e]">45</p>
           <p class="text-sm text-[#77685a]">Países</p>
         </div>
@@ -72,21 +73,21 @@
 </section>
 
 <!-- Team Section -->
-<section class="about-team py-20 lg:py-28 bg-linear-to-b from-[#fdf8ed] to-[#faf0d8]">
+<section aria-labelledby="about-team-title" class="about-team py-20 lg:py-28 bg-linear-to-b from-[#fdf8ed] to-[#faf0d8]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <div class="text-center mb-16 reveal">
       <div class="ornament-line mb-6">
-        <span class="text-[#b87021] text-lg uppercase tracking-[0.3em] font-semibold">
+        <span class="section-eyebrow text-lg uppercase tracking-[0.3em] font-semibold">
           Equipo
         </span>
       </div>
 
-      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#211b17] mb-6">
+      <h2 tabindex="0" id="about-team-title" class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#211b17] mb-6">
         Las personas detrás<br>de la plataforma
       </h2>
 
-      <p class="text-[#77685a] text-lg max-w-2xl mx-auto">
+      <p tabindex="0" class="text-[#77685a] text-lg max-w-2xl mx-auto">
         Un equipo de desarrolladores unidos por una misma pasión:
         crear herramientas que hagan más fácil y accesible la creación de ebooks.
       </p>
@@ -95,7 +96,7 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
 
       <!-- Daniel Nicolás Paez -->
-      <div class="team-card reveal text-center group">
+      <div tabindex="0" role="group" aria-labelledby="team-member-0" aria-describedby="team-role-0 team-description-0" class="team-card reveal text-center group">
         <div class="relative w-40 h-40 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg">
           <img
             src="/img/team/daniel.png"
@@ -104,21 +105,21 @@
           >
         </div>
 
-        <h3 class="font-display text-xl font-bold text-[#211b17] mb-1">
+        <h3 id="team-member-0" class="font-display text-xl font-bold text-[#211b17] mb-1">
           Daniel Nicolás Paez
         </h3>
 
-        <p class="text-[#8f1d37] text-sm font-semibold mb-2">
+        <p id="team-role-0" class="text-[#8f1d37] text-sm font-semibold mb-2">
           Desarrollador Backend
         </p>
 
-        <p class="text-[#77685a] text-sm leading-relaxed">
+        <p id="team-description-0" class="text-[#77685a] text-sm leading-relaxed">
           Desarrollador enfocado en la lógica, servicios y funcionamiento interno de la plataforma.
         </p>
       </div>
 
       <!-- Francisco Toro -->
-      <div class="team-card reveal text-center group">
+      <div tabindex="0" role="group" aria-labelledby="team-member-1" aria-describedby="team-role-1 team-description-1" class="team-card reveal text-center group">
         <div class="relative w-40 h-40 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg">
           <img
             src="/img/team/francisco.png"
@@ -127,21 +128,21 @@
           >
         </div>
 
-        <h3 class="font-display text-xl font-bold text-[#211b17] mb-1">
+        <h3 id="team-member-1" class="font-display text-xl font-bold text-[#211b17] mb-1">
           Francisco Toro
         </h3>
 
-        <p class="text-[#8f1d37] text-sm font-semibold mb-2">
+        <p id="team-role-1" class="text-[#8f1d37] text-sm font-semibold mb-2">
           Desarrollador Backend
         </p>
 
-        <p class="text-[#77685a] text-sm leading-relaxed">
+        <p id="team-description-1" class="text-[#77685a] text-sm leading-relaxed">
           Desarrollador dedicado al desarrollo de servicios y funcionalidades del backend.
         </p>
       </div>
 
       <!-- Juan Pablo Sánchez Brandán -->
-      <div class="team-card reveal text-center group">
+      <div tabindex="0" role="group" aria-labelledby="team-member-2" aria-describedby="team-role-2 team-description-2" class="team-card reveal text-center group">
         <div class="relative w-40 h-40 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg">
           <img
             src="/img/team/juanSanchez.png"
@@ -150,21 +151,21 @@
           >
         </div>
 
-        <h3 class="font-display text-xl font-bold text-[#211b17] mb-1">
+        <h3 id="team-member-2" class="font-display text-xl font-bold text-[#211b17] mb-1">
           Juan Pablo Sánchez Brandán
         </h3>
 
-        <p class="text-[#8f1d37] text-sm font-semibold mb-2">
+        <p id="team-role-2" class="text-[#8f1d37] text-sm font-semibold mb-2">
           Desarrollador Frontend
         </p>
 
-        <p class="text-[#77685a] text-sm leading-relaxed">
+        <p id="team-description-2" class="text-[#77685a] text-sm leading-relaxed">
           Desarrollador enfocado en la interfaz y experiencia visual de la plataforma.
         </p>
       </div>
 
       <!-- Juan Ignacio Gioda -->
-      <div class="team-card reveal text-center group">
+      <div tabindex="0" role="group" aria-labelledby="team-member-3" aria-describedby="team-role-3 team-description-3" class="team-card reveal text-center group">
         <div class="relative w-40 h-40 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg">
           <img
             src="/img/team/juanGioda.png"
@@ -173,21 +174,21 @@
           >
         </div>
 
-        <h3 class="font-display text-xl font-bold text-[#211b17] mb-1">
+        <h3 id="team-member-3" class="font-display text-xl font-bold text-[#211b17] mb-1">
           Juan Ignacio Gioda
         </h3>
 
-        <p class="text-[#8f1d37] text-sm font-semibold mb-2">
+        <p id="team-role-3" class="text-[#8f1d37] text-sm font-semibold mb-2">
           Desarrollador Frontend
         </p>
 
-        <p class="text-[#77685a] text-sm leading-relaxed">
+        <p id="team-description-3" class="text-[#77685a] text-sm leading-relaxed">
           Desarrollador dedicado a construir interfaces modernas y funcionales para los usuarios.
         </p>
       </div>
 
       <!-- Nahuel Argandoña -->
-      <div class="team-card reveal text-center group">
+      <div tabindex="0" role="group" aria-labelledby="team-member-4" aria-describedby="team-role-4 team-description-4" class="team-card reveal text-center group">
         <div class="relative w-40 h-40 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg">
           <img
             src="/img/team/nahue.png"
@@ -196,15 +197,15 @@
           >
         </div>
 
-        <h3 class="font-display text-xl font-bold text-[#211b17] mb-1">
+        <h3 id="team-member-4" class="font-display text-xl font-bold text-[#211b17] mb-1">
           Nahuel Argandoña
         </h3>
 
-        <p class="text-[#8f1d37] text-sm font-semibold mb-2">
+        <p id="team-role-4" class="text-[#8f1d37] text-sm font-semibold mb-2">
           Desarrollador Full Stack
         </p>
 
-        <p class="text-[#77685a] text-sm leading-relaxed">
+        <p id="team-description-4" class="text-[#77685a] text-sm leading-relaxed">
           Desarrollador encargado de trabajar tanto en el frontend como en el backend de la plataforma.
         </p>
       </div>
@@ -213,7 +214,7 @@
   </div>
 </section>
 
-<app-cta></app-cta>
+<app-cta [tabThroughContent]="true"></app-cta>
 
 </main>
 
