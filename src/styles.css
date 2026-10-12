@@ -105,3 +105,17 @@ h1, h2, h3 {
 	background: var(--color-gold-700);
 }
 
+
+/* Shared keyboard access and motion preferences. */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+ outline: 3px solid #946a2f; outline-offset: 4px;
+}
+.dark a:focus-visible, .dark button:focus-visible, .dark input:focus-visible, .dark select:focus-visible, .dark [tabindex]:focus-visible {
+ outline-color: #f2da96;
+}
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 10000; transform: translateY(-200%); padding: 12px 18px; background: #211b17; color: white; border-radius: 6px; }
+.skip-link:focus { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+ *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+ .reveal { opacity: 1 !important; transform: none !important; }
+}

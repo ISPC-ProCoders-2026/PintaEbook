@@ -93,7 +93,7 @@
 
 :host-context(.dark) .about-story h2,
 :host-context(.dark) .about-team h2,
-:host-context(.dark) .team-card h4 {
+:host-context(.dark) .team-card h3 {
   color: #f2efe3 !important;
 }
 

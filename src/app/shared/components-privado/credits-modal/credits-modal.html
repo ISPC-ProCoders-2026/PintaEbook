@@ -1,8 +1,8 @@
 @if (isOpen) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto" (click)="closeModalOnBackdrop($event)">
-    <section role="dialog" aria-modal="true" aria-labelledby="credits-title" class="relative w-full max-w-5xl my-8 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] text-white rounded-3xl shadow-2xl border border-gold-200/20 p-6 sm:p-10">
+  <dialog #purchaseDialog aria-labelledby="credits-title" class="purchase-dialog" (cancel)="onCancel($event)" (click)="closeModalOnBackdrop($event)">
+    <section class="relative w-full max-w-5xl my-8 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] text-white rounded-3xl shadow-2xl border border-gold-200/20 p-6 sm:p-10">
       <button type="button" aria-label="Cerrar" (click)="close()" [disabled]="buyingId() !== null" class="absolute top-4 right-5 text-2xl">×</button>
-      <h2 id="credits-title" class="font-display text-3xl font-bold text-center mb-4">{{ mode === 'plans' ? 'Elegí el plan perfecto para vos' : 'Comprar créditos' }}</h2>
+      <h2 tabindex="-1" id="credits-title" class="font-display text-3xl font-bold text-center mb-4">{{ mode === 'plans' ? 'Elegí el plan perfecto para vos' : 'Comprar créditos' }}</h2>
       @if (mode === 'plans' && error()) { <p role="alert" class="text-center text-amber-300 mb-4">{{ error() }}</p> }
       @if (mode === 'plans') {
         <p class="text-center text-white/80 mb-8">Desde lectores apasionados hasta editoriales profesionales.</p>
@@ -121,5 +121,5 @@
       <p class="text-center text-white/70 text-sm mt-8">Compra única en pesos argentinos. Los créditos se acreditan cuando se confirma el pago.</p>
       }
     </section>
-  </div>
+  </dialog>
 }

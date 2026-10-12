@@ -1,5 +1,7 @@
 <app-navbar></app-navbar>
 
+<main id="main-content" tabindex="-1">
+
 <!-- Reading Progress Bar -->
 <div id="reading-progress" [style.width.%]="readingProgress"></div>
 
@@ -37,9 +39,10 @@
 </section>
 
 <!-- Pricing Cards Section -->
-<section id="planes" class="credits-plans py-6 lg:py-10 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] relative text-white">
+<section aria-labelledby="plans-title" id="planes" class="credits-plans py-6 lg:py-10 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] relative text-white">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="plans-title" class="sr-only">Planes disponibles</h2>
         <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto reveal active">
             <!-- Free Plan - Lector -->
             <div class="pricing-card p-6 bg-white/5 border border-white/10 hover:border-amber-400/50 transition-all flex flex-col justify-between hover:-translate-y-1">
@@ -121,5 +124,7 @@
 <app-faqs></app-faqs>
 
 <app-cta></app-cta>
+
+</main>
 
 <app-footer></app-footer>

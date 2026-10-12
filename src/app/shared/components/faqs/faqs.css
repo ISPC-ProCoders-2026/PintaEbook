@@ -97,7 +97,7 @@
     background: #b88435;
 }
 
-.faq-item h4 {
+.faq-trigger span {
     color: #211b17;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.35rem;
@@ -105,7 +105,7 @@
     letter-spacing: .01em;
 }
 
-:host-context(.dark) .faq-item h4 {
+:host-context(.dark) .faq-trigger span {
     color: #f2efe3 !important;
 }
 
@@ -115,7 +115,7 @@
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .faq-item.open .faq-answer {
-    max-height: 300px;
+    max-height: none;
 }
 .faq-item.open .faq-icon {
     transform: rotate(45deg);
@@ -143,3 +143,6 @@
     color: #c7b8aa !important;
 }
 
+
+.faq-trigger { width: 100%; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 0; }
+.faq-answer[hidden] { display: none; }

@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, inject, signal } from '@angular/core';
+﻿import { AfterViewChecked, ElementRef, ViewChild, Component, Input, Output, EventEmitter, OnChanges, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { CreditPackage } from '../../../models/billing.model';
@@ -12,7 +12,26 @@ export type CreditPurchaseMode = 'credits' | 'plans';
   templateUrl: './credits-modal.html',
   styleUrls: ['./credits-modal.css']
 })
-export class CreditsModal implements OnChanges, OnDestroy {
+export class CreditsModal implements OnChanges, OnDestroy, AfterViewChecked {
+  @ViewChild('purchaseDialog') private dialog?: ElementRef<HTMLDialogElement>;
+  private returnFocus: HTMLElement | null = null;
+  ngAfterViewChecked(): void {
+    const dialog = this.dialog?.nativeElement;
+    if (!this.isOpen || !dialog || dialog.open) return;
+    this.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    // Native modal dialogs make the background inert and contain keyboard focus.
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+    dialog.querySelector<HTMLElement>('#credits-title')?.focus();
+  }
+  onCancel(event: Event): void {
+    event.preventDefault();
+    this.close();
+  }
+  private restoreFocus(): void {
+    if (this.returnFocus?.isConnected) this.returnFocus.focus();
+    this.returnFocus = null;
+  }
   private readonly billing = inject(BillingService);
   private readonly subscriptions = new Subscription();
   @Input() isOpen = false;
@@ -45,6 +64,7 @@ export class CreditsModal implements OnChanges, OnDestroy {
     }));
   }
   ngOnChanges(): void {
+    if (!this.isOpen) this.restoreFocus();
     this.selectedPlan.set(null);
     if (this.isOpen && this.mode === 'credits') this.loadPackages();
   }
@@ -81,7 +101,13 @@ export class CreditsModal implements OnChanges, OnDestroy {
     }));
   }
   redirectToCheckout(url: string): void { window.location.assign(url); }
-  close(): void { if (this.buyingId() === null) this.closeEvent.emit(); }
+  close(): void {
+    if (this.buyingId() !== null) return;
+    const dialog = this.dialog?.nativeElement;
+    if (dialog && typeof dialog.close === 'function') dialog.close();
+    this.restoreFocus();
+    this.closeEvent.emit();
+  }
   closeModalOnBackdrop(event: MouseEvent): void { if (event.target === event.currentTarget) this.close(); }
-  ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
+  ngOnDestroy(): void { this.subscriptions.unsubscribe(); this.restoreFocus(); }
 }
