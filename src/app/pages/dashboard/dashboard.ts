@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CreditPurchaseMode, CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
 import { NavbarPrivado } from '../../shared/components-privado/navbar-privado/navbar-privado';
 import { MyEbooks } from '../../shared/components-privado/my-ebooks/my-ebooks';
@@ -8,6 +9,8 @@ import { Profile } from '../../shared/components-privado/profile/profile';
 import { AuthService } from '../../service/login/login';
 import { NewEbook } from '../../shared/components-privado/new-ebooks/new-ebook';
 import { BookLoader } from '../../shared/components-privado/book-loader/book-loader';
+import { CreditBalance } from '../../models/billing.model';
+import { BillingService } from '../../service/billing/billing';
 
 
 @Component({
@@ -19,22 +22,33 @@ import { BookLoader } from '../../shared/components-privado/book-loader/book-loa
 })
 export class Dashboard implements OnDestroy, OnInit {
   private readonly authService = inject(AuthService);
+  private readonly billingService = inject(BillingService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly subscriptions = new Subscription();
 
   isCreditsModalOpen = false;
   creditsModalMode: CreditPurchaseMode = 'credits';
   activeSection = 'dashboard';
   selectedEbook: EbookSummary | null = null;
+  creditBalance: CreditBalance | null = null;
   isOpeningEbook = false;
   private openingEbookTimer?: number;
 
   ngOnInit(): void {
-    this.activatedRoute.queryParamMap.subscribe((params) => {
+    this.subscriptions.add(this.activatedRoute.queryParamMap.subscribe((params) => {
       const section = params.get('section');
       if (section) this.handleNavigation(section);
-    });
+    }));
+    this.loadCreditBalance();
+  }
+
+  loadCreditBalance(): void {
+    this.subscriptions.add(this.billingService.getBalance().subscribe({
+      next: (balance) => this.creditBalance = balance,
+      error: () => this.creditBalance = null
+    }));
   }
 
   setActiveSection(section: string): void {
@@ -65,6 +79,7 @@ export class Dashboard implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     window.clearTimeout(this.openingEbookTimer);
+    this.subscriptions.unsubscribe();
   }
 
   closeCreditsModal(): void {
