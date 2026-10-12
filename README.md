@@ -141,7 +141,7 @@ Abre el archivo `.env` y verifica que contenga los valores correctos:
 
 ```env
 API_BASE_URL=http://localhost:8000/api
-GOOGLE_CLIENT_ID=1042090144205-hs489ota4otsl2f0e2l8qtk27ktegu5h.apps.googleusercontent.com
+GOOGLE_CLIENT_ID=consultar wiki documentacion
 ```
 
 #### 3. Construir y levantar el contenedor
