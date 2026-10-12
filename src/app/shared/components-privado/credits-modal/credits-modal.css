@@ -84,3 +84,17 @@ button:not(:disabled),
 button:disabled {
   cursor: not-allowed;
 }
+
+.credit-package { position: relative; justify-content: flex-start; padding: 28px 24px 24px; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
+.credit-package:hover { border-color: rgba(251,191,36,.5); transform: translateY(-4px); }
+.credit-package--featured { border: 2px solid rgba(251,191,36,.6); background: linear-gradient(180deg,#631b2f,#390a16); box-shadow: 0 16px 40px rgba(0,0,0,.2); }
+.credit-package-badge { position: absolute; top: 0; right: 0; padding: 5px 12px; border-radius: 0 4px 0 12px; background: #f59e0b; color: #211b17; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.credit-package-amount { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 26px 0 20px; }
+.credit-package-price { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.12); }
+.credit-package-benefits { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); }
+.credit-package-benefits li { display: flex; align-items: center; gap: 10px; }
+.credit-package-benefits span { color: #fbbf24; }
+.credit-package-action { margin-top: auto; border: 1px solid rgba(255,255,255,.2); color: #fff; background: transparent; transition: background .2s ease; }
+.credit-package-action:not(:disabled):hover { background: rgba(255,255,255,.1); }
+.credit-package--featured .credit-package-action { border-color: #f59e0b; color: #211b17; background: #f59e0b; }
+.credit-package--featured .credit-package-action:not(:disabled):hover { background: #fbbf24; }

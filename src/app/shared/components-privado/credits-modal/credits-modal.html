@@ -92,20 +92,33 @@
       @if (error()) { <p role="alert" class="text-amber-300 mb-4">{{ error() }}</p><button type="button" (click)="loadPackages()" [disabled]="loading() || buyingId() !== null" class="checkout-back mb-4">Actualizar catálogo</button> }
       @if (loading()) { <p role="status">Cargando paquetes...</p> }
       @else {
-        <div class="grid sm:grid-cols-3 gap-4">
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           @for (pkg of creditPackages(); track pkg.id) {
-            <article class="credit-option-card">
-              <h3 class="text-amber-300 font-semibold">{{ pkg.nombre }}</h3>
-              <p class="text-3xl font-bold mt-3">{{ pkg.cantidad_creditos | number }} créditos</p>
-              <p class="text-xl mt-5">{{ +pkg.precio | currency:'ARS':'code':'1.2-2' }}</p>
-              <button type="button" (click)="buy(pkg)" [disabled]="buyingId() !== null" class="purchase-action-button w-full py-3 mt-6 bg-amber-500 text-black font-bold disabled:opacity-50">
+            <article class="credit-option-card credit-package" [class.credit-package--featured]="pkg.cantidad_creditos === 500">
+              @if (pkg.cantidad_creditos === 500) { <span class="credit-package-badge">Recomendado</span> }
+              <h3 class="font-display text-xl font-bold text-white">{{ pkg.nombre }}</h3>
+              <p class="text-white/70 text-xs mt-1">{{ pkg.cantidad_creditos < 500 ? 'Para empezar a crear' : pkg.cantidad_creditos < 1000 ? 'Para darle forma a tus ideas' : 'Para tus grandes proyectos' }}</p>
+              <div class="credit-package-amount">
+                <span class="font-display text-5xl font-bold gold-shimmer">{{ pkg.cantidad_creditos | number }}</span>
+                <span class="text-white/70 text-sm">cr&#233;ditos</span>
+              </div>
+              <div class="credit-package-price">
+                <p class="font-display text-2xl font-bold">{{ +pkg.precio | currency:'ARS':'code':'1.2-2' }}</p>
+                <p class="text-white/60 text-xs mt-1">Pago &#250;nico</p>
+              </div>
+              <button type="button" (click)="buy(pkg)" [disabled]="buyingId() !== null" class="purchase-action-button credit-package-action w-full py-3 text-sm font-bold disabled:opacity-50">
                 {{ buyingId() === pkg.id ? 'Preparando pago...' : 'Comprar con Mercado Pago' }}
               </button>
             </article>
-          } @empty { <p>No hay paquetes disponibles en este momento.</p> }
+          } @empty { <p class="text-center text-white/70 md:col-span-3">No hay paquetes disponibles en este momento.</p> }
         </div>
+        <ul class="credit-package-benefits text-xs text-white/90">
+          <li><span aria-hidden="true">&#10003;</span> Cr&#233;ditos para crear tus ebooks</li>
+          <li><span aria-hidden="true">&#10003;</span> Se suman a tu saldo actual</li>
+          <li><span aria-hidden="true">&#10003;</span> Sin suscripci&#243;n mensual</li>
+        </ul>
       }
-      <p class="text-center text-white/70 text-sm mt-8">Compra única en pesos argentinos. Los créditos se acreditan cuando el backend confirma el pago.</p>
+      <p class="text-center text-white/70 text-sm mt-8">Compra única en pesos argentinos. Los créditos se acreditan cuando se confirma el pago.</p>
       }
     </section>
   </div>
