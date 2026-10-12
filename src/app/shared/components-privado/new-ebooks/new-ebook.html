@@ -113,8 +113,25 @@
             </div>
 
             <div class="editor-prompt">
-              <input type="text" placeholder="Pregunta o pide cambios al asistente..." aria-label="Pregunta al asistente" />
-              <button type="button" aria-label="Enviar pregunta al asistente">↑</button>
+              <label class="editor-prompt__target">
+                <span>Aplicar cambios a</span>
+                <select [value]="assistantChapterId + '|' + assistantSectionId" (change)="selectAssistantSection($event)" [disabled]="isAssistantWorking">
+                  @for (chapter of generatedEbook.chapters; track chapter.content_id) {
+                    @for (section of chapter.sections; track section.content_id) {
+                      <option [value]="chapter.content_id + '|' + section.content_id">Capítulo {{ chapter.chapter_id }} · {{ section.title }}</option>
+                    }
+                  }
+                </select>
+              </label>
+              <div class="editor-prompt__form" role="group" aria-label="Instrucción para el asistente">
+                <input type="text" [formControl]="assistantPrompt" maxlength="800" placeholder="Pregunta o pide cambios al asistente..." aria-label="Pregunta al asistente" [disabled]="isAssistantWorking" (keydown.enter)="$event.preventDefault(); sendAssistantPrompt()" />
+                <button type="button" aria-label="Enviar instrucción al asistente" [disabled]="isAssistantWorking || !assistantPrompt.value.trim()" (click)="sendAssistantPrompt()">
+                  {{ isAssistantWorking ? '…' : '↑' }}
+                </button>
+              </div>
+              <small class="editor-prompt__hint">Cada refinación consume 10 créditos. Saldo: {{ creditsAvailable ?? '—' }}</small>
+              @if (assistantMessage) { <p class="editor-prompt__message" role="status">{{ assistantMessage }}</p> }
+              @if (assistantError) { <p class="editor-prompt__message editor-prompt__message--error" role="alert">{{ assistantError }}</p> }
             </div>
           </section>
         </section>

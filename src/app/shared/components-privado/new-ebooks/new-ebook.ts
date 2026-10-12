@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -44,6 +44,12 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   generatedEbook: EbookContent | null = null;
   isPreviewLoading = false;
   previewError = '';
+  readonly assistantPrompt = new FormControl('', { nonNullable: true });
+  assistantChapterId = '';
+  assistantSectionId = '';
+  isAssistantWorking = false;
+  assistantMessage = '';
+  assistantError = '';
   creditsAvailable: number | null = null;
   readonly fieldErrors: Record<string, string> = {};
   generationProgress: GenerationProgress = {
@@ -54,6 +60,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     if (this.existingEbook) {
+      this.refreshCreditBalance();
       this.loadGeneratedEbook(this.existingEbook.ebook_id);
       return;
     }
@@ -143,6 +150,98 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
     this.isLoading = false;
   }
 
+  selectAssistantSection(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    const [chapterId, sectionId] = value.split('|');
+    this.assistantChapterId = chapterId ?? '';
+    this.assistantSectionId = sectionId ?? '';
+  }
+
+  sendAssistantPrompt(): void {
+    const request = this.assistantPrompt.value.trim();
+    const ebook = this.generatedEbook;
+    if (!ebook || this.isAssistantWorking) return;
+    if (request.length < 5) {
+      this.assistantError = 'Escribí una instrucción de al menos 5 caracteres.';
+      this.assistantMessage = '';
+      return;
+    }
+
+    const chapter = ebook.chapters.find((item) => item.content_id === this.assistantChapterId);
+    const section = chapter?.sections.find((item) => item.content_id === this.assistantSectionId);
+    if (!chapter || !section) {
+      this.assistantError = 'Elegí una sección del libro para aplicar el cambio.';
+      this.assistantMessage = '';
+      return;
+    }
+
+    const instruction = `Instrucción del autor: ${request.slice(0, 800)}`;
+    const metadata = `Libro: ${ebook.title.slice(0, 120)}. Capítulo: ${chapter.title.slice(0, 120)}. Sección: ${section.title.slice(0, 120)}.`;
+    const htmlLabel = 'HTML actual de la sección:\n';
+    const directive = 'Reescribe esta sección aplicando la instrucción. Conserva el idioma y el contexto del libro. Devuelve únicamente HTML semántico, sin bloques Markdown.';
+    const fixedLength = instruction.length + metadata.length + htmlLabel.length + directive.length + 9;
+    const htmlContextLength = Math.max(0, 1990 - fixedLength);
+    const contextualPrompt = [
+      instruction,
+      metadata,
+      `${htmlLabel}${section.content_html.slice(0, htmlContextLength)}`,
+      directive
+    ].join('\n\n');
+
+    this.isAssistantWorking = true;
+    this.assistantError = '';
+    this.assistantMessage = 'El asistente está trabajando en esta sección…';
+    this.ebooksService.generateSection({
+      ebook_id: ebook.ebook_id,
+      chapter_id: chapter.content_id,
+      section_id: section.content_id,
+      prompt: contextualPrompt
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (response) => {
+        if (typeof response.generated_html !== 'string') {
+          this.assistantError = 'El asistente devolvió una respuesta vacía. Intentá nuevamente.';
+          this.assistantMessage = '';
+          this.isAssistantWorking = false;
+          this.changeDetector.markForCheck();
+          return;
+        }
+
+        this.generatedEbook = {
+          ...ebook,
+          chapters: ebook.chapters.map((item) => item.content_id !== chapter.content_id ? item : {
+            ...item,
+            sections: item.sections.map((current) => current.content_id === section.content_id
+              ? { ...current, content_html: response.generated_html }
+              : current)
+          })
+        };
+        if (response.credits_available !== undefined) this.creditsAvailable = response.credits_available;
+        else this.refreshCreditBalance();
+        this.assistantPrompt.setValue('');
+        this.assistantMessage = `La sección “${section.title}” se actualizó y quedó guardada.`;
+        this.isAssistantWorking = false;
+        this.changeDetector.markForCheck();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isAssistantWorking = false;
+        this.assistantMessage = '';
+        if (error.status === 401) {
+          this.assistantError = 'El servidor rechazó tu sesión. Cerrá sesión y volvé a ingresar para usar el asistente.';
+        } else if (error.status === 402) {
+          const body = error.error as Record<string, unknown> | null;
+          const detail = body?.['error'];
+          this.assistantError = detail && typeof detail === 'object' && 'message' in detail
+            ? String((detail as { message: unknown }).message)
+            : 'Necesitás al menos 10 créditos para refinar una sección.';
+          this.refreshCreditBalance();
+        } else {
+          this.assistantError = 'No se pudo aplicar el cambio. Revisá la conexión e intentá nuevamente.';
+        }
+        this.changeDetector.markForCheck();
+      }
+    });
+  }
+
   private handleProgress(progress: GenerationProgress): void {
     this.generationProgress = progress;
     if (progress.credits_available !== undefined) this.creditsAvailable = progress.credits_available;
@@ -230,6 +329,10 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
       .subscribe({
         next: (ebook) => {
           this.generatedEbook = ebook;
+          const firstChapter = ebook.chapters[0];
+          const firstSection = firstChapter?.sections[0];
+          this.assistantChapterId = firstChapter?.content_id ?? '';
+          this.assistantSectionId = firstSection?.content_id ?? '';
           this.isPreviewLoading = false;
           this.changeDetector.markForCheck();
         },

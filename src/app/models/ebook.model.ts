@@ -39,12 +39,14 @@ export interface CreateEbookResponse {
 // Editor-facing content uses the backend's canonical identifier and HTML keys.
 export interface Section {
   section_id: string;
+  content_id: string;
   title: string;
   content_html: string;
 }
 
 export interface Chapter {
   chapter_id: number;
+  content_id: string;
   title: string;
   sections: Section[];
 }

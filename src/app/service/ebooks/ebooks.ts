@@ -22,7 +22,9 @@ import {
   EbookStatusResponse,
   GenerationProgress,
   CreditBalanceResponse,
-  Section
+  Section,
+  AiGeneratePayload,
+  AiGenerateResponse
 } from '../../models/ebook.model';
 import { environment } from '../../../environments/environment.generated';
 import { AuthService } from '../login/login';
@@ -69,6 +71,12 @@ export class EbooksService {
 
   getCreditBalance(): Observable<CreditBalanceResponse> {
     return this.http.get<CreditBalanceResponse>(`${environment.apiBaseUrl}/billing/balance/`, {
+      headers: this.authHeaders()
+    });
+  }
+
+  generateSection(payload: AiGeneratePayload): Observable<AiGenerateResponse> {
+    return this.http.post<AiGenerateResponse>(`${environment.apiBaseUrl}/ai/generate/`, payload, {
       headers: this.authHeaders()
     });
   }
@@ -332,9 +340,11 @@ export class EbooksService {
 
     const chapters: Chapter[] = rawChapters.map((rawChapter, chapterIndex) => {
       if (!this.isRecord(rawChapter)) throw new Error('El capítulo recibido tiene un formato inválido.');
+      const rawChapterId = rawChapter['id'] ?? rawChapter['chapter_id'];
       const chapterId = typeof rawChapter['chapter_id'] === 'number'
         ? rawChapter['chapter_id']
         : chapterIndex + 1;
+      const chapterContentId = typeof rawChapterId === 'string' ? rawChapterId : String(chapterId);
       if (typeof rawChapter['title'] !== 'string' || !rawChapter['title'].trim()) {
         throw new Error(`El capítulo ${chapterId} no tiene un título válido.`);
       }
@@ -344,9 +354,11 @@ export class EbooksService {
       const sections: Section[] = rawSections.map((rawSection, sectionIndex) => {
         if (!this.isRecord(rawSection)) throw new Error('La sección recibida tiene un formato inválido.');
         const requestedSectionId = rawSection['section_id'];
+        const rawSectionId = rawSection['id'] ?? requestedSectionId;
         const sectionId = typeof requestedSectionId === 'string' && /^\d+\.\d+$/.test(requestedSectionId)
           ? requestedSectionId
           : `${chapterId}.${sectionIndex + 1}`;
+        const sectionContentId = typeof rawSectionId === 'string' ? rawSectionId : sectionId;
         const html = rawSection['content_html'] ?? rawSection['html'];
         if (typeof rawSection['title'] !== 'string' || !rawSection['title'].trim()) {
           throw new Error(`La sección ${sectionId} no tiene un título válido.`);
@@ -357,6 +369,7 @@ export class EbooksService {
 
         return {
           section_id: sectionId,
+          content_id: sectionContentId,
           title: rawSection['title'],
           content_html: html
         };
@@ -364,6 +377,7 @@ export class EbooksService {
 
       return {
         chapter_id: chapterId,
+        content_id: chapterContentId,
         title: rawChapter['title'],
         sections
       };
