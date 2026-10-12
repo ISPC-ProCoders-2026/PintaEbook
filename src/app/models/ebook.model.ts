@@ -29,6 +29,14 @@ export interface GenerationProgress {
   completed: boolean;
   ebook_id?: string;
   error?: string;
+  status?: 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  step?: number;
+  credits_available?: number;
+}
+
+export interface CreditBalanceResponse {
+  credits_available: number;
+  last_updated: string;
 }
 
 export interface EbookGenerationResponse {

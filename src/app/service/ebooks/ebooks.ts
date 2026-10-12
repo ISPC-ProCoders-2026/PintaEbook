@@ -21,22 +21,27 @@ import {
   PaginatedEbookMetadataResponse,
   EbookStatusResponse,
   GenerationProgress,
+  CreditBalanceResponse,
   Section
 } from '../../models/ebook.model';
 import { environment } from '../../../environments/environment.generated';
+import { AuthService } from '../login/login';
 
 interface ProgressSocketMessage {
+  type: 'progress_update';
+  step: number;
   progress?: number;
   message?: string;
-  status?: string;
+  status?: 'PROCESSING' | 'COMPLETED' | 'FAILED';
   error?: string;
+  credits_available?: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class EbooksService {
   private readonly apiUrl = `${environment.apiBaseUrl}/ebooks/`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, private readonly authService: AuthService) {}
 
   /**
    * Inicia la generación. El backend actual conserva los nombres históricos
@@ -54,7 +59,18 @@ export class EbooksService {
       .post<EbookGenerationResponse>(this.apiUrl, backendPayload, {
         headers: this.authHeaders()
       })
-      .pipe(map((response) => ({ ebook_id: response.ebook_id })));
+      .pipe(map((response) => {
+        if (typeof response?.ebook_id !== 'string' || !response.ebook_id.trim()) {
+          throw new Error('La API no devolvió un identificador válido para el E-book.');
+        }
+        return { ebook_id: response.ebook_id };
+      }));
+  }
+
+  getCreditBalance(): Observable<CreditBalanceResponse> {
+    return this.http.get<CreditBalanceResponse>(`${environment.apiBaseUrl}/billing/balance/`, {
+      headers: this.authHeaders()
+    });
   }
 
   /** Lista los metadatos reales del usuario desde el endpoint REST configurado. */
@@ -77,6 +93,7 @@ export class EbooksService {
       let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
       let pollingSubscription: Subscription | undefined;
       let reconnectAttempts = 0;
+      let statusReadFailures = 0;
       let lastProgress = 0;
       let finished = false;
       const stopPolling$ = new Subject<void>();
@@ -101,25 +118,30 @@ export class EbooksService {
       };
 
       const emitProgress = (message: ProgressSocketMessage): void => {
-        const status = message.status?.toUpperCase();
+        const status = message.status;
         const currentProgress = this.clampProgress(message.progress ?? lastProgress);
         lastProgress = Math.max(lastProgress, currentProgress);
 
         if (status === 'FAILED') {
+          const userMessage = 'La generación falló en el servidor. El libro no pudo completarse; intentá más tarde o contactá al equipo técnico.';
           finish({
             progress: lastProgress,
-            status_message: message.message ?? 'No se pudo generar el E-book.',
+            status_message: userMessage,
             completed: true,
-            error: message.error ?? 'La generación falló.'
+            error: userMessage,
+            status: 'FAILED',
+            credits_available: message.credits_available
           });
           return;
         }
 
-        if (status === 'COMPLETED' || currentProgress >= 100) {
+        if (status === 'COMPLETED') {
           finish({
             progress: 100,
             status_message: message.message ?? '¡Obra finalizada con éxito!',
-            completed: true
+            completed: true,
+            status: 'COMPLETED',
+            credits_available: message.credits_available
           });
           return;
         }
@@ -128,7 +150,10 @@ export class EbooksService {
           progress: lastProgress,
           status_message: message.message ?? 'Generando capítulos...',
           completed: false,
-          ebook_id: ebookId
+          ebook_id: ebookId,
+          status: 'PROCESSING',
+          step: message.step,
+          credits_available: message.credits_available
         });
       };
 
@@ -162,19 +187,22 @@ export class EbooksService {
         currentSocket.onmessage = (event: MessageEvent<string>) => {
           if (finished || socket !== currentSocket) return;
           try {
-            emitProgress(JSON.parse(event.data) as ProgressSocketMessage);
+            const parsed: unknown = JSON.parse(event.data);
+            if (this.isProgressMessage(parsed)) emitProgress(parsed);
           } catch {
-            subscriber.next({
-              progress: lastProgress,
-              status_message: 'Recibiendo actualización de progreso...',
-              completed: false,
-              ebook_id: ebookId
-            });
+            // Ignorar mensajes malformados sin inferir un estado.
           }
         };
 
         currentSocket.onerror = () => currentSocket.close();
-        currentSocket.onclose = () => {
+        currentSocket.onclose = (event: CloseEvent) => {
+          if (finished || socket !== currentSocket) return;
+          if ([4001, 4003, 1011].includes(event.code)) {
+            const error = new Error(`WebSocket cerrado con código ${event.code}`) as Error & { code: number };
+            error.code = event.code;
+            subscriber.error(error);
+            return;
+          }
           if (!finished && socket === currentSocket) scheduleReconnect();
         };
       };
@@ -200,22 +228,31 @@ export class EbooksService {
 
       pollingSubscription = timer(1500, 3000)
         .pipe(
-          switchMap(() => this.getEbookStatus(ebookId).pipe(catchError(() => EMPTY))),
+          switchMap(() => this.getEbookStatus(ebookId).pipe(catchError(() => {
+            statusReadFailures += 1;
+            if (reconnectAttempts > 6 && statusReadFailures >= 3 && !finished) {
+              subscriber.error(new Error('No se pudo confirmar el estado del E-book.'));
+            }
+            return EMPTY;
+          }))),
           takeUntil(stopPolling$)
         )
         .subscribe({
           next: (status) => {
+            statusReadFailures = 0;
             if (status.status === 'COMPLETED') {
               finish({
                 progress: 100,
                 status_message: '¡Obra finalizada con éxito!',
-                completed: true
+                completed: true,
+                status: 'COMPLETED'
               });
             } else if (status.status === 'FAILED') {
               finish({
                 progress: lastProgress,
                 status_message: 'No se pudo generar el E-book.',
                 completed: true,
+                status: 'FAILED',
                 error: 'La generación falló. Revisá el estado del libro e intentá nuevamente.'
               });
             }
@@ -258,7 +295,7 @@ export class EbooksService {
   }
 
   private authHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = this.authService.getToken();
     return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
   }
 
@@ -266,9 +303,21 @@ export class EbooksService {
     const apiUrl = new URL(environment.apiBaseUrl);
     apiUrl.protocol = apiUrl.protocol === 'https:' ? 'wss:' : 'ws:';
     apiUrl.pathname = `${apiUrl.pathname.replace(/\/api\/?$/, '')}/ws/ebooks/${encodeURIComponent(ebookId)}/progress/`;
-    const token = localStorage.getItem('token');
+    const token = this.authService.getToken();
     if (token) apiUrl.searchParams.set('token', token);
     return apiUrl.toString();
+  }
+
+  private isProgressMessage(value: unknown): value is ProgressSocketMessage {
+    if (!this.isRecord(value) || value['type'] !== 'progress_update') return false;
+    if (typeof value['step'] !== 'number' || !Number.isFinite(value['step'])) return false;
+    if (typeof value['progress'] !== 'number' || !Number.isFinite(value['progress'])) return false;
+    if (typeof value['message'] !== 'string') return false;
+    const status = value['status'];
+    if (status !== undefined && status !== 'PROCESSING' && status !== 'COMPLETED' && status !== 'FAILED') return false;
+    if (value['error'] !== undefined && typeof value['error'] !== 'string') return false;
+    if (value['credits_available'] !== undefined && (typeof value['credits_available'] !== 'number' || !Number.isFinite(value['credits_available']))) return false;
+    return true;
   }
 
   private clampProgress(progress: number): number {

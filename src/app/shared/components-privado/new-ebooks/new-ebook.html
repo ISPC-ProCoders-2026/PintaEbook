@@ -17,29 +17,30 @@
             <span>Título del E-book</span>
             <input type="text" formControlName="title" placeholder="Ej: Los Espejos de Papel" />
             @if (setupForm.controls.title.touched && setupForm.controls.title.invalid) {
-              <small class="field-error">Ingresá un título para continuar.</small>
+              <small class="field-error">Ingresá un título válido de hasta 255 caracteres.</small>
             }
+            @if (fieldErrors['title']) { <small class="field-error">{{ fieldErrors['title'] }}</small> }
           </label>
           <label class="field field--wide">
             <span>Descripción breve</span>
             <textarea rows="4" formControlName="description" placeholder="¿De qué trata tu E-book?"></textarea>
-            @if (setupForm.controls.description.touched && setupForm.controls.description.invalid) {
-              <small class="field-error">Agregá una breve descripción.</small>
-            }
+            @if (fieldErrors['description']) { <small class="field-error">{{ fieldErrors['description'] }}</small> }
           </label>
           <label class="field field--wide">
-            <span>Prompt principal</span>
-            <textarea rows="3" formControlName="prompt" placeholder="¿Qué querés desarrollar en tu E-book? (mínimo 10 caracteres)"></textarea>
+            <span>Idea principal</span>
+            <textarea rows="3" formControlName="prompt" placeholder="Describí el tema, el objetivo, el público y el enfoque de tu libro"></textarea>
             @if (setupForm.controls.prompt.touched && setupForm.controls.prompt.invalid) {
-              <small class="field-error">Escribí una consigna de al menos 10 caracteres.</small>
+              <small class="field-error">Escribí una idea principal para orientar la generación.</small>
             }
+            @if (fieldErrors['prompt']) { <small class="field-error">{{ fieldErrors['prompt'] }}</small> }
           </label>
           <label class="field">
             <span>Cantidad de capítulos</span>
-            <input type="number" min="1" max="15" formControlName="num_chapters" />
+            <input type="number" min="1" max="10" step="1" formControlName="num_chapters" />
             @if (setupForm.controls.num_chapters.touched && setupForm.controls.num_chapters.invalid) {
-              <small class="field-error">Elegí entre 1 y 15 capítulos.</small>
+              <small class="field-error">Elegí un número entero entre 1 y 10 capítulos.</small>
             }
+            @if (fieldErrors['quantity_chapters']) { <small class="field-error">{{ fieldErrors['quantity_chapters'] }}</small> }
           </label>
           <label class="field">
             <span>Género</span>
@@ -63,12 +64,12 @@
         </div>
         <div class="ebook-setup__actions">
           <div>
-            <span class="ebook-setup__hint">La generación cuesta 100 créditos.</span>
+            <span class="ebook-setup__hint">La generación cuesta 100 créditos.@if (creditsAvailable !== null) { Saldo disponible: {{ creditsAvailable }}. }</span>
             @if (formError) {
               <small class="form-error" role="alert">{{ formError }}</small>
             }
           </div>
-          <button type="submit" class="button button--primary" [disabled]="isLoading">
+          <button type="submit" class="button button--primary" [disabled]="isLoading || setupForm.invalid">
             {{ isLoading ? 'Generando...' : 'Generar E-book (100 créditos)' }} <span aria-hidden="true">→</span>
           </button>
         </div>
@@ -165,9 +166,9 @@
         </div>
         <div class="generation-modal__meta">
           <strong>{{ generationProgress.progress }}%</strong>
-          <span>Estamos organizando capítulos y secciones</span>
+          <span>@if (generationProgress.credits_available !== undefined) { Saldo: {{ generationProgress.credits_available }} créditos } @else { Paso {{ generationProgress.step ?? '—' }} }</span>
         </div>
-        @if (generationProgress.error) {
+        @if (generationProgress.completed) {
           <button type="button" class="button button--primary generation-modal__close" (click)="closeProgressModal()">Cerrar</button>
         }
       </section>

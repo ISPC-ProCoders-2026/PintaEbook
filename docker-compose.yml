@@ -13,4 +13,5 @@ services:
       - .env
     environment:
       NODE_ENV: development
+    command: ["npm", "start", "--", "--host", "0.0.0.0", "--prebundle=false"]
     restart: unless-stopped
