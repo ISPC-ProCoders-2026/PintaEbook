@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CreditPurchaseMode, CreditsModal } from '../../shared/components-privado/credits-modal/credits-modal';
@@ -32,7 +32,7 @@ export class Dashboard implements OnDestroy, OnInit {
   creditsModalMode: CreditPurchaseMode = 'credits';
   activeSection = 'dashboard';
   selectedEbook: EbookSummary | null = null;
-  creditBalance: CreditBalance | null = null;
+  readonly creditBalance = signal<CreditBalance | null>(null);
   isOpeningEbook = false;
   private openingEbookTimer?: number;
 
@@ -46,8 +46,8 @@ export class Dashboard implements OnDestroy, OnInit {
 
   loadCreditBalance(): void {
     this.subscriptions.add(this.billingService.getBalance().subscribe({
-      next: (balance) => this.creditBalance = balance,
-      error: () => this.creditBalance = null
+      next: (balance) => this.creditBalance.set(balance),
+      error: () => this.creditBalance.set(null)
     }));
   }
 
