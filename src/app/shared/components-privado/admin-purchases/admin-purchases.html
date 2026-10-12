@@ -2,13 +2,13 @@
   <div class="purchases-workspace">
     <app-private-navbar
       [isAdmin]="isAdminUser"
-      [sectionName]="isAdminView ? 'Compras' : 'Historial de compras'"
+      [sectionName]="isAdminView ? 'purchases' : 'purchase-history'"
       (navigationEvent)="handleNavigation($event)"
       (logoutEvent)="logout()"
       (brandClickEvent)="backToDashboard()">
     </app-private-navbar>
 
-    <main class="purchases-content">
+    <main id="main-content" tabindex="-1" class="purchases-content">
       <header class="purchases-header">
         <div>
           <p class="eyebrow">{{ isAdminView ? 'Administración' : 'Mi cuenta' }}</p>
@@ -39,10 +39,10 @@
       </section>
 
       <section class="purchases-panel" aria-labelledby="purchases-list-title">
-        <div class="purchases-panel__heading"><div><p class="eyebrow">Operaciones registradas</p><h2 id="purchases-list-title">Historial de compras</h2></div><span>{{ filteredPurchases.length }} operaciones</span></div>
+        <div class="purchases-panel__heading"><div><p class="eyebrow">Operaciones registradas</p><h2 id="purchases-list-title">Historial de compras</h2></div><span role="status" aria-live="polite" aria-atomic="true">{{ filteredPurchases.length }} operaciones</span></div>
         <div class="purchases-table-wrapper">
-          <table class="purchases-table">
-            <thead><tr><th>ID</th>@if (isAdminView) { <th>Usuario</th> }<th>Fecha</th><th>Créditos</th><th>Monto</th><th>Estado</th></tr></thead>
+          <table class="purchases-table" aria-labelledby="purchases-list-title">
+            <thead><tr><th scope="col">ID</th>@if (isAdminView) { <th scope="col">Usuario</th> }<th scope="col">Fecha</th><th scope="col">Créditos</th><th scope="col">Monto</th><th scope="col">Estado</th></tr></thead>
             <tbody>
               @for (purchase of filteredPurchases; track purchase.id) {
                 <tr><td data-label="ID"><strong>{{ purchase.id }}</strong></td>@if (isAdminView) { <td data-label="Usuario">{{ purchase.userName }}</td> }<td data-label="Fecha">{{ purchase.date }}</td><td data-label="Créditos">{{ purchase.credits | number }}</td><td data-label="Monto">{{ formatAmount(purchase.amount) }}</td><td data-label="Estado"><span class="status" [class]="'status status--' + purchase.status.toLocaleLowerCase()">{{ purchase.status }}</span></td></tr>

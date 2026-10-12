@@ -1,5 +1,5 @@
 <div class="private-navigation" [class.private-navigation--menu-open]="isSidebarOpen">
-  <aside class="sidebar" id="dashboard-sidebar" aria-label="Navegación del espacio de escritura">
+  <aside [attr.inert]="isMobile && !isSidebarOpen ? '' : null" class="sidebar" id="dashboard-sidebar" aria-label="Navegación del espacio de escritura">
     <div class="sidebar__texture" aria-hidden="true"></div>
     <div class="sidebar__spine" aria-hidden="true"><span></span><i>✦</i><i>✦</i><i>✦</i><i>✦</i><span></span></div>
     <div class="sidebar__content">
@@ -20,7 +20,7 @@
         <section class="nav-group" aria-labelledby="writing-title">
           <h2 id="writing-title">Escritura</h2>
           @for (item of writingNavigation; track item.id) {
-            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" (click)="setActiveSection(item.id)">
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" [attr.aria-current]="sectionName === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">@for (path of item.icon; track path) { <path [attr.d]="path"></path> }</svg>
               {{ item.label }}
             </button>
@@ -29,7 +29,7 @@
         <section class="nav-group" aria-labelledby="resource-title">
           <h2 id="resource-title">Planes</h2>
           @for (item of resourceNavigation; track item.id) {
-            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" (click)="setActiveSection(item.id)">
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" [attr.aria-current]="sectionName === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">@for (path of item.icon; track path) { <path [attr.d]="path"></path> }</svg>
               {{ item.label }}
             </button>
@@ -51,7 +51,7 @@
         <section class="nav-group nav-group--account" aria-labelledby="account-title">
           <h2 id="account-title">Cuenta</h2>
           @for (item of accountNavigation; track item.id) {
-            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" (click)="setActiveSection(item.id)">
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" [attr.aria-current]="sectionName === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">@for (path of item.icon; track path) { <path [attr.d]="path"></path> }</svg>
               {{ item.label }}
             </button>
@@ -81,7 +81,7 @@
   
   <div class="topbar__breadcrumb">
     <span>Mi espacio</span>
-    <b>{{ sectionName }}</b>
+    <b>{{ sectionLabel }}</b>
   </div>
   
   <div class="topbar__actions">

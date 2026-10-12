@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { HostListener, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ThemeToggle } from '../../components/theme-toggle/theme-toggle';
 
 type NavigationItem = {
@@ -23,6 +23,21 @@ export class NavbarPrivado {
   @Output() brandClickEvent = new EventEmitter<void>();
 
   isSidebarOpen = false;
+  isMobile = typeof window !== 'undefined' && window.innerWidth <= 860;
+  get sectionLabel(): string {
+    return [...this.libraryNavigation, ...this.writingNavigation, ...this.resourceNavigation, ...this.accountNavigation]
+      .find(item => item.id === this.sectionName)?.label
+      ?? ({ purchases: 'Compras', metrics: 'Métricas' } as Record<string, string>)[this.sectionName]
+      ?? this.sectionName;
+  }
+  @HostListener('window:resize')
+  onResize(): void { this.isMobile = window.innerWidth <= 860; }
+  @HostListener('document:keydown.escape')
+  closeSidebar(): void {
+    if (!this.isSidebarOpen) return;
+    this.isSidebarOpen = false;
+    document.querySelector<HTMLElement>('.menu-toggle')?.focus();
+  }
 
   readonly libraryNavigation: NavigationItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: ['M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5z', 'M9 20v-6h6v6'] },

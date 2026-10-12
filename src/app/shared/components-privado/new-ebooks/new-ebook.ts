@@ -53,7 +53,10 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   };
 
   ngOnInit(): void {
-    if (this.existingEbook) return;
+    if (this.existingEbook) {
+      this.loadGeneratedEbook(this.existingEbook.ebook_id);
+      return;
+    }
     this.ebooksService.getCreditBalance().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (balance) => {
         if (Number.isFinite(balance.credits_available)) this.creditsAvailable = balance.credits_available;
@@ -63,11 +66,8 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
   ngAfterViewInit(): void {
     if (this.existingEbook) {
-      this.setupForm.patchValue({
-        title: this.existingEbook.title,
-        description: this.existingEbook.description
-      });
-      this.showEditor = true;
+      this.showEditor = false;
+      return;
     }
     if (!this.showEditor) return;
     this.initializeEditor();
@@ -119,8 +119,20 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.isLoading = false;
-        this.showProgressModal = false;
         this.showHttpError(error);
+        if (error.status === 402) {
+          this.generationProgress = {
+            progress: 0,
+            status_message: this.formError,
+            completed: true,
+            error: this.formError
+          };
+          this.showProgressModal = true;
+          this.refreshCreditBalance();
+          this.changeDetector.markForCheck();
+          return;
+        }
+        this.showProgressModal = false;
       }
     });
   }

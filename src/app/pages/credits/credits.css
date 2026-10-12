@@ -94,3 +94,11 @@
 :host-context(.dark) .credits-plans .hover\:bg-white\/10:hover {
     background-color: rgba(242, 239, 227, .14) !important;
 }
+button:not(:disabled),
+.pricing-action:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

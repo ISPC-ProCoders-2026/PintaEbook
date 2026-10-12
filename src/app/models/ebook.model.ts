@@ -1,3 +1,42 @@
+export type EbookStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+
+export interface Ebook {
+  ebook_id: string;
+  title: string;
+  description: string;
+  prompt_idea: string;
+  quantity_chapters: number;
+  status?: EbookStatus;
+  created_at: string;
+  updated_at: string;
+  credits_available: number;
+}
+
+export interface EbookListResponse {
+  results: Ebook[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+export interface CreateEbookPayload {
+  title: string;
+  description: string;
+  prompt_idea: string;
+  quantity_chapters: number;
+}
+
+export interface CreateEbookResponse {
+  ebook_id: string;
+  title: string;
+  description: string;
+  status: EbookStatus;
+  created_at: string;
+  updated_at: string;
+  credits_available?: number;
+}
+
+// Editor-facing content uses the backend's canonical identifier and HTML keys.
 export interface Section {
   section_id: string;
   title: string;
@@ -29,7 +68,7 @@ export interface GenerationProgress {
   completed: boolean;
   ebook_id?: string;
   error?: string;
-  status?: 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  status?: EbookStatus;
   step?: number;
   credits_available?: number;
 }
@@ -42,7 +81,7 @@ export interface CreditBalanceResponse {
 export interface EbookGenerationResponse {
   ebook_id: string;
   title: string;
-  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  status: EbookStatus;
   credits_available?: number;
 }
 
@@ -50,7 +89,7 @@ export interface EbookMetadataResponse {
   ebook_id: string;
   title: string;
   description: string;
-  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  status: EbookStatus;
   created_at: string;
   updated_at: string;
   credits_available?: number;
@@ -65,6 +104,34 @@ export interface PaginatedEbookMetadataResponse {
 
 export interface EbookStatusResponse {
   ebook_id: string;
-  status: EbookGenerationResponse['status'];
+  status: EbookStatus;
   title: string;
+}
+
+export interface PatchSectionPayload {
+  sections: { chapter_id: string; section_id: string; html: string }[];
+}
+
+export interface AiGeneratePayload {
+  ebook_id: string;
+  chapter_id: string;
+  section_id: string;
+  prompt: string;
+}
+
+export interface AiGenerateResponse {
+  generated_html: string;
+  credits_available?: number;
+  html?: string;
+  credits_remaining?: number;
+}
+
+export interface EbookProgressEvent {
+  type: 'progress_update';
+  step: number;
+  progress: number;
+  message: string;
+  status?: EbookStatus;
+  credits_available?: number;
+  error?: string;
 }

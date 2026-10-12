@@ -1,6 +1,7 @@
 <main class="new-ebook" aria-labelledby="new-ebook-title">
   @if (!showEditor) {
     <section class="ebook-setup" aria-labelledby="ebook-setup-title">
+      @if (!isPreviewLoading && !generatedEbook && !existingEbook) {
       <div class="ebook-setup__intro">
         <p class="eyebrow">Escritura / Nuevo proyecto</p>
         <h1 id="ebook-setup-title">Preparate para crear tu E-book</h1>
@@ -74,6 +75,7 @@
           </button>
         </div>
       </form>
+      }
 
       @if (isPreviewLoading) {
         <section class="ebook-preview__state" role="status" aria-live="polite">
@@ -84,26 +86,37 @@
           {{ previewError }}
         </section>
       } @else if (generatedEbook) {
-        <section class="ebook-preview" aria-labelledby="ebook-preview-title">
-          <header class="ebook-preview__header">
+        <section class="generated-editor" aria-labelledby="ebook-preview-title">
+          <header class="generated-editor__header">
             <div>
-              <p class="eyebrow">Obra generada</p>
-              <h2 id="ebook-preview-title">{{ generatedEbook.title }}</h2>
-              <p>Tu E-book también aparecerá en Mis E-books.</p>
+              <p class="eyebrow">{{ existingEbook ? 'Tu E-book' : 'Obra generada' }}</p>
+              <h1 id="ebook-preview-title">Generador de Ebook</h1>
+              <p class="new-ebook__intro">{{ generatedEbook.title }} · {{ generatedEbook.chapters.length }} capítulos</p>
             </div>
-            <span>{{ generatedEbook.chapters.length }} capítulos</span>
           </header>
-          @for (chapter of generatedEbook.chapters; track chapter.chapter_id) {
-            <article class="ebook-preview__chapter">
-              <h3>{{ chapter.title }}</h3>
-              @for (section of chapter.sections; track section.section_id) {
-                <section class="ebook-preview__section">
-                  <h4>{{ section.title }}</h4>
-                  <div class="ebook-preview__html" [innerHTML]="section.content_html"></div>
-                </section>
+
+          <section class="editor-frame generated-editor__frame" aria-label="E-book completo">
+
+
+            <div class="generated-manuscript">
+              @for (chapter of generatedEbook.chapters; track chapter.chapter_id) {
+                <article class="generated-manuscript__chapter">
+                  <h2>Capítulo {{ chapter.chapter_id }}: {{ chapter.title }}</h2>
+                  @for (section of chapter.sections; track section.section_id) {
+                    <section class="generated-manuscript__section">
+                      <h3>{{ section.title }}</h3>
+                      <div class="ebook-preview__html" [innerHTML]="section.content_html"></div>
+                    </section>
+                  }
+                </article>
               }
-            </article>
-          }
+            </div>
+
+            <div class="editor-prompt">
+              <input type="text" placeholder="Pregunta o pide cambios al asistente..." aria-label="Pregunta al asistente" />
+              <button type="button" aria-label="Enviar pregunta al asistente">↑</button>
+            </div>
+          </section>
         </section>
       }
     </section>

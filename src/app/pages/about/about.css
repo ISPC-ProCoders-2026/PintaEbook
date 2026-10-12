@@ -21,13 +21,8 @@
   background: linear-gradient(to right, transparent, #b88435, transparent);
 }
 
-/* Animaciones al hacer Scroll */
+/* Keep all content visible without relying on scrolling or JavaScript. */
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.reveal.active {
   opacity: 1;
   transform: translateY(0);
 }
@@ -39,22 +34,38 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+.section-eyebrow { color: #86501b; }
+.about-stat { margin-top: 16px; }
+.team-card { min-width: 0; overflow-wrap: anywhere; }
+main h1, main h2, main h3 { scroll-margin-top: 7rem; }
+
+[tabindex='0'] { scroll-margin-block: 7rem 2rem; }
+[tabindex='0']:focus-visible {
+  outline: 3px solid #751b33;
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+.about-hero [tabindex='0']:focus-visible,
+:host-context(.dark) [tabindex='0']:focus-visible { outline-color: #f2da96; }
+
+@media (min-width: 1024px) {
+  .about-stat { margin-top: 0; }
 }
 
-/* Animación Flotante */
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+@media (max-width: 900px) {
+  main h1, main h2, main h3, [tabindex='0'] { scroll-margin-top: 2rem; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+@media (prefers-reduced-motion: reduce) {
+  .team-img { transition: none; }
+  .team-card:hover .team-img { transform: none; }
+}
+
+@media (forced-colors: active) {
+  .gold-shimmer { background: none; -webkit-text-fill-color: currentColor; color: CanvasText; }
+  .about-hero p, .section-eyebrow { color: CanvasText; }
 }
 
 /* Hover de Equipo */
@@ -86,6 +97,8 @@
   color: #f2efe3 !important;
 }
 
+:host-context(.dark) .section-eyebrow { color: #e9c27f; }
+
 :host-context(.dark) .about-story,
 :host-context(.dark) .about-team {
   background: linear-gradient(180deg, #211b17, #2e211d) !important;
@@ -93,7 +106,7 @@
 
 :host-context(.dark) .about-story h2,
 :host-context(.dark) .about-team h2,
-:host-context(.dark) .team-card h4 {
+:host-context(.dark) .team-card h3 {
   color: #f2efe3 !important;
 }
 

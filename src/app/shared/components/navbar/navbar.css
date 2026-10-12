@@ -63,5 +63,32 @@
 
 .navbar__left a:hover,
 .navbar__right a:hover {
-	color: #BC8034;
+	color: #5e0b15;
+	text-decoration: underline;
+}
+
+.navbar a:focus-visible, .navbar button:focus-visible {
+  outline: 3px solid #5e0b15;
+  outline-offset: 4px;
+}
+
+.navbar__left a, .navbar__right a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+@media (max-width: 1100px) {
+  .navbar { padding-inline: 1rem; column-gap: 1rem; }
+  .navbar__left ul, .navbar__right ul { gap: .75rem; }
+  .navbar__brand img { width: 8rem; }
+}
+
+@media (max-width: 900px) {
+  :host { position: relative; }
+  .navbar { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+  .navbar__brand { grid-row: 1; }
+  .navbar__left, .navbar__right { justify-self: center; min-width: 0; }
+  .navbar__left ul, .navbar__right ul { flex-wrap: wrap; justify-content: center; }
+  .navbar__right { flex-wrap: wrap; justify-content: center; }
 }

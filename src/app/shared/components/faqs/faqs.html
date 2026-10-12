@@ -9,56 +9,56 @@
 
         <div class="space-y-4 reveal active">
             <!-- FAQ 1 -->
-            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 0" (click)="toggleFAQ(0)">
-                <div class="flex items-center justify-between gap-4">
-                    <h4 class="font-semibold text-ink-900 text-lg">¿Puedo cambiar de plan en cualquier momento?</h4>
-                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </div>
-                <div class="faq-answer">
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 0">
+                <h3><button type="button" class="faq-trigger flex items-center justify-between gap-4" id="faq-question-0" [attr.aria-expanded]="faqOpen === 0" aria-controls="faq-answer-0" (click)="toggleFAQ(0)">
+                    <span class="font-semibold text-ink-900 text-lg">¿Puedo cambiar de plan en cualquier momento?</span>
+                    <svg aria-hidden="true" class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </button></h3>
+                <div class="faq-answer" id="faq-answer-0" [hidden]="faqOpen !== 0" role="region" aria-labelledby="faq-question-0">
                     <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">¡Sí! Puedes subir o bajar de plan cuando quieras. Si cambias a un plan superior, solo pagarás la diferencia proporcional. Si bajas de plan, el cambio se aplicará al final del período de facturación actual. Sin penalizaciones ni letra pequeña.</p>
                 </div>
             </div>
 
             <!-- FAQ 2 -->
-            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 1" (click)="toggleFAQ(1)">
-                <div class="flex items-center justify-between gap-4">
-                    <h4 class="font-semibold text-ink-900 text-lg">¿Hay un período de prueba gratuito?</h4>
-                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </div>
-                <div class="faq-answer">
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 1">
+                <h3><button type="button" class="faq-trigger flex items-center justify-between gap-4" id="faq-question-1" [attr.aria-expanded]="faqOpen === 1" aria-controls="faq-answer-1" (click)="toggleFAQ(1)">
+                    <span class="font-semibold text-ink-900 text-lg">¿Hay un período de prueba gratuito?</span>
+                    <svg aria-hidden="true" class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </button></h3>
+                <div class="faq-answer" id="faq-answer-1" [hidden]="faqOpen !== 1" role="region" aria-labelledby="faq-question-1">
                     <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">El plan Lector es completamente gratuito para siempre. Los planes Escritor y Editorial incluyen una prueba gratuita de 14 días sin necesidad de tarjeta de crédito. Puedes explorar todas las funciones premium sin compromiso.</p>
                 </div>
             </div>
 
             <!-- FAQ 3 -->
-            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 2" (click)="toggleFAQ(2)">
-                <div class="flex items-center justify-between gap-4">
-                    <h4 class="font-semibold text-ink-900 text-lg">¿Qué métodos de pago aceptan?</h4>
-                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </div>
-                <div class="faq-answer">
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 2">
+                <h3><button type="button" class="faq-trigger flex items-center justify-between gap-4" id="faq-question-2" [attr.aria-expanded]="faqOpen === 2" aria-controls="faq-answer-2" (click)="toggleFAQ(2)">
+                    <span class="font-semibold text-ink-900 text-lg">¿Qué métodos de pago aceptan?</span>
+                    <svg aria-hidden="true" class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </button></h3>
+                <div class="faq-answer" id="faq-answer-2" [hidden]="faqOpen !== 2" role="region" aria-labelledby="faq-question-2">
                     <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Aceptamos tarjetas de crédito y débito (Visa, Mastercard, American Express), PayPal, y transferencia bancaria para planes Editorial. Todos los pagos se procesan de forma segura con encriptación SSL de 256 bits.</p>
                 </div>
             </div>
 
             <!-- FAQ 4 -->
-            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 3" (click)="toggleFAQ(3)">
-                <div class="flex items-center justify-between gap-4">
-                    <h4 class="font-semibold text-ink-900 text-lg">¿Puedo cancelar mi suscripción?</h4>
-                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </div>
-                <div class="faq-answer">
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 3">
+                <h3><button type="button" class="faq-trigger flex items-center justify-between gap-4" id="faq-question-3" [attr.aria-expanded]="faqOpen === 3" aria-controls="faq-answer-3" (click)="toggleFAQ(3)">
+                    <span class="font-semibold text-ink-900 text-lg">¿Puedo cancelar mi suscripción?</span>
+                    <svg aria-hidden="true" class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </button></h3>
+                <div class="faq-answer" id="faq-answer-3" [hidden]="faqOpen !== 3" role="region" aria-labelledby="faq-question-3">
                     <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Por supuesto. Puedes cancelar en cualquier momento desde tu panel de cuenta con un solo clic. Tu acceso a las funciones premium continuará hasta el final del período de facturación. No hay compromisos de permanencia.</p>
                 </div>
             </div>
 
             <!-- FAQ 5 -->
-            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 4" (click)="toggleFAQ(4)">
-                <div class="flex items-center justify-between gap-4">
-                    <h4 class="font-semibold text-ink-900 text-lg">¿Ofrecen descuentos para estudiantes o instituciones?</h4>
-                    <svg class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </div>
-                <div class="faq-answer">
+            <div class="faq-item bg-white rounded-2xl border border-ink-100 p-6 cursor-pointer hover:border-gold-200 transition-colors" [class.open]="faqOpen === 4">
+                <h3><button type="button" class="faq-trigger flex items-center justify-between gap-4" id="faq-question-4" [attr.aria-expanded]="faqOpen === 4" aria-controls="faq-answer-4" (click)="toggleFAQ(4)">
+                    <span class="font-semibold text-ink-900 text-lg">¿Ofrecen descuentos para estudiantes o instituciones?</span>
+                    <svg aria-hidden="true" class="faq-icon w-5 h-5 text-gold-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                </button></h3>
+                <div class="faq-answer" id="faq-answer-4" [hidden]="faqOpen !== 4" role="region" aria-labelledby="faq-question-4">
                     <p class="text-ink-500 leading-relaxed mt-4 pt-4 border-t border-ink-50">Sí, ofrecemos un 30% de descuento para estudiantes con correo institucional verificable. Para universidades, colegios y bibliotecas, tenemos planes institucionales personalizados. Ponte en contacto con nuestro equipo de ventas para más información.</p>
                 </div>
             </div>

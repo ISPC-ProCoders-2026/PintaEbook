@@ -14,7 +14,7 @@ export class AdminMetrics {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   backToDashboard(): void {
-    void this.router.navigate(['/dashboard']);
+    this.openDashboardSection('dashboard');
   }
 
   logout(): void {
@@ -24,7 +24,8 @@ export class AdminMetrics {
 
   handleNavigation(section: string): void {
     if (section === 'dashboard') this.backToDashboard();
-    if (section === 'purchases') void this.router.navigate(['/admin/purchases']);
+    if (section === 'purchases') this.openDashboardSection('purchases');
+    if (section === 'purchase-history') this.openDashboardSection('purchase-history');
     if (['ebooks', 'new-ebook', 'editor', 'profile', 'settings', 'credits', 'buy-credits'].includes(section)) {
       this.openDashboardSection(section);
     }
