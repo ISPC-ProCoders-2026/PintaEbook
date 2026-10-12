@@ -11,8 +11,11 @@ import { AdminPurchases } from './shared/components-privado/admin-purchases/admi
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { guestGuard } from './guards/guest.guard';
+import { BillingPackages, BillingResult } from './pages/billing-result/billing-result';
 
 export const routes: Routes = [
+  { path: 'billing', component: BillingPackages, canActivate: [authGuard] },
+  { path: 'billing/result/:outcome', component: BillingResult, canActivate: [authGuard] },
   {
     path: '',
     component: Home,
