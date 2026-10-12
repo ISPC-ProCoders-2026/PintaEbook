@@ -1,103 +1,64 @@
-
-import { ChangeDetectorRef, Component, Input, Output, EventEmitter, inject } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { BookLoader } from '../book-loader/book-loader';
-
-type CreditPackage = {
-  name: string;
-  credits: number;
-  price?: number;
-  monthlyPrice?: number;
-};
+import { Subscription, switchMap, tap } from 'rxjs';
+import { CreditPackage } from '../../../models/billing.model';
+import { BillingService, billingError, CHECKOUT_BALANCE_KEY } from '../../../service/billing/billing';
 
 export type CreditPurchaseMode = 'credits' | 'plans';
-
 @Component({
   selector: 'app-credits-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, BookLoader],
+  imports: [CommonModule],
   templateUrl: './credits-modal.html',
   styleUrls: ['./credits-modal.css']
 })
-export class CreditsModal {
-  private readonly changeDetector = inject(ChangeDetectorRef);
-  @Input() isOpen: boolean = false;
+export class CreditsModal implements OnChanges, OnDestroy {
+  private readonly billing = inject(BillingService);
+  private readonly subscriptions = new Subscription();
+  @Input() isOpen = false;
   @Input() mode: CreditPurchaseMode = 'credits';
   @Output() closeEvent = new EventEmitter<void>();
-
-  isAnnual = false;
-  selectedPlan: CreditPackage | null = null;
-  customCredits = 150;
-  checkoutSubmitted = false;
-  cardholderName = '';
-  email = '';
-  cardNumber = '';
-  expiration = '';
-  securityCode = '';
-  isLoading = false;
-  loadingMessage = 'Estamos preparando tu selección...';
-  private loadingTimer?: number;
-
-  readonly creditPackages: CreditPackage[] = [
-    { name: 'Carga inicial', credits: 100, price: 1500 },
-    { name: 'Carga estándar', credits: 200, price: 2800 },
-    { name: 'Carga creadora', credits: 500, price: 6000 },
-    { name: 'Carga completa', credits: 1000, price: 11000 },
-  ];
-
-  selectPlan(plan: CreditPackage): void {
-    this.loadingMessage = plan.monthlyPrice !== undefined
-      ? 'Estamos preparando tu plan...'
-      : 'Estamos preparando tus créditos...';
-    this.isLoading = true;
-    window.clearTimeout(this.loadingTimer);
-    this.loadingTimer = window.setTimeout(() => {
-      this.selectedPlan = plan;
-      this.checkoutSubmitted = false;
-      this.isLoading = false;
-      this.changeDetector.detectChanges();
-    }, 450);
+  readonly creditPackages = signal<CreditPackage[]>([]);
+  readonly loading = signal(false);
+  readonly buyingId = signal<number | null>(null);
+  readonly error = signal('');
+  ngOnChanges(): void {
+    if (this.isOpen) this.loadPackages();
   }
-
-  get selectedPrice(): number {
-    return this.selectedPlan?.price ?? this.selectedPlan?.monthlyPrice ?? 0;
+  loadPackages(): void {
+    if (this.loading()) return;
+    this.loading.set(true);
+    this.error.set('');
+    this.subscriptions.add(this.billing.getPackages().subscribe({
+      next: packages => { this.creditPackages.set(packages); this.loading.set(false); },
+      error: err => { this.error.set(billingError(err.status)); this.loading.set(false); }
+    }));
   }
-
-  selectCustomCredits(): void {
-    const credits = Math.max(1, Math.floor(this.customCredits));
-    this.customCredits = credits;
-    this.selectPlan({
-      name: 'Carga personalizada',
-      credits,
-      price: credits * 12,
-    });
+  buy(pkg: CreditPackage): void {
+    if (this.buyingId() !== null) return;
+    this.buyingId.set(pkg.id);
+    this.error.set('');
+    this.subscriptions.add(this.billing.getBalance().pipe(
+      tap(balance => sessionStorage.setItem(CHECKOUT_BALANCE_KEY, JSON.stringify({
+        balance: balance.credits_available, userId: localStorage.getItem('userId'), createdAt: Date.now()
+      }))),
+      switchMap(() => this.billing.createCheckout(pkg.id))
+    ).subscribe({
+      next: response => {
+        try {
+          const url = new URL(response.init_point);
+          if (url.protocol !== 'https:' || !(url.hostname === 'mercadopago.com.ar' || url.hostname.endsWith('.mercadopago.com.ar'))) throw new Error('Invalid checkout URL');
+          this.redirectToCheckout(url.href);
+        } catch {
+          this.buyingId.set(null);
+          this.error.set('No pudimos abrir Mercado Pago. Intentá nuevamente.');
+        }
+      },
+      error: err => { this.buyingId.set(null); this.error.set(billingError(err.status)); }
+    }));
   }
-
-  submitPurchase(): void {
-    if (!this.selectedPlan) return;
-    this.checkoutSubmitted = true;
-  }
-
-  backToPlans(): void {
-    this.selectedPlan = null;
-    this.checkoutSubmitted = false;
-  }
-
-  toggleBilling(): void {
-    this.isAnnual = !this.isAnnual;
-  }
-
-  close(): void {
-    window.clearTimeout(this.loadingTimer);
-    this.isLoading = false;
-    this.backToPlans();
-    this.closeEvent.emit();
-  }
-
-  closeModalOnBackdrop(event: MouseEvent): void {
-    if ((event.target as HTMLElement).classList.contains('backdrop-blur-sm')) {
-      this.close();
-    }
-  }
+  redirectToCheckout(url: string): void { window.location.assign(url); }
+  close(): void { if (this.buyingId() === null) this.closeEvent.emit(); }
+  closeModalOnBackdrop(event: MouseEvent): void { if (event.target === event.currentTarget) this.close(); }
+  ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
 }
