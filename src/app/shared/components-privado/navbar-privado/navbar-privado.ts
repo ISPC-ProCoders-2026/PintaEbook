@@ -27,7 +27,7 @@ export class NavbarPrivado {
   get sectionLabel(): string {
     return [...this.libraryNavigation, ...this.writingNavigation, ...this.resourceNavigation, ...this.accountNavigation]
       .find(item => item.id === this.sectionName)?.label
-      ?? ({ purchases: 'Compras', metrics: 'M?tricas' } as Record<string, string>)[this.sectionName]
+      ?? ({ purchases: 'Compras', metrics: 'Métricas' } as Record<string, string>)[this.sectionName]
       ?? this.sectionName;
   }
   @HostListener('window:resize')

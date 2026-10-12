@@ -16,6 +16,34 @@ describe('CreditsModal checkout', () => {
     localStorage.setItem('token', 'test-token');
   });
   afterEach(() => { http.verify(); localStorage.clear(); sessionStorage.clear(); });
+  it('opens a native modal, focuses its title and returns focus on Escape', () => {
+    const opener = document.createElement('button');
+    document.body.append(opener);
+    opener.focus();
+    const originalShow = HTMLDialogElement.prototype.showModal;
+    const originalClose = HTMLDialogElement.prototype.close;
+    HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+    HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+    const fixture = TestBed.createComponent(CreditsModal);
+    try {
+      fixture.componentRef.setInput('mode', 'plans');
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+      const dialog = fixture.nativeElement.querySelector('dialog') as HTMLDialogElement;
+      expect(dialog.open).toBe(true);
+      expect(document.activeElement?.id).toBe('credits-title');
+      const close = vi.spyOn(fixture.componentInstance.closeEvent, 'emit');
+      dialog.dispatchEvent(new Event('cancel', { cancelable: true }));
+      expect(dialog.open).toBe(false);
+      expect(close).toHaveBeenCalledOnce();
+      expect(document.activeElement).toBe(opener);
+    } finally {
+      fixture.destroy();
+      opener.remove();
+      HTMLDialogElement.prototype.showModal = originalShow;
+      HTMLDialogElement.prototype.close = originalClose;
+    }
+  });
   it('shows plan prices in ARS without requesting credit packages', () => {
     const fixture = TestBed.createComponent(CreditsModal);
     fixture.componentRef.setInput('isOpen', true);

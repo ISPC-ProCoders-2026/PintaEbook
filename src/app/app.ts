@@ -18,9 +18,9 @@ export class App {
       const path = url.root.children['primary']?.segments.map(segment => segment.path).join('/') ?? '';
       const section = url.queryParams['section'];
       const names: Record<string, string> = {
-        '': 'Inicio', about: 'Sobre nosotros', credits: 'Cr?ditos y planes', billing: 'Comprar cr?ditos',
-        dashboard: 'Mi espacio', login: 'Iniciar sesi?n', register: 'Registro',
-        'purchase-history': 'Historial de compras', purchases: 'Compras', metrics: 'M?tricas',
+        '': 'Inicio', about: 'Sobre nosotros', credits: 'Créditos y planes', billing: 'Comprar créditos',
+        dashboard: 'Mi espacio', login: 'Iniciar sesión', register: 'Registro',
+        'purchase-history': 'Historial de compras', purchases: 'Compras', metrics: 'Métricas',
         'buy-credits': 'Planes'
       };
       document.title = `${names[section] ?? names[path] ?? (path.startsWith('billing/result/') ? 'Resultado de compra' : 'PintaEbook')} | PintaEbook`;
