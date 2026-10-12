@@ -1,9 +1,94 @@
-﻿@if (isOpen) {
+@if (isOpen) {
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto" (click)="closeModalOnBackdrop($event)">
     <section role="dialog" aria-modal="true" aria-labelledby="credits-title" class="relative w-full max-w-5xl my-8 bg-linear-to-b from-[#211b17] via-[#390a16] to-[#211b17] text-white rounded-3xl shadow-2xl border border-gold-200/20 p-6 sm:p-10">
       <button type="button" aria-label="Cerrar" (click)="close()" [disabled]="buyingId() !== null" class="absolute top-4 right-5 text-2xl">×</button>
-      <h2 id="credits-title" class="font-display text-3xl font-bold text-center mb-4">Comprar créditos</h2>
-      <p class="text-center text-white/80 mb-8">Elegí tu paquete y continuá con el pago en Mercado Pago.</p>
+      <h2 id="credits-title" class="font-display text-3xl font-bold text-center mb-4">{{ mode === 'plans' ? 'Elegí el plan perfecto para vos' : 'Comprar créditos' }}</h2>
+      @if (mode === 'plans' && error()) { <p role="alert" class="text-center text-amber-300 mb-4">{{ error() }}</p> }
+      @if (mode === 'plans') {
+        <p class="text-center text-white/80 mb-8">Desde lectores apasionados hasta editoriales profesionales.</p>
+            <!-- Billing Toggle -->
+            <div class="flex items-center justify-center gap-4 mt-10 mb-8">
+                <span id="monthly-label" class="text-sm transition-colors" [style.color]="isAnnual ? 'rgba(255, 255, 255, 0.6)' : '#FFFFFF'" [style.font-weight]="isAnnual ? '500' : '600'">Mensual</span>
+                
+                <button type="button" role="switch" aria-label="Facturaci&#243;n anual" [attr.aria-checked]="isAnnual" (click)="toggleBilling()" class="relative w-14 h-7 rounded-full transition-colors duration-300" [style.background-color]="isAnnual ? '#751b33' : '#d0cbc2'">
+                    <div id="billing-dot" class="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300" [style.transform]="isAnnual ? 'translateX(28px)' : 'translateX(0)'"></div>
+                </button>
+                
+                <span id="annual-label" class="text-sm transition-colors" [style.color]="isAnnual ? '#FFFFFF' : 'rgba(255, 255, 255, 0.6)'" [style.font-weight]="isAnnual ? '600' : '500'">
+                    Anual <span class="text-gold-400 font-semibold">-20%</span>
+                </span>
+            </div>
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <!-- Free Plan - Lector -->
+            <div class="pricing-card p-6 bg-white/5 border border-white/10 hover:border-amber-400/50 transition-all flex flex-col justify-between hover:-translate-y-1">
+                <div>
+                    
+                    <h3 class="font-display text-xl font-bold text-white mb-1">Lector</h3>
+                    <p class="text-white/70 text-xs mb-6">Perfecto para empezar a explorar</p>
+                </div>
+                <div class="mb-6">
+                    <span class="font-display text-4xl font-bold text-white">Gratis</span>
+                    <p class="text-white/60 text-xs mt-1">Para siempre</p>
+                </div>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Biblioteca hasta 50 ebooks</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Lector básico con modos de lectura</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Resaltado y notas</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Sincronización en 2 dispositivos</li>
+                </ul>
+                <button type="button" (click)="selectPlan('Lector')" class="pricing-action w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm text-center block">Comenzar gratis</button>
+            </div>
+
+            <!-- Pro Plan - Escritor -->
+            <div class="pricing-featured pricing-card p-6 bg-linear-to-b from-[#631b2f] to-[#390a16] border-2 border-amber-400/60 relative flex flex-col justify-between shadow-xl hover:-translate-y-1 transition-all">
+                <div class="absolute top-0 right-0 bg-amber-500 text-black font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-md">Más popular</div>
+                <div>
+                    
+                    <h3 class="font-display text-xl font-bold text-white mb-1">Escritor</h3>
+                    <p class="text-white/70 text-xs mb-6">Para autores que quieren publicar</p>
+                </div>
+                <div class="mb-6">
+                    <span class="font-display text-2xl font-bold text-white">{{ isAnnual ? 'ARS38,400.00' : 'ARS4,000.00' }}</span>
+                    <span class="text-white/70 text-xs">{{ isAnnual ? '/año' : '/mes' }}</span>
+                </div>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Lector</strong></li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Biblioteca ilimitada</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Editor profesional completo</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Diseño de portadas</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Publicación en 5 tiendas</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Analíticas básicas</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Sincronización ilimitada</li>
+                </ul>
+                <button type="button" (click)="selectPlan('Escritor')" [disabled]="loading() || buyingId() !== null" class="pricing-action w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-all shadow-lg text-sm text-center block">{{ selectedPlan() === 'Escritor' && (loading() || buyingId() !== null) ? 'Preparando pago...' : 'Comprar con Mercado Pago' }}</button>
+            </div>
+
+            <!-- Publisher Plan - Editorial -->
+            <div class="pricing-card p-6 bg-white/5 border border-white/10 hover:border-amber-400/50 transition-all flex flex-col justify-between hover:-translate-y-1">
+                <div>
+                    
+                    <h3 class="font-display text-xl font-bold text-white mb-1">Editorial</h3>
+                    <p class="text-white/70 text-xs mb-6">Para equipos y sellos editoriales</p>
+                </div>
+                <div class="mb-6">
+                    <span class="font-display text-2xl font-bold text-white">{{ isAnnual ? 'ARS67,200.00' : 'ARS7,000.00' }}</span>
+                    <span class="text-white/70 text-xs">{{ isAnnual ? '/año' : '/mes' }}</span>
+                </div>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Escritor</strong></li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Colaboración en equipo (hasta 10)</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Distribución global completa</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Analíticas avanzadas y reportes</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Soporte prioritario 24/7</li>
+                    <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> API de integración</li>
+                </ul>
+                <button type="button" (click)="selectPlan('Editorial')" [disabled]="loading() || buyingId() !== null" class="pricing-action w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm text-center block">{{ selectedPlan() === 'Editorial' && (loading() || buyingId() !== null) ? 'Preparando pago...' : 'Comprar con Mercado Pago' }}</button>
+            </div>
+        </div>
+
+
+      } @else {
+        <p class="text-center text-white/80 mb-8">Elegí tu paquete y continuá con el pago en Mercado Pago.</p>
       @if (error()) { <p role="alert" class="text-amber-300 mb-4">{{ error() }}</p><button type="button" (click)="loadPackages()" [disabled]="loading() || buyingId() !== null" class="checkout-back mb-4">Actualizar catálogo</button> }
       @if (loading()) { <p role="status">Cargando paquetes...</p> }
       @else {
@@ -21,6 +106,7 @@
         </div>
       }
       <p class="text-center text-white/70 text-sm mt-8">Compra única en pesos argentinos. Los créditos se acreditan cuando el backend confirma el pago.</p>
+      }
     </section>
   </div>
 }

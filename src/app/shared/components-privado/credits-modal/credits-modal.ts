@@ -22,8 +22,31 @@ export class CreditsModal implements OnChanges, OnDestroy {
   readonly loading = signal(false);
   readonly buyingId = signal<number | null>(null);
   readonly error = signal('');
+  readonly selectedPlan = signal<string | null>(null);
+  isAnnual = false;
+  toggleBilling(): void { this.isAnnual = !this.isAnnual; }
+  selectPlan(plan: string): void {
+    if (this.buyingId() !== null || this.loading()) return;
+    if (plan === 'Lector') { this.close(); return; }
+    const credits = plan === 'Escritor' ? 500 : plan === 'Editorial' ? 1000 : null;
+    if (credits === null) return;
+    this.selectedPlan.set(plan);
+    this.loading.set(true);
+    this.error.set('');
+    this.subscriptions.add(this.billing.getPackages().subscribe({
+      next: packages => {
+        this.creditPackages.set(packages);
+        this.loading.set(false);
+        const pkg = packages.find(item => item.cantidad_creditos === credits && Number(item.precio) > 0);
+        if (pkg) this.buy(pkg);
+        else this.error.set('El paquete de ' + credits + ' cr\u00e9ditos no est\u00e1 disponible. Intent\u00e1 nuevamente.');
+      },
+      error: err => { this.loading.set(false); this.error.set(billingError(err.status)); }
+    }));
+  }
   ngOnChanges(): void {
-    if (this.isOpen) this.loadPackages();
+    this.selectedPlan.set(null);
+    if (this.isOpen && this.mode === 'credits') this.loadPackages();
   }
   loadPackages(): void {
     if (this.loading()) return;

@@ -24,7 +24,7 @@
             <div class="flex items-center justify-center gap-4 mt-10">
                 <span id="monthly-label" class="text-sm transition-colors" [style.color]="isAnnual ? 'rgba(255, 255, 255, 0.6)' : '#FFFFFF'" [style.font-weight]="isAnnual ? '500' : '600'">Mensual</span>
                 
-                <button (click)="toggleBilling()" class="relative w-14 h-7 rounded-full transition-colors duration-300" [style.background-color]="isAnnual ? '#751b33' : '#d0cbc2'">
+                <button type="button" role="switch" aria-label="Facturaci&#243;n anual" [attr.aria-checked]="isAnnual" (click)="toggleBilling()" class="relative w-14 h-7 rounded-full transition-colors duration-300" [style.background-color]="isAnnual ? '#751b33' : '#d0cbc2'">
                     <div id="billing-dot" class="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300" [style.transform]="isAnnual ? 'translateX(28px)' : 'translateX(0)'"></div>
                 </button>
                 
@@ -70,9 +70,8 @@
                     <p class="text-white/70 text-xs mb-6">Para autores que quieren publicar</p>
                 </div>
                 <div class="mb-6">
-                    <span class="font-display text-4xl font-bold text-white">{{ isAnnual ? '€11' : '€14' }}</span>
-                    <span class="text-white/70 text-xs">/mes</span>
-                    <p class="text-amber-300 text-xs font-semibold mt-1" [style.display]="isAnnual ? 'block' : 'none'">Ahorras €36 al año</p>
+                    <span class="font-display text-2xl font-bold text-white">{{ isAnnual ? 'ARS38,400.00' : 'ARS4,000.00' }}</span>
+                    <span class="text-white/70 text-xs">{{ isAnnual ? '/año' : '/mes' }}</span>
                 </div>
                 <ul class="space-y-3 mb-6">
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Lector</strong></li>
@@ -83,7 +82,7 @@
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Analíticas básicas</li>
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Sincronización ilimitada</li>
                 </ul>
-                <a routerLink="/login" class="pricing-action w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-all shadow-lg text-sm text-center block">Elegir Escritor</a>
+                <a routerLink="/login" class="pricing-action w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-all shadow-lg text-sm text-center block">Comprar con Mercado Pago</a>
             </div>
 
             <!-- Publisher Plan - Editorial -->
@@ -94,9 +93,8 @@
                     <p class="text-white/70 text-xs mb-6">Para equipos y sellos editoriales</p>
                 </div>
                 <div class="mb-6">
-                    <span class="font-display text-4xl font-bold text-white">{{ isAnnual ? '€31' : '€39' }}</span>
-                    <span class="text-white/70 text-xs">/mes</span>
-                    <p class="text-amber-300 text-xs font-semibold mt-1" [style.display]="isAnnual ? 'block' : 'none'">Ahorras €96 al año</p>
+                    <span class="font-display text-2xl font-bold text-white">{{ isAnnual ? 'ARS67,200.00' : 'ARS7,000.00' }}</span>
+                    <span class="text-white/70 text-xs">{{ isAnnual ? '/año' : '/mes' }}</span>
                 </div>
                 <ul class="space-y-3 mb-6">
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> <strong>Todo del plan Escritor</strong></li>
@@ -106,7 +104,7 @@
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Soporte prioritario 24/7</li>
                     <li class="flex items-center gap-2.5 text-xs text-white/90"><svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> API de integración</li>
                 </ul>
-                <a routerLink="/login" class="pricing-action w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm text-center block">Contactar ventas</a>
+                <a routerLink="/login" class="pricing-action w-full py-3 border border-white/20 text-white font-semibold hover:bg-white/10 transition-all text-sm text-center block">Comprar con Mercado Pago</a>
             </div>
         </div>
 
