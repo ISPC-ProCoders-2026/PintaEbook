@@ -23,7 +23,8 @@ export class AdminPurchases {
   creditsModalMode: CreditPurchaseMode = 'credits';
 
   get isAdminView(): boolean {
-    return this.router.url.startsWith('/admin/purchases');
+    return this.router.url.startsWith('/admin/purchases')
+      || this.router.parseUrl(this.router.url).queryParams['section'] === 'purchases';
   }
 
   get isAdminUser(): boolean {
@@ -64,7 +65,7 @@ export class AdminPurchases {
   }
 
   backToDashboard(): void {
-    void this.router.navigate(['/dashboard']);
+    this.openDashboardSection('dashboard');
   }
 
   logout(): void {
@@ -83,16 +84,16 @@ export class AdminPurchases {
 
   handleNavigation(section: string): void {
     if (section === 'dashboard') this.openDashboardSection('dashboard');
-    if (section === 'metrics') void this.router.navigate(['/admin/metrics']);
+    if (section === 'metrics') this.openDashboardSection('metrics');
     if (section === 'credits' || section === 'buy-credits') {
       this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
       this.isCreditsModalOpen = true;
     }
     if (section === 'purchase-history') {
-      void this.router.navigate(['/purchases']);
+      this.openDashboardSection('purchase-history');
     }
     if (section === 'purchases') {
-      void this.router.navigate(['/admin/purchases']);
+      this.openDashboardSection('purchases');
     }
     if (['ebooks', 'new-ebook', 'editor', 'profile', 'settings'].includes(section)) {
       this.openDashboardSection(section);

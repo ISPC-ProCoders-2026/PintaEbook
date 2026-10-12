@@ -1,3 +1,8 @@
+@if (activeSection === 'purchase-history' || activeSection === 'purchases') {
+  <app-admin-purchases></app-admin-purchases>
+} @else if (activeSection === 'metrics') {
+  <app-admin-metrics></app-admin-metrics>
+} @else {
 <div class="dashboard-shell">
   <div class="dashboard-page">
     <app-private-navbar
@@ -83,3 +88,5 @@
   [mode]="creditsModalMode"
   (closeEvent)="closeCreditsModal()">
 </app-credits-modal>
+
+}

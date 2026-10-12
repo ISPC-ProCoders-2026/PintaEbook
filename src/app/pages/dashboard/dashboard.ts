@@ -1,3 +1,5 @@
+import { AdminPurchases } from '../../shared/components-privado/admin-purchases/admin-purchases';
+import { AdminMetrics } from '../../shared/components-privado/admin-metrics/admin-metrics';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -16,7 +18,7 @@ import { BillingService } from '../../service/billing/billing';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CreditsModal, NavbarPrivado, MyEbooks, Profile, NewEbook, BookLoader],
+  imports: [AdminPurchases, AdminMetrics, CreditsModal, NavbarPrivado, MyEbooks, Profile, NewEbook, BookLoader],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -38,8 +40,11 @@ export class Dashboard implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.subscriptions.add(this.activatedRoute.queryParamMap.subscribe((params) => {
-      const section = params.get('section');
-      if (section) this.handleNavigation(section);
+      const section = params.get('section') ?? 'dashboard';
+      this.activeSection = section;
+      this.isCreditsModalOpen = section === 'credits' || section === 'buy-credits';
+      this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
+      this.changeDetector.markForCheck();
     }));
     this.loadCreditBalance();
   }
@@ -52,18 +57,12 @@ export class Dashboard implements OnDestroy, OnInit {
   }
 
   setActiveSection(section: string): void {
-    this.activeSection = section;
+    this.handleNavigation(section);
   }
 
   handleNavigation(section: string): void {
-    this.setActiveSection(section);
-    if (section === 'credits' || section === 'buy-credits') {
-      this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
-      this.isCreditsModalOpen = true;
-    }
-
-    if (section === 'metrics') this.openAdminMetrics();
-    if (section === 'purchase-history') this.openPurchases();
+    if ((section === 'purchases' || section === 'metrics') && !this.isAdmin) return;
+    void this.router.navigate(['/dashboard'], { queryParams: { section } });
   }
 
   openEbook(ebook: EbookSummary): void {
@@ -71,7 +70,7 @@ export class Dashboard implements OnDestroy, OnInit {
     this.isOpeningEbook = true;
     window.clearTimeout(this.openingEbookTimer);
     this.openingEbookTimer = window.setTimeout(() => {
-      this.activeSection = 'editor';
+      this.handleNavigation('editor');
       this.isOpeningEbook = false;
       this.changeDetector.detectChanges();
     }, 450);
@@ -84,6 +83,7 @@ export class Dashboard implements OnDestroy, OnInit {
 
   closeCreditsModal(): void {
     this.isCreditsModalOpen = false;
+    this.handleNavigation('dashboard');
   }
 
   logout(): void {
@@ -96,10 +96,10 @@ export class Dashboard implements OnDestroy, OnInit {
   }
 
   openAdminMetrics(): void {
-    void this.router.navigate(['/admin/metrics']);
+    this.handleNavigation('metrics');
   }
 
   openPurchases(): void {
-    void this.router.navigate(['/purchases']);
+    this.handleNavigation('purchase-history');
   }
 }

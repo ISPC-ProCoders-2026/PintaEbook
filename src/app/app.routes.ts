@@ -1,3 +1,4 @@
+import { dashboardSectionGuard } from './guards/dashboard-section.guard';
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
@@ -6,10 +7,7 @@ import { About } from './pages/about/about';
 import { NotFound } from './pages/not-found/not-found';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Credits } from './pages/credits/credits';
-import { AdminMetrics } from './shared/components-privado/admin-metrics/admin-metrics';
-import { AdminPurchases } from './shared/components-privado/admin-purchases/admin-purchases';
 import { authGuard } from './guards/auth.guard';
-import { adminGuard } from './guards/admin.guard';
 import { guestGuard } from './guards/guest.guard';
 import { BillingPackages, BillingResult } from './pages/billing-result/billing-result';
 
@@ -36,25 +34,25 @@ export const routes: Routes = [
     // Child routes added under Dashboard inherit this protection.
     canActivateChild: [authGuard],
     children: [
-      { path: '', component: Dashboard },
+      { path: '', component: Dashboard, canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
       // Keeps direct access to a future dashboard sub-route private as well.
-      { path: '**', component: Dashboard }
+      { path: '**', component: Dashboard, canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' }
     ]
   },
   {
     path: 'admin/metrics',
-    component: AdminMetrics,
-    canActivate: [adminGuard]
+    redirectTo: '/dashboard?section=metrics',
+    pathMatch: 'full'
   },
   {
     path: 'admin/purchases',
-    component: AdminPurchases,
-    canActivate: [adminGuard]
+    redirectTo: '/dashboard?section=purchases',
+    pathMatch: 'full'
   },
   {
     path: 'purchases',
-    component: AdminPurchases,
-    canActivate: [authGuard]
+    redirectTo: '/dashboard?section=purchase-history',
+    pathMatch: 'full'
   },
   {
     path: 'credits',
