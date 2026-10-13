@@ -1,8 +1,7 @@
-import { Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { timeout } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 
 import { EbookMetadataResponse } from '../../../models/ebook.model';
 import { EbooksService } from '../../../service/ebooks/ebooks';
@@ -31,6 +30,7 @@ export class MyEbooks implements OnInit {
 
   private readonly ebooksService = inject(EbooksService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   searchTerm = '';
   selectedStatus = 'Todos';
@@ -50,15 +50,18 @@ export class MyEbooks implements OnInit {
     this.ebooksService.getEbooks()
       .pipe(
         timeout({ first: 15000 }),
-        finalize(() => this.isLoading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: (items) => {
           this.ebooks = items.map((item) => this.toSummary(item));
+          this.isLoading = false;
+          this.changeDetector.detectChanges();
         },
         error: () => {
           this.loadError = 'No se pudieron cargar tus E-books. Intentá nuevamente.';
+          this.isLoading = false;
+          this.changeDetector.detectChanges();
         }
       });
   }
