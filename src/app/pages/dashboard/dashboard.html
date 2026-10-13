@@ -7,8 +7,8 @@
   <div class="dashboard-page">
     <app-private-navbar
       [isAdmin]="isAdmin"
-      [sectionName]="activeSection"
-      (navigationEvent)="handleNavigation($event)"
+      [sectionName]="activeSection === 'ebook-editor' ? 'editor' : activeSection"
+      (navigationEvent)="handleSidebarNavigation($event)"
       (logoutEvent)="logout()"
       (brandClickEvent)="setActiveSection('dashboard')">
     </app-private-navbar>
@@ -21,7 +21,9 @@
       <app-profile></app-profile>
     } @else if (activeSection === 'new-ebook') {
       <app-new-ebook (generationSucceeded)="handleGenerationSuccess()"></app-new-ebook>
-    } @else if (activeSection === 'editor') {
+    } @else if (activeSection === 'editor' || (activeSection === 'ebook-editor' && !selectedEbook)) {
+      <app-static-ebook-editor (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
+    } @else if (activeSection === 'ebook-editor') {
       <app-new-ebook [existingEbook]="selectedEbook"></app-new-ebook>
     } @else {
     <main class="dashboard-content">
