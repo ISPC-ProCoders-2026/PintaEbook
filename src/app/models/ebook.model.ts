@@ -97,6 +97,11 @@ export interface EbookMetadataResponse {
   credits_available?: number;
 }
 
+export interface UpdateEbookMetadataPayload {
+  title: string;
+  description: string;
+}
+
 export interface PaginatedEbookMetadataResponse {
   count: number;
   next: string | null;

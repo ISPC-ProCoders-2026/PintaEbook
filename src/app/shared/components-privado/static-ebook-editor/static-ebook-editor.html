@@ -3,68 +3,78 @@
     <div>
       <p class="editor-page__eyebrow">Escritura / Editor</p>
       <h1 id="editor-page-title">Editar E-book</h1>
-      <p class="editor-page__intro">Organizá tu manuscrito y trabajá cada capítulo en un mismo espacio.</p>
+      <p class="editor-page__intro">Actualizá los datos y el contenido de tu libro.</p>
     </div>
-    <div class="editor-page__actions" aria-label="Acciones del manuscrito">
-      <button type="button" class="editor-button editor-button--quiet" disabled title="Disponible próximamente">Guardar borrador</button>
-      <button type="button" class="editor-button editor-button--primary" disabled title="Disponible próximamente">Publicar E-book</button>
+    <div class="editor-page__actions">
+      @if (saveMessage) { <span class="save-message" role="status">{{ saveMessage }}</span> }
+      <button type="button" class="editor-button editor-button--primary" [disabled]="isLoading || isSaving || !content" (click)="saveChanges()">
+        {{ isSaving ? 'Guardando…' : 'Guardar cambios' }}
+      </button>
     </div>
   </header>
 
-  <div class="editor-workspace">
-    <aside class="editor-outline" aria-labelledby="outline-title">
-      <div class="editor-outline__heading">
-        <div><p class="editor-page__eyebrow">Manuscrito</p><h2 id="outline-title">Estructura</h2></div>
-        <span class="editor-outline__count" aria-label="4 capítulos">04</span>
-      </div>
-      <ol class="chapter-list">
-        <li><button type="button" class="chapter-item chapter-item--active" aria-current="true" disabled><span class="chapter-item__number">01</span><span class="chapter-item__text"><strong>Introducción</strong><small>Sección inicial</small></span></button></li>
-        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">02</span><span class="chapter-item__text"><strong>Capítulo 1</strong><small>Sin contenido</small></span></button></li>
-        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">03</span><span class="chapter-item__text"><strong>Capítulo 2</strong><small>Sin contenido</small></span></button></li>
-        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">04</span><span class="chapter-item__text"><strong>Cierre</strong><small>Sección final</small></span></button></li>
-      </ol>
-      <button type="button" class="editor-outline__add" disabled title="Disponible próximamente"><span aria-hidden="true">+</span> Agregar capítulo</button>
-      <p class="editor-outline__note">La estructura del libro se podrá editar desde este panel.</p>
-    </aside>
+  @if (isLoading) {
+    <p class="editor-state" role="status">Cargando los datos del E-book…</p>
+  } @else if (errorMessage && !content) {
+    <div class="editor-state editor-state--error" role="alert">
+      <p>{{ errorMessage }}</p>
+      @if (ebook) { <button type="button" class="editor-button editor-button--quiet" (click)="loadEbook(ebook.ebook_id)">Reintentar</button> }
+    </div>
+  } @else if (content) {
+    @if (errorMessage) { <p class="editor-alert" role="alert">{{ errorMessage }}</p> }
+    <div class="editor-workspace">
+      <aside class="editor-outline" aria-labelledby="outline-title">
+        <div class="editor-outline__heading">
+          <div><p class="editor-page__eyebrow">Manuscrito</p><h2 id="outline-title">Estructura</h2></div>
+          <span class="editor-outline__count">{{ content.chapters.length }}</span>
+        </div>
+        <ol class="chapter-list">
+          @for (chapter of content.chapters; track chapter.content_id; let chapterIndex = $index) {
+            <li>
+              <p class="chapter-heading"><span>{{ (chapterIndex + 1).toString().padStart(2, '0') }}</span>{{ chapter.title }}</p>
+              @for (section of chapter.sections; track section.content_id) {
+                <button type="button" class="chapter-item" [class.chapter-item--active]="selectedSection?.content_id === section.content_id" [attr.aria-current]="selectedSection?.content_id === section.content_id ? 'true' : null" (click)="selectSection(chapter.content_id, section)">
+                  <span class="chapter-item__text"><strong>{{ section.title }}</strong><small>Sección del capítulo</small></span>
+                </button>
+              }
+            </li>
+          }
+        </ol>
+        <p class="editor-outline__note">Seleccioná una sección para editar su contenido.</p>
+      </aside>
 
-    <section class="manuscript-panel" aria-labelledby="manuscript-title">
-      <div class="manuscript-panel__toolbar" aria-label="Herramientas de formato">
-        <span class="toolbar-group-label">Formato</span>
-        <button type="button" disabled aria-label="Párrafo">¶</button>
-        <button type="button" disabled aria-label="Título">H</button>
-        <button type="button" disabled aria-label="Lista">☷</button>
-        <span class="toolbar-divider" aria-hidden="true"></span>
-        <button type="button" disabled aria-label="Cita">“</button>
-        <span class="toolbar-spacer"></span>
-        <span class="manuscript-panel__zoom">100%</span>
-      </div>
-      <article class="manuscript-page">
-        <p class="manuscript-page__kicker">Capítulo 01 · Introducción</p>
-        <h2 id="manuscript-title">El comienzo de tu historia</h2>
-        <p class="manuscript-page__hint">El contenido de tu manuscrito aparecerá en esta página.</p>
-        <div class="manuscript-page__rule" aria-hidden="true"></div>
-        <p class="manuscript-page__placeholder">Este espacio está preparado para que desarrolles tus ideas. Cuando la edición esté habilitada, vas a poder escribir y dar formato a cada sección de tu E-book.</p>
-        <span class="manuscript-page__page-number" aria-label="Página 1">1</span>
-      </article>
-    </section>
+      <section class="manuscript-panel" aria-labelledby="manuscript-title">
+        <div class="manuscript-panel__toolbar"><span class="toolbar-group-label">Contenido de la sección</span><span class="toolbar-spacer"></span><span class="manuscript-panel__zoom">{{ selectedSection?.content_html?.length ?? 0 }} caracteres</span></div>
+        @if (selectedSection) {
+          <article class="manuscript-page">
+            <p class="manuscript-page__kicker">{{ selectedSection.title }}</p>
+            <h2 id="manuscript-title">{{ title || 'Tu E-book' }}</h2>
+            <label class="content-label" for="section-content">Contenido HTML</label>
+            <textarea id="section-content" class="section-editor" [value]="selectedSection.content_html" (input)="updateSectionHtml($any($event.target).value)" [disabled]="isSaving" spellcheck="false" aria-describedby="section-help"></textarea>
+            <p id="section-help" class="content-help">Podés editar el texto y conservar etiquetas HTML como &lt;p&gt;, &lt;h2&gt; y &lt;strong&gt;.</p>
+          </article>
+        } @else {
+          <p class="editor-state">Este E-book todavía no tiene secciones para editar.</p>
+        }
+      </section>
 
-    <aside class="editor-details" aria-labelledby="details-title">
-      <p class="editor-page__eyebrow">Detalles</p>
-      <h2 id="details-title">Tu proyecto</h2>
-      <dl class="project-details">
-        <div><dt>Estado</dt><dd><span class="project-details__status">Borrador</span></dd></div>
-        <div><dt>Capítulos</dt><dd>4</dd></div>
-        <div><dt>Última edición</dt><dd>—</dd></div>
-      </dl>
-      <div class="editor-details__tip">
-        <span aria-hidden="true">✦</span>
-        <p>Tu proceso de escritura, organizado en un solo lugar.</p>
-      </div>
-    </aside>
-  </div>
+      <aside class="editor-details" aria-labelledby="details-title">
+        <p class="editor-page__eyebrow">Detalles</p>
+        <h2 id="details-title">Tu proyecto</h2>
+        <label class="metadata-field"><span>Título</span><input [(ngModel)]="title" maxlength="255" [disabled]="isSaving" /></label>
+        <label class="metadata-field"><span>Descripción</span><textarea [(ngModel)]="description" rows="6" [disabled]="isSaving"></textarea></label>
+        <dl class="project-details">
+          <div><dt>Estado</dt><dd>{{ metadata?.status ?? '—' }}</dd></div>
+          <div><dt>Capítulos</dt><dd>{{ content.chapters.length }}</dd></div>
+          <div><dt>Secciones</dt><dd>{{ sectionCount }}</dd></div>
+        </dl>
+        <button type="button" class="editor-button editor-button--primary editor-save-mobile" [disabled]="isSaving" (click)="saveChanges()">{{ isSaving ? 'Guardando…' : 'Guardar cambios' }}</button>
+      </aside>
+    </div>
+  }
 
   <footer class="editor-page__footer">
-    <p>La edición del manuscrito estará disponible próximamente.</p>
+    <p>Los cambios se guardan en tu cuenta.</p>
     <button type="button" class="editor-back-link" (click)="backToLibrary.emit()">Volver a Mis Ebooks <span aria-hidden="true">→</span></button>
   </footer>
 </main>

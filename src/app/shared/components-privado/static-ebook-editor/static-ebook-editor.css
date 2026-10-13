@@ -45,6 +45,10 @@ button { font: inherit; }
 }
 .editor-page__intro { margin: 10px 0 0; color: var(--editor-muted); font-size: 14px; line-height: 1.5; }
 .editor-page__actions { display: flex; flex-wrap: wrap; gap: 9px; }
+.save-message { align-self: center; color: #426b43; font-size: 12px; }
+.editor-state { padding: 24px; border: 1px solid var(--editor-border); border-radius: 8px; color: var(--editor-muted); background: var(--editor-paper); }
+.editor-state--error, .editor-alert { color: #9b2632; }
+.editor-alert { margin: 0 0 14px; }
 .editor-button {
   min-height: 43px;
   padding: 0 15px;
@@ -89,12 +93,14 @@ button { font: inherit; }
   color: var(--editor-ink);
   text-align: left;
 }
-.chapter-item:disabled { cursor: default; opacity: 1; }
+.chapter-item { cursor: pointer; text-align: left; }
 .chapter-item--active { border-color: #d9c4a3; background: #f4ecdf; }
 .chapter-item__number { color: var(--editor-gold); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; font-weight: 700; }
 .chapter-item__text { display: grid; min-width: 0; gap: 3px; }
 .chapter-item__text strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .chapter-item__text small { color: var(--editor-muted); font-size: 10px; }
+.chapter-heading { display: flex; gap: 8px; align-items: baseline; margin: 13px 4px 4px; color: var(--editor-muted); font-size: 11px; font-weight: 700; }
+.chapter-heading span { color: var(--editor-gold); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; }
 .editor-outline__add {
   width: 100%;
   min-height: 38px;
@@ -144,6 +150,14 @@ button { font: inherit; }
 .manuscript-page__rule { width: 54px; height: 1px; margin: 0 auto 27px; background: #bd914e; }
 .manuscript-page__placeholder { max-width: 620px; margin: 0 auto; color: #685a4d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; line-height: 1.7; }
 .manuscript-page__page-number { position: absolute; right: 20px; bottom: 16px; color: #746657; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 13px; }
+.content-label { display: block; margin: 24px 0 8px; color: var(--editor-muted); font-size: 12px; font-weight: 700; }
+.section-editor { display: block; width: 100%; min-height: 360px; resize: vertical; padding: 14px; border: 1px solid var(--editor-border); border-radius: 5px; color: var(--editor-ink); background: var(--editor-paper); font: 14px/1.65 Inter, Arial, sans-serif; }
+.section-editor:focus, .metadata-field input:focus, .metadata-field textarea:focus { outline: 2px solid #946a2f; outline-offset: 1px; }
+.content-help { margin: 8px 0 0; color: var(--editor-muted); font-size: 11px; line-height: 1.5; }
+.metadata-field { display: grid; gap: 6px; margin-bottom: 14px; color: var(--editor-muted); font-size: 11px; font-weight: 700; }
+.metadata-field input, .metadata-field textarea { width: 100%; padding: 9px; border: 1px solid var(--editor-border); border-radius: 5px; color: var(--editor-ink); background: var(--editor-paper); font: 13px/1.5 Inter, Arial, sans-serif; }
+.metadata-field textarea { resize: vertical; }
+.editor-save-mobile { display: none; width: 100%; margin-top: 16px; }
 
 .editor-details > .editor-page__eyebrow { margin-bottom: 5px; }
 .editor-details h2 { margin-bottom: 18px; }
@@ -189,6 +203,9 @@ button { font: inherit; }
 :host-context(.dark) .manuscript-page { border-color: #725846; background: #30241f; }
 :host-context(.dark) .manuscript-page__placeholder,
 :host-context(.dark) .editor-details__tip p { color: #e0d1c2; }
+:host-context(.dark) .metadata-field input,
+:host-context(.dark) .metadata-field textarea,
+:host-context(.dark) .section-editor { border-color: #725846; color: #f5eee5; background: #30241f; }
 :host-context(.dark) .manuscript-page__page-number { color: #c8b5a4; }
 :host-context(.dark) .project-details__status { border-color: #9a7d51; background: #4c3a26; color: #ffe0a6; }
 :host-context(.dark) .editor-details__tip { border-color: #725846; background: #403129; }
@@ -210,6 +227,9 @@ button { font: inherit; }
   .editor-outline { order: 0; }
   .manuscript-panel { order: 1; }
   .editor-details { order: 2; grid-column: auto; }
+  .editor-page__actions { justify-content: flex-start; }
+  .editor-page__actions .editor-button { flex: 1; }
+  .editor-save-mobile { display: block; }
   .chapter-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chapter-item { min-height: 48px; gap: 7px; padding: 6px; }
   .manuscript-page { min-height: 480px; margin: 10px; padding: 35px 22px 58px; }
