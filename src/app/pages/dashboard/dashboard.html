@@ -26,9 +26,9 @@
     } @else if (activeSection === 'new-ebook') {
       <app-new-ebook (generationSucceeded)="handleGenerationSuccess()"></app-new-ebook>
     } @else if (activeSection === 'editor' || (activeSection === 'ebook-editor' && !selectedEbook)) {
-      <app-static-ebook-editor (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
+      <app-static-ebook-editor [ebook]="selectedEbook" (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
     } @else if (activeSection === 'ebook-editor') {
-      <app-new-ebook [existingEbook]="selectedEbook"></app-new-ebook>
+      <app-static-ebook-editor [ebook]="selectedEbook" (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
     } @else {
     <main class="dashboard-content">
       <section class="welcome" aria-labelledby="welcome-title">

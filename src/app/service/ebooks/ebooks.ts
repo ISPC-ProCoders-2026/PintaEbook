@@ -15,6 +15,7 @@ import { catchError, expand, map, reduce } from 'rxjs/operators';
 import {
   Chapter,
   EbookContent,
+  UpdateEbookMetadataPayload,
   EbookGenerationRequest,
   EbookGenerationResponse,
   EbookMetadataResponse,
@@ -301,6 +302,24 @@ export class EbooksService {
         return this.normalizeContent({ ...content, title: metadata.title }, ebookId);
       })
     );
+  }
+
+  getEbook(ebookId: string): Observable<EbookMetadataResponse> {
+    return this.http.get<EbookMetadataResponse>(`${this.apiUrl}${encodeURIComponent(ebookId)}/`, {
+      headers: this.authHeaders()
+    });
+  }
+
+  updateEbookMetadata(ebookId: string, payload: UpdateEbookMetadataPayload): Observable<EbookMetadataResponse> {
+    return this.http.patch<EbookMetadataResponse>(`${this.apiUrl}${encodeURIComponent(ebookId)}/`, payload, {
+      headers: this.authHeaders()
+    });
+  }
+
+  updateEbookContent(ebookId: string, payload: { sections: { chapter_id: string; section_id: string; html: string }[] }): Observable<unknown> {
+    return this.http.patch<unknown>(`${this.apiUrl}${encodeURIComponent(ebookId)}/content/`, payload, {
+      headers: this.authHeaders()
+    });
   }
 
   private getEbookStatus(ebookId: string): Observable<EbookStatusResponse> {
