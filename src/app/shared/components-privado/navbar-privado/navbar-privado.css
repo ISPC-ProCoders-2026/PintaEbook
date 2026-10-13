@@ -247,3 +247,91 @@ button { font: inherit; }
   .nav-link, .nav-link svg, .profile-card { transition: none; }
   .nav-link:hover, .nav-link:hover svg { transform: none; }
 }
+
+/* Lomo ornamental inspirado en una encuadernación metálica. */
+.sidebar__spine {
+  width: 34px;
+  overflow: hidden;
+  border-left: 1px solid #c89445;
+  border-right: 1px solid rgba(238, 201, 123, .48);
+  background: linear-gradient(90deg, #451018 0%, #7a431f 13%, #d0a353 20%, #f0d48b 25%, #80501f 32%, #4a1118 43% 66%, #85521e 76%, #e2bb68 82%, #4c1118 91%);
+  box-shadow: inset 2px 0 3px rgba(30, 8, 12, .65), inset -2px 0 3px rgba(30, 8, 12, .55);
+}
+.sidebar__spine::before {
+  inset: 7px 5px;
+  left: 5px;
+  width: auto;
+  height: auto;
+  border: 1px solid rgba(246, 218, 155, .52);
+  background: linear-gradient(90deg, rgba(39, 9, 12, .38), transparent 24% 74%, rgba(39, 9, 12, .34));
+  content: '';
+}
+.sidebar__spine::after { content: none; }
+.sidebar__content { padding-right: 42px; }
+.sidebar__spine .spine-cap, .sidebar__spine .spine-band, .sidebar__spine .spine-plate {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: auto;
+  height: auto;
+  border: 0;
+}
+.sidebar__spine .spine-cap {
+  right: 0;
+  left: 0;
+  height: 14px;
+  border-top: 1px solid #f3d991;
+  border-bottom: 1px solid #6e431e;
+  background: linear-gradient(180deg, #e3bd70, #81511f 45%, #d8ad5c 70%, #4e1718);
+  box-shadow: 0 1px 3px rgba(25, 8, 10, .55);
+}
+.sidebar__spine .spine-cap--top { top: 7px; }
+.sidebar__spine .spine-cap--bottom { bottom: 7px; }
+.sidebar__spine .spine-band {
+  right: 2px;
+  left: 2px;
+  height: 5px;
+  border-top: 1px solid rgba(255, 230, 164, .9);
+  border-bottom: 1px solid rgba(61, 23, 17, .8);
+  background: linear-gradient(180deg, #e8c878, #8a581f 55%, #d4a64f);
+  box-shadow: 0 1px 2px rgba(24, 7, 9, .7);
+}
+.sidebar__spine .spine-band--one { top: 15%; }
+.sidebar__spine .spine-band--two { top: 38%; }
+.sidebar__spine .spine-band--three { top: 62%; }
+.sidebar__spine .spine-band--four { top: 85%; }
+.sidebar__spine .spine-plate {
+  left: 50%;
+  width: 20px;
+  height: 38px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(236, 197, 112, .8);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(45, 12, 14, .42), rgba(205, 157, 71, .18) 48%, rgba(45, 12, 14, .42));
+  box-shadow: inset 0 0 0 2px rgba(36, 10, 13, .28), 0 1px 3px rgba(20, 5, 8, .55);
+}
+.sidebar__spine .spine-plate--one { top: 23%; }
+.sidebar__spine .spine-plate--two { top: 47%; }
+.sidebar__spine .spine-plate--three { top: 71%; }
+.sidebar__spine .spine-plate i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px solid #f4d88f;
+  border-radius: 1px;
+  background: #88551f;
+  box-shadow: 0 0 0 2px rgba(40, 10, 13, .35);
+}
+.spine-plate i::before, .spine-plate i::after {
+  position: absolute;
+  top: 2px;
+  width: 5px;
+  height: 1px;
+  background: #f4d88f;
+  content: '';
+}
+.spine-plate i::before { right: 8px; }
+.spine-plate i::after { left: 8px; }

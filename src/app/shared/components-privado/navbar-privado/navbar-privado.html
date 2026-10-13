@@ -1,7 +1,17 @@
 <div class="private-navigation" [class.private-navigation--menu-open]="isSidebarOpen">
   <aside [attr.inert]="isMobile && !isSidebarOpen ? '' : null" class="sidebar" id="dashboard-sidebar" aria-label="Navegación del espacio de escritura">
     <div class="sidebar__texture" aria-hidden="true"></div>
-    <div class="sidebar__spine" aria-hidden="true"><span></span><i>✦</i><i>✦</i><i>✦</i><i>✦</i><span></span></div>
+    <div class="sidebar__spine" aria-hidden="true">
+      <span class="spine-cap spine-cap--top"></span>
+      <span class="spine-band spine-band--one"></span>
+      <span class="spine-plate spine-plate--one"><i></i></span>
+      <span class="spine-band spine-band--two"></span>
+      <span class="spine-plate spine-plate--two"><i></i></span>
+      <span class="spine-band spine-band--three"></span>
+      <span class="spine-plate spine-plate--three"><i></i></span>
+      <span class="spine-band spine-band--four"></span>
+      <span class="spine-cap spine-cap--bottom"></span>
+    </div>
     <div class="sidebar__content">
       <button type="button" class="brand" (click)="onBrandClick()" aria-label="PintaEbook, ir al inicio">
         <span class="brand__mark"><img src="/img/logos/logo1_acortado.png" alt="PintaEbook" width="160" height="56" /></span>
