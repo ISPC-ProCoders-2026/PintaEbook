@@ -15,12 +15,13 @@ import { CreditBalance } from '../../models/billing.model';
 import { BillingService } from '../../service/billing/billing';
 import { EbooksService } from '../../service/ebooks/ebooks';
 import { EbookMetadataResponse } from '../../models/ebook.model';
+import { StaticEbookEditor } from '../../shared/components-privado/static-ebook-editor/static-ebook-editor';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AdminPurchases, AdminMetrics, CreditsModal, NavbarPrivado, MyEbooks, Profile, NewEbook, BookLoader],
+  imports: [AdminPurchases, AdminMetrics, CreditsModal, NavbarPrivado, MyEbooks, Profile, NewEbook, BookLoader, StaticEbookEditor],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -133,12 +134,17 @@ export class Dashboard implements OnDestroy, OnInit {
     void this.router.navigate(['/dashboard'], { queryParams: { section } });
   }
 
+  handleSidebarNavigation(section: string): void {
+    if (section === 'editor') this.selectedEbook = null;
+    this.handleNavigation(section);
+  }
+
   openEbook(ebook: EbookSummary): void {
     this.selectedEbook = ebook;
     this.isOpeningEbook = true;
     window.clearTimeout(this.openingEbookTimer);
     this.openingEbookTimer = window.setTimeout(() => {
-      this.handleNavigation('editor');
+      this.handleNavigation('ebook-editor');
       this.isOpeningEbook = false;
       this.changeDetector.detectChanges();
     }, 450);

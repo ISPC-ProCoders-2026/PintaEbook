@@ -1,0 +1,70 @@
+<main class="editor-page" aria-labelledby="editor-page-title">
+  <header class="editor-page__heading">
+    <div>
+      <p class="editor-page__eyebrow">Escritura / Editor</p>
+      <h1 id="editor-page-title">Editar E-book</h1>
+      <p class="editor-page__intro">Organizá tu manuscrito y trabajá cada capítulo en un mismo espacio.</p>
+    </div>
+    <div class="editor-page__actions" aria-label="Acciones del manuscrito">
+      <button type="button" class="editor-button editor-button--quiet" disabled title="Disponible próximamente">Guardar borrador</button>
+      <button type="button" class="editor-button editor-button--primary" disabled title="Disponible próximamente">Publicar E-book</button>
+    </div>
+  </header>
+
+  <div class="editor-workspace">
+    <aside class="editor-outline" aria-labelledby="outline-title">
+      <div class="editor-outline__heading">
+        <div><p class="editor-page__eyebrow">Manuscrito</p><h2 id="outline-title">Estructura</h2></div>
+        <span class="editor-outline__count" aria-label="4 capítulos">04</span>
+      </div>
+      <ol class="chapter-list">
+        <li><button type="button" class="chapter-item chapter-item--active" aria-current="true" disabled><span class="chapter-item__number">01</span><span class="chapter-item__text"><strong>Introducción</strong><small>Sección inicial</small></span></button></li>
+        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">02</span><span class="chapter-item__text"><strong>Capítulo 1</strong><small>Sin contenido</small></span></button></li>
+        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">03</span><span class="chapter-item__text"><strong>Capítulo 2</strong><small>Sin contenido</small></span></button></li>
+        <li><button type="button" class="chapter-item" disabled><span class="chapter-item__number">04</span><span class="chapter-item__text"><strong>Cierre</strong><small>Sección final</small></span></button></li>
+      </ol>
+      <button type="button" class="editor-outline__add" disabled title="Disponible próximamente"><span aria-hidden="true">+</span> Agregar capítulo</button>
+      <p class="editor-outline__note">La estructura del libro se podrá editar desde este panel.</p>
+    </aside>
+
+    <section class="manuscript-panel" aria-labelledby="manuscript-title">
+      <div class="manuscript-panel__toolbar" aria-label="Herramientas de formato">
+        <span class="toolbar-group-label">Formato</span>
+        <button type="button" disabled aria-label="Párrafo">¶</button>
+        <button type="button" disabled aria-label="Título">H</button>
+        <button type="button" disabled aria-label="Lista">☷</button>
+        <span class="toolbar-divider" aria-hidden="true"></span>
+        <button type="button" disabled aria-label="Cita">“</button>
+        <span class="toolbar-spacer"></span>
+        <span class="manuscript-panel__zoom">100%</span>
+      </div>
+      <article class="manuscript-page">
+        <p class="manuscript-page__kicker">Capítulo 01 · Introducción</p>
+        <h2 id="manuscript-title">El comienzo de tu historia</h2>
+        <p class="manuscript-page__hint">El contenido de tu manuscrito aparecerá en esta página.</p>
+        <div class="manuscript-page__rule" aria-hidden="true"></div>
+        <p class="manuscript-page__placeholder">Este espacio está preparado para que desarrolles tus ideas. Cuando la edición esté habilitada, vas a poder escribir y dar formato a cada sección de tu E-book.</p>
+        <span class="manuscript-page__page-number" aria-label="Página 1">1</span>
+      </article>
+    </section>
+
+    <aside class="editor-details" aria-labelledby="details-title">
+      <p class="editor-page__eyebrow">Detalles</p>
+      <h2 id="details-title">Tu proyecto</h2>
+      <dl class="project-details">
+        <div><dt>Estado</dt><dd><span class="project-details__status">Borrador</span></dd></div>
+        <div><dt>Capítulos</dt><dd>4</dd></div>
+        <div><dt>Última edición</dt><dd>—</dd></div>
+      </dl>
+      <div class="editor-details__tip">
+        <span aria-hidden="true">✦</span>
+        <p>Tu proceso de escritura, organizado en un solo lugar.</p>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="editor-page__footer">
+    <p>La edición del manuscrito estará disponible próximamente.</p>
+    <button type="button" class="editor-back-link" (click)="backToLibrary.emit()">Volver a Mis Ebooks <span aria-hidden="true">→</span></button>
+  </footer>
+</main>
