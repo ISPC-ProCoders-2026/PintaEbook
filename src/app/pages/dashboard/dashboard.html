@@ -27,8 +27,8 @@
     <main class="dashboard-content">
       <section class="welcome" aria-labelledby="welcome-title">
         <div>
-          <h1 id="welcome-title">Bienvenido editor.</h1>
-          <p>Volvé a tu proyecto y seguí escribiendo.</p>
+          <h1 id="welcome-title">Tu espacio de escritura</h1>
+          <p>Consultá tus proyectos y el saldo de tu cuenta.</p>
         </div>
         <button type="button" class="primary-action" (click)="setActiveSection('new-ebook')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -36,44 +36,67 @@
         </button>
       </section>
 
-      <section class="stats" aria-label="Resumen de escritura">
+      <section class="stats" aria-label="Resumen de tu biblioteca">
         <article class="stat-card">
-          <span class="stat-card__icon stat-card__icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5zM4 5.5v16"/><path d="M8 7h7M8 11h7"/></svg></span>
-          <span><small>Mis proyectos</small><strong>04</strong><em>+1 este mes</em></span>
+          <span class="stat-card__icon stat-card__icon--rose" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5zM4 5.5v16"/><path d="M8 7h7M8 11h7"/></svg></span>
+          <span><small>Mis proyectos</small><strong>{{ isLoadingEbooks ? '…' : ebooksLoadError ? '—' : ebooks.length }}</strong><em>{{ isLoadingEbooks ? 'Cargando proyectos' : ebooksLoadError ? 'No disponible' : newEbooksThisMonth + ' creados este mes' }}</em></span>
         </article>
         <article class="stat-card">
-          <span class="stat-card__icon stat-card__icon--gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V4h16v16z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-          <span><small>Créditos disponibles</small><strong>{{ creditBalance()?.credits_available ?? '—' }}</strong><em>Saldo de tu cuenta</em></span>
+          <span class="stat-card__icon stat-card__icon--gold" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V4h16v16z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+          <span><small>Créditos disponibles</small><strong>{{ creditBalance()?.credits_available ?? '—' }}</strong><em>Saldo actual de tu cuenta</em></span>
         </article>
       </section>
 
-      <section class="dashboard-grid">
+      <section class="dashboard-grid" aria-label="Actividad de escritura">
         <article class="continue-card" aria-labelledby="continue-title">
           <div class="continue-card__heading">
-            <div><p class="eyebrow">En progreso</p><h2 id="continue-title">Continuá escribiendo</h2></div>
-            <button type="button" class="text-button" (click)="setActiveSection('ebooks')">Ver todos <span aria-hidden="true">→</span></button>
+            <div><p class="eyebrow">Biblioteca personal</p><h2 id="continue-title">Tu proyecto más reciente</h2></div>
+            <button type="button" class="text-button" (click)="setActiveSection('ebooks')">Ver biblioteca <span aria-hidden="true">→</span></button>
           </div>
-          <div class="current-book">
-            <div class="book-cover" aria-hidden="true"><span>LA CASA<br>DE LAS<br>MEMORIAS</span><i>Una novela de Juan</i></div>
-            <div class="current-book__content">
-              <p class="current-book__chapter">Capítulo 06</p>
-              <h3>La casa de las memorias</h3>
-              <p>La última vez que editaste fue hace 2 horas.</p>
-              <div class="progress-label"><span>Progreso del manuscrito</span><strong>62%</strong></div>
-              <div class="progress" role="progressbar" aria-label="Progreso de La casa de las memorias" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62"><span></span></div>
-              <button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Ver mis E-books <span aria-hidden="true">→</span></button>
+          @if (isLoadingEbooks) {
+            <p class="dashboard-data-state" role="status">Cargando tus proyectos…</p>
+          } @else if (ebooksLoadError) {
+            <div class="dashboard-data-state" role="status"><p>No pudimos consultar tus proyectos.</p><button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Abrir Mis Ebooks</button></div>
+          } @else if (featuredEbook; as ebook) {
+            <div class="current-book">
+              <div class="book-cover" aria-hidden="true"><span>{{ ebook.title }}</span><i>PintaEbook</i></div>
+              <div class="current-book__content">
+                <p class="current-book__chapter">{{ ebook.status }}</p>
+                <h3>{{ ebook.title }}</h3>
+                <p>{{ ebook.description || 'Este proyecto todavía no tiene una descripción.' }}</p>
+                @if (ebook.updatedAt) { <p class="current-book__updated">Última actualización: {{ ebook.updatedAt }}</p> }
+                @if (ebook.status === 'Finalizado') {
+                  <button type="button" class="continue-button" (click)="openEbook(ebook)">Abrir editor <span aria-hidden="true">→</span></button>
+                } @else {
+                  <button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Ver estado del proyecto <span aria-hidden="true">→</span></button>
+                }
+              </div>
             </div>
-          </div>
+          } @else {
+            <div class="dashboard-data-state">
+              <p>{{ ebooks.length ? 'Tus proyectos necesitan atención antes de continuar.' : 'Todavía no creaste ningún ebook.' }}</p>
+              <button type="button" class="continue-button" (click)="ebooks.length ? setActiveSection('ebooks') : setActiveSection('new-ebook')">{{ ebooks.length ? 'Revisar Mis Ebooks' : 'Crear mi primer ebook' }} <span aria-hidden="true">→</span></button>
+            </div>
+          }
         </article>
 
-        <aside class="goal-card" aria-labelledby="goal-title">
+        <aside class="goal-card library-summary" aria-labelledby="library-summary-title">
           <div class="goal-card__ornament" aria-hidden="true">✦</div>
-          <p class="eyebrow">Meta semanal</p>
-          <h2 id="goal-title">Tu ritual de escritura</h2>
-          <p>Estás muy cerca. Una sesión más y alcanzás tu objetivo.</p>
-          <div class="goal-card__amount"><strong>1.240</strong><span>/ 2.000 palabras</span></div>
-          <div class="progress progress--gold" role="progressbar" aria-label="Meta semanal" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="1240"><span></span></div>
-          <div class="goal-card__days"><span class="day day--done">L</span><span class="day day--done">M</span><span class="day day--done">X</span><span class="day day--today">J</span><span class="day">V</span><span class="day">S</span><span class="day">D</span></div>
+          <p class="eyebrow">Resumen de biblioteca</p>
+          <h2 id="library-summary-title">Estado de tus proyectos</h2>
+          <p>Un resumen de las obras guardadas en tu cuenta.</p>
+          @if (isLoadingEbooks) {
+            <p class="library-summary__loading" role="status">Cargando resumen…</p>
+          } @else if (ebooksLoadError) {
+            <p class="library-summary__loading" role="status">No disponible por el momento.</p>
+          } @else {
+            <dl class="library-summary__stats">
+              <div><dt>En progreso</dt><dd>{{ inProgressCount }}</dd></div>
+              <div><dt>Finalizados</dt><dd>{{ completedCount }}</dd></div>
+              <div><dt>Fallidos</dt><dd>{{ failedCount }}</dd></div>
+            </dl>
+          }
+          <button type="button" class="library-summary__link" (click)="setActiveSection('ebooks')">Ir a Mis Ebooks <span aria-hidden="true">→</span></button>
         </aside>
       </section>
     </main>

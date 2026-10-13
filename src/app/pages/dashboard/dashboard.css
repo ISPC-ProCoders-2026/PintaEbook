@@ -176,3 +176,24 @@ button { font: inherit; }
 
 .dashboard-toast { position: fixed; z-index: 1100; right: 24px; bottom: 24px; max-width: calc(100vw - 32px); padding: 14px 19px; border: 1px solid rgba(217, 202, 179, .34); border-radius: 8px; background: #315b3d; box-shadow: 0 12px 28px rgba(33, 27, 23, .24); color: #fff; font-size: 13px; font-weight: 650; animation: dashboard-toast-in .22s ease-out; }
 @keyframes dashboard-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.dashboard-data-state { display: grid; justify-items: start; gap: 8px; margin: 24px 0 4px; color: var(--taupe); font-size: 14px; line-height: 1.5; }
+.dashboard-data-state p { margin: 0; }
+.current-book__content > p.current-book__updated { margin-top: -8px; font-size: 12px; }
+.book-cover span { overflow-wrap: anywhere; line-height: 1; }
+.library-summary__stats { position: relative; display: grid; gap: 0; margin: 20px 0 10px; }
+.library-summary__stats > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 42px; border-bottom: 1px solid rgba(242, 239, 227, .2); }
+.library-summary__stats dt { color: rgba(255, 250, 242, .9); font-size: 14px; }
+.library-summary__stats dd { margin: 0; color: #f1d28d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 23px; font-weight: 700; }
+.library-summary__loading { position: relative; margin: 20px 0; color: #f2efe3; font-size: 14px; }
+.library-summary__link { position: relative; display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-top: 8px; padding: 6px 0; border: 0; background: transparent; color: #f1d28d; cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; }
+.library-summary__link:hover { color: #fff4d8; text-decoration: underline; text-underline-offset: 3px; }
+.library-summary__link:focus-visible { outline: 3px solid #f1d28d; outline-offset: 3px; }
+:host-context(.dark) .stat-card { border-color: rgba(217, 202, 179, .2); background: rgba(59, 40, 35, .76); }
+:host-context(.dark) .stat-card small { color: #d2c0b0; }
+:host-context(.dark) .stat-card em { color: #ffd27a; }
+:host-context(.dark) .dashboard-data-state { color: #d2c0b0; }
+
+@media (max-width: 680px) {
+  .library-summary__stats dt { font-size: 13px; }
+}

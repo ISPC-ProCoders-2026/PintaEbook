@@ -13,6 +13,8 @@ import { NewEbook } from '../../shared/components-privado/new-ebooks/new-ebook';
 import { BookLoader } from '../../shared/components-privado/book-loader/book-loader';
 import { CreditBalance } from '../../models/billing.model';
 import { BillingService } from '../../service/billing/billing';
+import { EbooksService } from '../../service/ebooks/ebooks';
+import { EbookMetadataResponse } from '../../models/ebook.model';
 
 
 @Component({
@@ -25,6 +27,7 @@ import { BillingService } from '../../service/billing/billing';
 export class Dashboard implements OnDestroy, OnInit {
   private readonly authService = inject(AuthService);
   private readonly billingService = inject(BillingService);
+  private readonly ebooksService = inject(EbooksService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly changeDetector = inject(ChangeDetectorRef);
@@ -35,6 +38,10 @@ export class Dashboard implements OnDestroy, OnInit {
   activeSection = 'dashboard';
   selectedEbook: EbookSummary | null = null;
   readonly creditBalance = signal<CreditBalance | null>(null);
+  ebooks: EbookSummary[] = [];
+  isLoadingEbooks = true;
+  ebooksLoadError = false;
+  newEbooksThisMonth = 0;
   isOpeningEbook = false;
   private openingEbookTimer?: number;
   successMessage = '';
@@ -46,9 +53,68 @@ export class Dashboard implements OnDestroy, OnInit {
       this.activeSection = section;
       this.isCreditsModalOpen = section === 'credits' || section === 'buy-credits';
       this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
+      if (section === 'dashboard') this.loadDashboardEbooks();
       this.changeDetector.markForCheck();
     }));
     this.loadCreditBalance();
+  }
+
+  get featuredEbook(): EbookSummary | null {
+    return this.ebooks.find((ebook) => ebook.status !== 'Fallido') ?? null;
+  }
+
+  get inProgressCount(): number {
+    return this.ebooks.filter((ebook) => ebook.status === 'En progreso').length;
+  }
+
+  get completedCount(): number {
+    return this.ebooks.filter((ebook) => ebook.status === 'Finalizado').length;
+  }
+
+  get failedCount(): number {
+    return this.ebooks.filter((ebook) => ebook.status === 'Fallido').length;
+  }
+
+  private loadDashboardEbooks(): void {
+    this.isLoadingEbooks = true;
+    this.ebooksLoadError = false;
+    this.subscriptions.add(this.ebooksService.getEbooks().subscribe({
+      next: (items) => {
+        const currentDate = new Date();
+        this.newEbooksThisMonth = items.filter((item) => {
+          const created = new Date(item.created_at);
+          return created.getMonth() === currentDate.getMonth()
+            && created.getFullYear() === currentDate.getFullYear();
+        }).length;
+        this.ebooks = [...items]
+          .sort((first, second) => new Date(second.updated_at).getTime() - new Date(first.updated_at).getTime())
+          .map((item) => this.toEbookSummary(item));
+        this.isLoadingEbooks = false;
+        this.changeDetector.detectChanges();
+      },
+      error: () => {
+        this.ebooksLoadError = true;
+        this.isLoadingEbooks = false;
+        this.changeDetector.detectChanges();
+      }
+    }));
+  }
+
+  private toEbookSummary(item: EbookMetadataResponse): EbookSummary {
+    const updatedDate = new Date(item.updated_at);
+    return {
+      ebook_id: item.ebook_id,
+      title: item.title,
+      description: item.description,
+      status: item.status === 'COMPLETED' ? 'Finalizado'
+        : item.status === 'FAILED' ? 'Fallido' : 'En progreso',
+      updatedAt: Number.isNaN(updatedDate.getTime())
+        ? ''
+        : new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium' }).format(updatedDate),
+      progress: item.status === 'COMPLETED' ? 100 : 0,
+      coverClass: 'ebook-cover--default',
+      coverKicker: 'Tu proyecto'
+    };
   }
 
   loadCreditBalance(): void {
