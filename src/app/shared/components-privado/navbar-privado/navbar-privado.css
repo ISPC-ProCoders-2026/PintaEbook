@@ -152,3 +152,98 @@ button { font: inherit; }
     display: none;
   }
 }
+
+/* Navegación lateral: estados claros sin sombras pesadas. */
+.sidebar__nav {
+  margin-top: 28px;
+  padding: 0 5px 8px 1px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(242, 218, 150, .45) transparent;
+}
+.sidebar__nav::-webkit-scrollbar { display: block; width: 5px; }
+.sidebar__nav::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(242, 218, 150, .45); }
+.nav-group {
+  padding: 0 0 15px;
+  margin: 0 0 14px;
+  border-bottom-color: rgba(242, 218, 150, .19);
+}
+.nav-group h2 {
+  margin: 0 0 8px 11px;
+  color: #e5cda6;
+  font-size: 11px;
+  letter-spacing: .1em;
+}
+.nav-link {
+  position: relative;
+  min-height: 44px;
+  gap: 12px;
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: #f3e9dc;
+  font-size: 14px;
+  font-weight: 550;
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease, transform .16s ease;
+}
+.nav-link svg {
+  width: 19px;
+  height: 19px;
+  color: #e5cda6;
+  transition: color .16s ease, transform .16s ease;
+}
+.nav-link:hover {
+  transform: none;
+  border-color: rgba(242, 218, 150, .2);
+  background: rgba(242, 218, 150, .1);
+  color: #fffaf2;
+}
+.nav-link:hover svg { color: #f2da96; transform: scale(1.06); }
+.nav-link--active,
+.nav-link--active:hover {
+  transform: none;
+  border-color: rgba(242, 218, 150, .32);
+  background: rgba(242, 218, 150, .15);
+  box-shadow: none;
+  color: #fffaf2;
+  font-weight: 700;
+}
+.nav-link--active::before {
+  position: absolute;
+  inset: 9px auto 9px -1px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #f2da96;
+  content: '';
+}
+.nav-link--active svg { color: #f2da96; }
+.nav-link:focus-visible,
+.brand:focus-visible,
+.profile-card:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 3px solid #f2da96;
+  outline-offset: 3px;
+  z-index: 1;
+}
+.profile-card {
+  width: 100%;
+  min-height: 66px;
+  border-color: rgba(242, 218, 150, .25);
+  background: rgba(33, 8, 13, .22);
+}
+.profile-card:hover {
+  border-color: rgba(242, 218, 150, .55);
+  background: rgba(242, 218, 150, .09);
+}
+.profile-card__text small { color: #e0cdb7; }
+
+/* Reserva el espacio del lomo y evita que el panel proyecte una sombra ancha. */
+.sidebar { box-shadow: 2px 0 8px rgba(25, 10, 12, .12); }
+.sidebar__content { padding-right: 32px; }
+.sidebar__spine { box-shadow: inset 2px 0 rgba(94, 11, 21, .34); }
+.nav-link:hover svg { transform: none; }
+.nav-link--active::before { left: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link, .nav-link svg, .profile-card { transition: none; }
+  .nav-link:hover, .nav-link:hover svg { transform: none; }
+}
