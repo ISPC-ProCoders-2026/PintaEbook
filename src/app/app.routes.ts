@@ -5,7 +5,6 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { About } from './pages/about/about';
 import { NotFound } from './pages/not-found/not-found';
-import { Dashboard } from './pages/dashboard/dashboard';
 import { Credits } from './pages/credits/credits';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
@@ -34,9 +33,9 @@ export const routes: Routes = [
     // Child routes added under Dashboard inherit this protection.
     canActivateChild: [authGuard],
     children: [
-      { path: '', component: Dashboard, canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
+      { path: '', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard), canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
       // Keeps direct access to a future dashboard sub-route private as well.
-      { path: '**', component: Dashboard, canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' }
+      { path: '**', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard), canActivate: [dashboardSectionGuard], runGuardsAndResolvers: 'paramsOrQueryParamsChange' }
     ]
   },
   {

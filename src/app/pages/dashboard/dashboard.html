@@ -1,5 +1,9 @@
 @if (activeSection === 'purchase-history' || activeSection === 'purchases') {
-  <app-admin-purchases></app-admin-purchases>
+  @defer (on immediate) {
+    <app-admin-purchases></app-admin-purchases>
+  } @placeholder {
+    <p role="status">Cargando historial de compras…</p>
+  }
 } @else if (activeSection === 'metrics') {
   <app-admin-metrics></app-admin-metrics>
 } @else {

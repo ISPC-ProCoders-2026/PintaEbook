@@ -33,6 +33,7 @@ yarn-error.log
 /.env
 /.env.*
 !/.env.example
+!/.env.production.example
 /src/environments/environment.generated.ts
 /.angular/cache
 .sass-cache/

@@ -1,60 +1,36 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
-import { provideRouter, Router } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-
-import { ThemeService } from '../../../service/theme/theme';
+import { of, throwError } from 'rxjs';
 import { AdminPurchases } from './admin-purchases';
+import { PurchasesService } from '../../../service/purchases/purchases';
+import { ThemeService } from '../../../service/theme/theme';
+import { signal } from '@angular/core';
 
 describe('AdminPurchases', () => {
-  let component: AdminPurchases;
-  let fixture: ComponentFixture<AdminPurchases>;
-  let router: Router;
-
-  beforeEach(async () => {
-    localStorage.clear();
-    localStorage.setItem('token', 'user-token');
-    localStorage.setItem('userId', 'user-1');
-    await TestBed.configureTestingModule({
-      imports: [AdminPurchases],
-      providers: [
-        provideHttpClient(),
-        provideRouter([]),
-        { provide: ThemeService, useValue: { isDark: signal(false), toggle: () => undefined } }
-      ]
-    }).compileComponents();
-    fixture = TestBed.createComponent(AdminPurchases);
-    component = fixture.componentInstance;
-    router = TestBed.inject(Router);
-    fixture.detectChanges();
+  const service = { getPurchases: vi.fn() };
+  beforeEach(() => {
+    service.getPurchases.mockReset();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideHttpClient(), { provide: PurchasesService, useValue: service }, { provide: ThemeService, useValue: { isDark: signal(false), toggle: () => undefined } }] });
   });
-
-  it('should create the static purchases view', () => {
-    expect(component).toBeTruthy();
-    expect(component.filteredPurchases.length).toBe(2);
+  it('loads the authenticated history and requests the next page', () => {
+    service.getPurchases.mockReturnValue(of({ results: [], count: 30, hasNext: true, hasPrevious: false }));
+    const component = TestBed.createComponent(AdminPurchases).componentInstance;
+    component.ngOnInit();
+    expect(component.total).toBe(30);
+    expect(component.hasNext).toBe(true);
+    component.loadPurchases(2);
+    expect(service.getPurchases).toHaveBeenLastCalledWith(2, 'Todos');
   });
-
-  it('should filter purchases by status and sort by amount', () => {
-    component.selectedStatus = 'Aprobada';
-    component.sortBy = 'Monto';
-
-    expect(component.filteredPurchases.every((purchase) => purchase.status === 'Aprobada')).toBe(true);
-    expect(component.filteredPurchases[0].amount).toBe(19.99);
-  });
-
-  it('should show every user purchase in the administrator view', () => {
-    localStorage.setItem('userRole', 'admin');
-    vi.spyOn(router, 'url', 'get').mockReturnValue('/admin/purchases');
-
-    expect(component.isAdminView).toBe(true);
-    expect(component.filteredPurchases.length).toBe(6);
-  });
-
-  it('should show only the administrator purchases in the private history route', () => {
-    localStorage.setItem('userRole', 'admin');
-    localStorage.setItem('userId', 'admin-1');
-
-    expect(component.isAdminView).toBe(false);
-    expect(component.filteredPurchases.length).toBe(1);
+  it('shows an error and can retry without displaying example purchases', () => {
+    service.getPurchases.mockReturnValue(throwError(() => ({ status: 503 })));
+    const component = TestBed.createComponent(AdminPurchases).componentInstance;
+    component.ngOnInit();
+    expect(component.error).toBeTruthy();
+    expect(component.loading).toBe(false);
+    expect(component.purchases).toEqual([]);
+    service.getPurchases.mockReturnValue(of({ results: [], count: 0, hasNext: false, hasPrevious: false }));
+    component.loadPurchases();
+    expect(component.error).toBe('');
   });
 });

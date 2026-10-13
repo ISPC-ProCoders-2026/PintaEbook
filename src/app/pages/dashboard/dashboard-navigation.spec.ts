@@ -7,16 +7,19 @@ import { routes } from '../../app.routes';
 import { Dashboard } from './dashboard';
 import { AuthService } from '../../service/login/login';
 import { BillingService } from '../../service/billing/billing';
+import { EbooksService } from '../../service/ebooks/ebooks';
 
  describe('Dashboard section URLs', () => {
   let admin = false;
-  beforeEach(() => {
+  beforeEach(async () => {
     admin = false;
     TestBed.configureTestingModule({ providers: [provideRouter(routes), provideHttpClient(),
       { provide: AuthService, useValue: { isLoggedIn: () => true, isAdmin: () => admin } },
+      { provide: EbooksService, useValue: { getEbooks: () => of([]) } },
       { provide: BillingService, useValue: { getBalance: () => of({ credits_available: 100 }) } }
     ] });
     TestBed.overrideComponent(Dashboard, { set: { imports: [], template: '{{ activeSection }}' } });
+    await TestBed.compileComponents();
   });
   it('redirects the old history URL and supports back navigation between sections', async () => {
     const harness = await RouterTestingHarness.create();

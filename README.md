@@ -172,3 +172,41 @@ Actualmente incluye recursos utilizados por la interfaz, como logotipos e imáge
 PintaEbook forma parte del proyecto académico **FullStack II** de la **Tecnicatura Superior en Desarrollo de Software** del **ISPC**.
 
 El frontend se desarrolla de manera independiente del backend y se comunica con este mediante una API REST.
+
+
+## Producción en Vercel
+
+En Environment Variables configurar:
+
+La plantilla `.env.production.example` contiene los valores públicos para importar en Vercel.
+
+```env
+API_BASE_URL=https://pintaebook-backend.onrender.com/api
+GOOGLE_CLIENT_ID=tu-client-id-publico-de-google
+```
+
+El generador prioriza las variables del entorno sobre `.env`. Para desarrollo,
+conservar `.env` con `API_BASE_URL=http://localhost:8000/api`.
+`npm start` y `npm run build` generan la configuración automáticamente.
+No editar `environment.generated.ts` ni cargar claves privadas en el frontend.
+
+Usar Build Command `npm run build` y Output Directory
+`dist/frontend-ebook/browser`. Quitar el comando anterior que escribía `.env`
+en Vercel: ya no es necesario. `vercel.json` permite abrir y recargar rutas de Angular.
+Después de cambiar variables en Vercel hay que volver a desplegar.
+
+En Render, autorizar el dominio de producción del frontend en
+`CORS_ALLOWED_ORIGINS`. Las URLs de retorno de Mercado Pago deben apuntar a
+`https://TU-DOMINIO/billing/result/success`, `/failure` y `/pending`.
+El webhook permanece en el backend: `https://pintaebook-backend.onrender.com/api/billing/webhook/`.
+En Google OAuth, autorizar también el origen de producción para el inicio de sesión con Google.
+
+## Historial de compras
+
+Disponible en `/purchases` o en la sección de historial del panel privado.
+Consulta `GET /api/billing/transactions/` con el token del usuario.
+Muestra paquete, créditos, monto en ARS, fecha y estado; permite filtrar por
+estado y navegar entre páginas. La búsqueda por ID y el orden se aplican a la
+página actual. Incluye carga, error con reintento y listado vacío.
+El endpoint devuelve únicamente las compras del usuario autenticado,
+incluso si es administrador; no es un reporte global de ventas.

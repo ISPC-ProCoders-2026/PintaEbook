@@ -1,4 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { PurchasesService } from '../../../service/purchases/purchases';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +17,40 @@ import { Purchase, PurchaseStatus } from '../../../models/purchase.model';
   templateUrl: './admin-purchases.html',
   styleUrl: './admin-purchases.css'
 })
-export class AdminPurchases {
+export class AdminPurchases implements OnInit, OnDestroy {
+  private readonly purchasesService = inject(PurchasesService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private request?: Subscription;
+  loading = false;
+  error = '';
+  page = 1;
+  total = 0;
+  hasNext = false;
+  hasPrevious = false;
+  ngOnInit(): void { this.loadPurchases(); }
+  ngOnDestroy(): void { this.request?.unsubscribe(); }
+  loadPurchases(page = 1): void {
+    this.request?.unsubscribe();
+    this.loading = true;
+    this.error = '';
+    this.purchases = [];
+    this.request = this.purchasesService.getPurchases(page, this.selectedStatus).subscribe({
+      next: result => {
+        this.purchases = result.results;
+        this.total = result.count;
+        this.hasNext = result.hasNext;
+        this.hasPrevious = result.hasPrevious;
+        this.page = page;
+        this.loading = false;
+        this.changeDetector.markForCheck();
+      },
+      error: error => {
+        this.loading = false;
+        this.error = error.status === 401 ? 'Tu sesión venció. Volvé a iniciar sesión.' : 'No pudimos cargar tus compras. Intentá nuevamente.';
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
@@ -35,28 +70,20 @@ export class AdminPurchases {
   selectedStatus: 'Todos' | PurchaseStatus = 'Todos';
   sortBy: 'Fecha' | 'Monto' | 'Créditos' = 'Fecha';
 
-  readonly purchases: Purchase[] = [
-    { id: 'ARC-1048', date: '28/09/2026', credits: 500, amount: 19.99, status: 'Aprobada', userId: 'user-1', userName: 'Ana Pérez' },
-    { id: 'ARC-1047', date: '27/09/2026', credits: 1000, amount: 34.99, status: 'Pendiente', userId: 'user-2', userName: 'Lucas Gómez' },
-    { id: 'ARC-1046', date: '26/09/2026', credits: 250, amount: 11.99, status: 'Aprobada', userId: 'user-1', userName: 'Ana Pérez' },
-    { id: 'ARC-1045', date: '25/09/2026', credits: 500, amount: 19.99, status: 'Rechazada', userId: 'user-3', userName: 'Sofía Díaz' },
-    { id: 'ARC-1044', date: '24/09/2026', credits: 1000, amount: 34.99, status: 'Aprobada', userId: 'user-2', userName: 'Lucas Gómez' },
-    { id: 'ARC-1043', date: '23/09/2026', credits: 500, amount: 19.99, status: 'Aprobada', userId: 'admin-1', userName: 'Administrador' }
-  ];
+  purchases: Purchase[] = [];
 
   get filteredPurchases(): Purchase[] {
     const search = this.searchTerm.trim().toLocaleLowerCase();
     const filtered = this.purchases.filter((purchase) => {
-      const belongsToCurrentUser = this.isAdminView || purchase.userId === this.authService.getUserId();
       const matchesSearch = !search || purchase.id.toLocaleLowerCase().includes(search);
       const matchesStatus = this.selectedStatus === 'Todos' || purchase.status === this.selectedStatus;
-      return belongsToCurrentUser && matchesSearch && matchesStatus;
+      return matchesSearch && matchesStatus;
     });
 
     return [...filtered].sort((first, second) => {
       if (this.sortBy === 'Monto') return second.amount - first.amount;
       if (this.sortBy === 'Créditos') return second.credits - first.credits;
-      return second.id.localeCompare(first.id);
+      return new Date(second.timestamp ?? second.date).getTime() - new Date(first.timestamp ?? first.date).getTime();
     });
   }
 
