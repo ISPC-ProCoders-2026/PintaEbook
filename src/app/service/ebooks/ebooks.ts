@@ -10,7 +10,7 @@ import {
   takeUntil,
   timer
 } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, expand, map, reduce } from 'rxjs/operators';
 
 import {
   Chapter,
@@ -83,18 +83,25 @@ export class EbooksService {
 
   /** Lista los metadatos reales del usuario desde el endpoint REST configurado. */
   getEbooks(): Observable<EbookMetadataResponse[]> {
+    return this.getEbookPage(this.apiUrl).pipe(
+      expand((page) => page.next ? this.getEbookPage(page.next) : EMPTY),
+      reduce((allItems, page) => allItems.concat(page.items), [] as EbookMetadataResponse[])
+    );
+  }
+
+  private getEbookPage(url: string): Observable<{ items: EbookMetadataResponse[]; next: string | null }> {
     return this.http
-      .get<EbookMetadataResponse[] | PaginatedEbookMetadataResponse>(this.apiUrl, {
+      .get<EbookMetadataResponse[] | PaginatedEbookMetadataResponse>(url, {
         headers: this.authHeaders()
       })
       .pipe(map((response) => {
-        if (Array.isArray(response)) return response;
-        if (response && Array.isArray(response.results)) return response.results;
+        if (Array.isArray(response)) return { items: response, next: null };
+        if (response && Array.isArray(response.results)) {
+          return { items: response.results, next: response.next };
+        }
         throw new Error('La API devolvió un formato de biblioteca inválido.');
       }));
-  }
-
-  /** Recibe avances por WebSocket y consulta el estado REST como respaldo. */
+  }  /** Recibe avances por WebSocket y consulta el estado REST como respaldo. */
   watchGenerationProgress(ebookId: string): Observable<GenerationProgress> {
     return new Observable<GenerationProgress>((subscriber) => {
       let socket: WebSocket | undefined;
