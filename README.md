@@ -104,7 +104,7 @@ Entre ellos se encuentran:
 
 ## Instalación y ejecución
 
-# Frontend alojado en Vercel: https://pinta-ebook.vercel.app/
+# Frontend alojado en Vercel: [https://pinta-ebook.vercel.app/](https://pinta-ebook-x21q2s696-aubar48s-projects.vercel.app/)
 
 La forma recomendada de levantar el proyecto desde cero es utilizar Docker. Esto evita problemas de dependencias y deja preparado el entorno de desarrollo.
 
