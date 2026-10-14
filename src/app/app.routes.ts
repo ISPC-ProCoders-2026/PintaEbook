@@ -9,6 +9,7 @@ import { Credits } from './pages/credits/credits';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 import { BillingPackages, BillingResult } from './pages/billing-result/billing-result';
+import { BookSample } from './pages/book-sample/book-sample';
 
 export const routes: Routes = [
   { path: 'billing', component: BillingPackages, canActivate: [authGuard] },
@@ -62,6 +63,7 @@ export const routes: Routes = [
     component: Credits
   },
   { path: 'about', component: About },
+  { path: 'muestra/:slug', component: BookSample },
   {
   path: '**',
   component: NotFound

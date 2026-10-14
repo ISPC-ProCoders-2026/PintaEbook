@@ -1,0 +1,77 @@
+<main class="sample-page">
+  <header class="sample-topbar">
+    <a routerLink="/" class="sample-brand" aria-label="PintaEbook, volver al inicio"><img class="sample-brand__logo" src="/img/logos/logo1_acortado.png" width="180" height="64" alt="PintaEbook"></a>
+  </header>
+
+  @if (book(); as sample) {
+    <div class="sample-wrap">
+      <div class="sample-notice" role="note">
+        <span class="sample-notice__icon" aria-hidden="true">✦</span>
+        <p><strong>Estás leyendo una obra de muestra.</strong> Registrate para crear tu propio proyecto y llevar tus ideas al editor.</p>
+        <a routerLink="/register">Empezar gratis <span aria-hidden="true">→</span></a>
+      </div>
+
+      <section class="sample-layout" aria-label="Lectura de muestra">
+        <aside class="sample-sidebar">
+          <a routerLink="/" class="sample-back"><span aria-hidden="true">←</span> Volver a destacados</a>
+          <div [class]="'sample-cover sample-cover--' + sample.theme" aria-label="Portada de muestra">
+            <span class="sample-cover__label">PintaEbook <i>·</i> obra de muestra</span>
+            <span class="sample-cover__motif" aria-hidden="true">✳</span>
+            <h1>{{ sample.title }}</h1>
+            <p>{{ sample.author }}</p>
+          </div>
+          <p class="sample-sidebar__genre">{{ sample.genre }}</p>
+          <p class="sample-sidebar__description">{{ sample.description }}</p>
+
+          <nav class="sample-contents" aria-label="Contenido del libro">
+            <p>EN ESTA MUESTRA</p>
+            @for (chapter of sample.chapters; track chapter.title; let index = $index) {
+              <a [href]="'#sample-chapter-' + index"><span>0{{ index + 1 }}</span>{{ chapter.title }}</a>
+            }
+          </nav>
+        </aside>
+
+        <article class="sample-reader">
+          <div class="sample-reader__toolbar">
+            <span><i aria-hidden="true"></i> Vista de lectura</span>
+            <span>OBRA DE MUESTRA</span>
+          </div>
+          <header class="sample-reader__intro">
+            <p class="sample-reader__eyebrow">{{ sample.genre }} <span>·</span> PintaEbook</p>
+            <h2>{{ sample.title }}</h2>
+            <p class="sample-reader__byline">Una obra de {{ sample.author }}</p>
+            <p class="sample-reader__description">{{ sample.description }}</p>
+          </header>
+
+          @for (chapter of sample.chapters; track chapter.title; let index = $index) {
+            <section class="sample-chapter" [id]="'sample-chapter-' + index">
+              <p class="sample-chapter__number">CAPÍTULO {{ index + 1 }}</p>
+              <h3>{{ chapter.title }}</h3>
+              @for (section of chapter.sections; track section.title) {
+                <div class="sample-chapter__section">
+                  <h4>{{ section.title }}</h4>
+                  @for (paragraph of section.paragraphs; track $index) {
+                    <p>{{ paragraph }}</p>
+                  }
+                </div>
+              }
+            </section>
+          }
+
+          <footer class="sample-reader__end">
+            <span aria-hidden="true">✳</span>
+            <p>Todo libro empieza con una idea.</p>
+            <a routerLink="/register">Empezá a escribir la tuya <span aria-hidden="true">→</span></a>
+          </footer>
+        </article>
+      </section>
+    </div>
+  } @else {
+    <section class="sample-not-found">
+      <p class="sample-reader__eyebrow">PintaEbook · Lectura de muestra</p>
+      <h1>No encontramos este libro.</h1>
+      <p>Volvé a los destacados para elegir otra historia de ejemplo.</p>
+      <a routerLink="/">Volver al inicio</a>
+    </section>
+  }
+</main>
