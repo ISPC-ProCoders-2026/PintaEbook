@@ -121,3 +121,19 @@
       #f9f5ed;
   }
 }
+
+.terms-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5d131a;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.terms-link:hover { color: #8c2832; }
+.terms-link:focus-visible { outline: 2px solid #5d131a; outline-offset: 3px; }
+:host-context(.dark) .terms-link { color: #f0b6bd; }

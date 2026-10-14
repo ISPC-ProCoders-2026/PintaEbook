@@ -1,0 +1,128 @@
+@if (isOpen) {
+  <div class="terms-backdrop" role="presentation" (click)="close()">
+    <section class="terms-dialog" role="dialog" aria-modal="true" aria-labelledby="terms-title" (click)="$event.stopPropagation()">
+      <header class="terms-header">
+        <div>
+          <p class="terms-eyebrow">PintaEbook · Información legal</p>
+          <h2 id="terms-title">Términos y condiciones</h2>
+        </div>
+        <button type="button" class="terms-close" aria-label="Cerrar términos y condiciones" (click)="close()">×</button>
+      </header>
+
+      <div class="terms-content">
+        <p class="terms-lead">Estos términos regulan el acceso y uso de PintaEbook, la plataforma para crear, editar y exportar proyectos de libros electrónicos.</p>
+
+        <section>
+          <h3>1. Aceptación y alcance</h3>
+          <p>Estos términos regulan el acceso y uso de PintaEbook (el <strong>“Servicio”</strong>), plataforma que permite crear proyectos de libros electrónicos, generar y editar contenido con asistencia de inteligencia artificial, guardar obras, consultar saldos de créditos y exportar como EPUB los ebooks que estén terminados.</p>
+          <p>Al crear una cuenta o usar las funciones del Servicio, la persona usuaria declara que leyó estos términos. Si no está de acuerdo, debe dejar de usar las funciones correspondientes. La aceptación de estos términos no implica ceder a PintaEbook los derechos de autor sobre las obras de la persona usuaria ni limita derechos que no puedan renunciarse conforme a la legislación aplicable.</p>
+          <p>El proveedor contractual es <strong>[ProCoders]</strong>, con los datos de identificación y contacto indicados arriba. Las referencias a <strong>“PintaEbook”</strong>, <strong>“nosotros”</strong> o <strong>“la plataforma”</strong> deben entenderse hechas a ese titular.</p>
+        </section>
+
+        <section>
+          <h3>2. Cuenta y uso permitido</h3>
+          <p>Para usar las funciones privadas se requiere una cuenta. La persona usuaria debe proporcionar información veraz, cuidar sus credenciales y notificar al titular si sospecha que otra persona accedió a su cuenta. La persona usuaria responde por la actividad realizada desde su cuenta, sin perjuicio de los deberes de seguridad y responsabilidad que correspondan al titular.</p>
+          <p>La plataforma puede solicitar correcciones o limitar temporalmente una cuenta cuando existan indicios razonables de fraude, riesgo de seguridad o incumplimiento de estos términos. Cuando sea posible, informaremos el motivo y el modo de solicitar una revisión. Toda medida debe respetar los derechos de defensa, consumo y privacidad aplicables.</p>
+          <p>No se permite utilizar el Servicio para infringir derechos de terceros, cometer delitos, hostigar, difamar, suplantar identidades, producir o distribuir material de explotación sexual infantil, evadir controles de seguridad o interferir con el funcionamiento de la plataforma.</p>
+        </section>
+
+        <section>
+          <h3>3. Obras, autoría y derechos intelectuales</h3>
+          <h4>3.1. Contenido aportado por la persona usuaria</h4>
+          <p>La persona usuaria conserva los derechos que tenga sobre los textos, instrucciones, ideas expresadas, capítulos, secciones y demás materiales que aporte al Servicio (<strong>“Contenido del usuario”</strong>). PintaEbook no adquiere la propiedad de ese contenido por el hecho de alojarlo, editarlo o procesarlo.</p>
+          <p>La persona usuaria declara que cuenta con los permisos necesarios para cargar y utilizar el Contenido del usuario, y que su uso no infringe derechos de autor, marcas, imagen, privacidad, confidencialidad u otros derechos de terceros. Si incorpora material de otra persona, debe contar con una autorización o licencia que permita el uso previsto.</p>
+          <h4>3.2. Licencia técnica limitada</h4>
+          <p>La persona usuaria concede a PintaEbook una autorización no exclusiva, limitada y vigente mientras el contenido permanezca en el Servicio para alojarlo, respaldarlo, procesarlo, mostrarlo a esa persona, permitir su edición y exportación, y realizar las operaciones técnicas necesarias para prestar y proteger el Servicio. Esta autorización no habilita a PintaEbook a publicar, vender, licenciar a terceros ni explotar comercialmente la obra de la persona usuaria.</p>
+          <p>Para generar o refinar contenido, el texto y las instrucciones pertinentes pueden ser enviados a <strong>OpenRouter</strong> y al modelo de inteligencia artificial seleccionado para esa operación. La información sobre proveedores, finalidades, conservación y transferencias internacionales debe detallarse en la <strong>Política de Privacidad</strong> ([URL A DEFINIR]).</p>
+          <h4>3.3. Contenido generado o asistido por inteligencia artificial</h4>
+          <p>Las respuestas generadas pueden contener errores, información incompleta, coincidencias con material de terceros o resultados similares a los obtenidos por otras personas. PintaEbook no garantiza que una salida sea original, exclusiva, exacta, apta para un propósito determinado, registrable como obra protegida ni libre de derechos de terceros.</p>
+          <p>La persona usuaria debe revisar, corregir y verificar el contenido antes de publicarlo, comercializarlo o presentarlo como propio. La autoría y protección jurídica de cada obra dependerán de los aportes humanos y de la legislación aplicable. Estos términos no adjudican automáticamente a la persona usuaria derechos exclusivos sobre una salida generada por IA cuando esos derechos no existan legalmente.</p>
+          <p>PintaEbook no reclama derechos de autor sobre las salidas generadas para la persona usuaria. La persona usuaria conserva los derechos que la ley reconozca sobre sus aportes y sobre la obra final, incluidos los elementos originales que haya creado o incorporado. La plataforma no presta servicios de registro de derechos, asesoramiento editorial ni verificación de originalidad.</p>
+          <h4>3.4. Reclamos por derechos</h4>
+          <p>Quien considere que un contenido alojado en PintaEbook infringe sus derechos puede enviar una notificación a <strong><a href="mailto:procoders@gmail.com">procoders@gmail.com</a></strong>, incluyendo datos de contacto, identificación de la obra protegida, ubicación del contenido cuestionado, explicación del derecho invocado y documentación razonablemente necesaria para analizar el reclamo. PintaEbook podrá solicitar información adicional, restringir provisionalmente el acceso cuando corresponda y comunicar el reclamo a la persona usuaria afectada.</p>
+        </section>
+
+        <section>
+          <h3>4. Créditos, generación y exportación</h3>
+          <p>Las funciones de generación y refinamiento consumen créditos según el costo que se informe antes de cada acción. <strong>A la fecha de este borrador</strong>, el backend descuenta 100 créditos al iniciar la generación de un ebook y 10 créditos por cada refinamiento de sección con IA. Estos valores pueden cambiar; antes de confirmar una operación, la interfaz debe mostrar el costo vigente y el saldo disponible.</p>
+          <p>Los créditos comprados son unidades de uso del Servicio: no son dinero, depósito, cuenta de pago ni instrumento financiero; no generan intereses y no pueden transferirse a otra cuenta ni cambiarse por efectivo, salvo los derechos de devolución o revocación que correspondan por ley. El saldo no tiene vencimiento mientras la cuenta permanezca habilitada, salvo que una modificación se comunique con antelación y respete los derechos adquiridos y la normativa aplicable.</p>
+          <p>La generación puede demorar, fallar o producir resultados que requieran edición. Si una operación falla y el backend devuelve los créditos debitados, el saldo se ajustará conforme al registro de la transacción. La persona usuaria puede descargar gratuitamente como EPUB los ebooks que estén completados. La exportación refleja el contenido guardado en el servidor; los cambios que no se hayan guardado no se incluyen. La exportación actual puede no incluir imágenes u otros recursos que no estén soportados por el generador EPUB.</p>
+          <p>La persona usuaria debe conservar copias propias de sus obras y exportaciones. PintaEbook no garantiza disponibilidad permanente ni conservación indefinida de contenido, por lo que cualquier plazo de retención o eliminación debe informarse en la Política de Privacidad y en las opciones de cuenta.</p>
+        </section>
+
+        <section>
+          <h3>5. Compra de créditos y pagos con Mercado Pago</h3>
+          <p>Los paquetes disponibles, su cantidad de créditos y el precio total en pesos argentinos (ARS) se mostrarán antes de iniciar el pago. La compra es de pago único y no implica una suscripción recurrente, salvo que una oferta futura indique claramente lo contrario y sea aceptada por separado.</p>
+          <p>Al seleccionar un paquete, la persona usuaria es redirigida al checkout de <strong>Mercado Pago</strong>, que procesa el pago en su propio entorno. El uso de ese checkout también puede estar sujeto a los términos y políticas de Mercado Pago. PintaEbook no controla la disponibilidad de los medios de pago ni las decisiones de autorización de bancos o proveedores financieros.</p>
+          <p>Los créditos se acreditan cuando el backend confirma que el pago fue aprobado y que el importe corresponde al paquete seleccionado. La redirección de vuelta a PintaEbook, por sí sola, no confirma el pago. Las operaciones pendientes, rechazadas o canceladas no generan créditos hasta su aprobación. Si el pago fue debitado y los créditos no aparecen, la persona usuaria puede contactar a <strong><a href="mailto:procoders@gmail.com">procoders@gmail.com</a></strong> con la fecha, el importe y el identificador de operación, sin enviar datos completos de tarjeta ni credenciales de Mercado Pago.</p>
+          <p>Los pedidos de cancelación, devolución o reintegro se analizarán conforme a la normativa aplicable y al estado de la operación. Nada en estos términos excluye ni limita el derecho legal de revocación o arrepentimiento, las garantías, los derechos de consumidores ni la posibilidad de reclamar ante las autoridades competentes. Cuando corresponda un reintegro, la devolución al medio de pago puede depender de los plazos y procedimientos de Mercado Pago, la entidad financiera o el medio utilizado.</p>
+        </section>
+
+        <section>
+          <h3>6. Derecho de revocación o arrepentimiento</h3>
+          <p>En las contrataciones a distancia, la persona consumidora puede contar con el derecho irrenunciable de revocar su aceptación dentro del plazo legal —en general, diez (10) días conforme a la normativa argentina— y con las excepciones y modalidades que resulten aplicables al servicio digital adquirido y a su uso efectivo.</p>
+          <p>Para ejercer ese derecho, estará disponible un enlace visible denominado <strong>“Botón de arrepentimiento”</strong> en [UBICACIÓN/URL A IMPLEMENTAR]. La solicitud no requerirá crear una cuenta ni completar trámites ajenos a su procesamiento; solo podrán pedirse verificaciones razonables de identidad y seguridad cuando sean necesarias. Se enviará una constancia de recepción con un número de solicitud a <strong><a href="mailto:procoders@gmail.com">procoders@gmail.com</a></strong>.</p>
+          <p>La solicitud se evaluará de acuerdo con la Ley 24.240, el Código Civil y Comercial y las disposiciones vigentes. El uso de créditos no se considerará por sí solo una renuncia a derechos legales. La aplicación de excepciones, el cálculo de reintegros y los efectos de consumos parciales deben ser revisados por asesoría legal y explicados de manera clara antes de contratar.</p>
+        </section>
+
+        <section>
+          <h3>7. Disponibilidad y cambios del Servicio</h3>
+          <p>PintaEbook puede actualizar, mantener o discontinuar funciones por razones técnicas, de seguridad, legales o comerciales. Procuraremos informar cambios relevantes y mantener las funciones esenciales o una alternativa razonable cuando corresponda. No se excluye responsabilidad por incumplimientos ni por daños en los casos en que la ley no permita hacerlo.</p>
+          <p>El Servicio depende de conexiones a internet y de proveedores externos de infraestructura, almacenamiento, inteligencia artificial y pagos. Una interrupción de esos proveedores puede afectar temporalmente la generación, el acceso, el guardado, el checkout o la acreditación de créditos. La persona usuaria puede contactar a soporte para reportar errores; conservaremos la información necesaria para investigar y resolver el incidente de acuerdo con la Política de Privacidad.</p>
+        </section>
+
+        <section>
+          <h3>8. Privacidad y seguridad de la información</h3>
+          <p>El tratamiento de datos personales se rige por la <strong>Política de Privacidad</strong> ([URL A DEFINIR]), que debe identificar al responsable, describir qué datos se recopilan, para qué se usan, con quién se comparten, por cuánto tiempo se conservan y cómo ejercer los derechos de acceso, rectificación y supresión. La política debe explicar especialmente el tratamiento del contenido de las obras y su envío a OpenRouter/modelos de IA, además del intercambio de información transaccional con Mercado Pago.</p>
+          <p>La persona usuaria debe evitar incluir en prompts o manuscritos datos personales sensibles, secretos comerciales o información confidencial de terceros salvo que tenga base legal y resulte estrictamente necesario. PintaEbook aplicará medidas razonables de seguridad, sin que ello implique una garantía absoluta contra incidentes.</p>
+        </section>
+
+        <section>
+          <h3>9. Suspensión, cierre y conservación de contenido</h3>
+          <p>La persona usuaria puede dejar de usar el Servicio y solicitar el cierre de su cuenta por <strong><a href="mailto:cuentas@procoders.com">cuentas@procoders.com</a></strong>. La baja no elimina obligaciones ya devengadas ni impide conservar la información que sea necesaria por obligaciones legales, contables, prevención de fraude o defensa de reclamos. Los plazos, copias de respaldo y efectos sobre ebooks y saldo de créditos deben describirse en la Política de Privacidad y comunicarse antes de confirmar el cierre.</p>
+          <p>PintaEbook podrá suspender contenido o cuentas ante una orden válida, un riesgo serio para la seguridad, una infracción manifiesta o un reclamo fundado de derechos. En la medida permitida por la ley, informaremos a la persona afectada y ofreceremos un canal de revisión.</p>
+        </section>
+
+        <section>
+          <h3>10. Propiedad de PintaEbook</h3>
+          <p>La marca PintaEbook, su identidad visual, software, diseño, documentación y materiales propios pertenecen a <strong>[PROCODERS S.A]</strong> o se utilizan con autorización. Estos términos no conceden a la persona usuaria derechos sobre esos elementos, excepto el permiso limitado, personal, revocable y no transferible para utilizar el Servicio de acuerdo con estos términos.</p>
+        </section>
+
+        <section>
+          <h3>11. Reclamos y atención</h3>
+          <p>Para consultas, incidentes, reclamos de pago, privacidad o derechos de autor, contactarse con <strong><a href="mailto:soporte@procoders.com">soporte@procoders.com</a></strong> indicando el asunto y los datos mínimos necesarios para ubicar la cuenta u operación. Responderemos dentro de un plazo razonable y sin perjuicio de los plazos legales aplicables.</p>
+          <p>Las personas consumidoras conservan el derecho de acudir a los organismos de defensa del consumidor y a las autoridades competentes. Ninguna cláusula de estos términos obliga a iniciar un reclamo interno como condición para ejercer derechos legales.</p>
+        </section>
+
+        <section>
+          <h3>12. Legislación y jurisdicción</h3>
+          <p>Estos términos se interpretan conforme a las leyes de la República Argentina. En caso de una relación de consumo, se respetará la jurisdicción que corresponda a la persona consumidora según la normativa aplicable; estos términos no imponen una prórroga de jurisdicción ni limitan el acceso a autoridades administrativas o judiciales.</p>
+        </section>
+
+        <section>
+          <h3>13. Actualizaciones de estos términos</h3>
+          <p>PintaEbook podrá actualizar estos términos para reflejar cambios legales o funcionales. La versión vigente estará publicada en [URL DE TÉRMINOS], con fecha de actualización. Si un cambio afecta de manera sustancial derechos u obligaciones, se informará antes de su entrada en vigor y se solicitará una nueva aceptación cuando la ley lo requiera. Los cambios no afectarán retroactivamente derechos ya adquiridos.</p>
+          <p>Si alguna disposición fuera inválida o inaplicable, se interpretará o limitará en la medida necesaria para hacerla válida, sin afectar las demás disposiciones ni reducir derechos irrenunciables.</p>
+        </section>
+
+        <section class="terms-sources">
+          <h3>Fuentes oficiales de referencia</h3>
+          <ul>
+            <li><a href="https://www.argentina.gob.ar/normativa/nacional/42755/actualizacion" target="_blank" rel="noreferrer">Ley 11.723 — Régimen Legal de la Propiedad Intelectual</a></li>
+            <li><a href="https://www.argentina.gob.ar/normativa/nacional/638/actualizacion" target="_blank" rel="noreferrer">Ley 24.240 — Defensa del Consumidor</a></li>
+            <li><a href="https://www.argentina.gob.ar/normativa/nacional/norma-235975/actualizacion" target="_blank" rel="noreferrer">Código Civil y Comercial de la Nación — Ley 26.994</a>, en particular contratación a distancia y derecho de revocación.</li>
+            <li><a href="https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-954-2025-417152/texto" target="_blank" rel="noreferrer">Disposición 954/2025 — Botón de arrepentimiento</a>, complementada por <a href="https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-3-2026-423007/texto" target="_blank" rel="noreferrer">Disposición 3/2026</a>.</li>
+            <li><a href="https://www.argentina.gob.ar/normativa/nacional/ley-25326-64790/texto" target="_blank" rel="noreferrer">Ley 25.326 — Protección de Datos Personales</a>.</li>
+            <li><a href="https://www.mercadopago.com.ar/developers/es/docs/checkout-pro-preferences/create-payment-preference" target="_blank" rel="noreferrer">Mercado Pago Developers — Checkout Pro</a> y <a href="https://www.mercadopago.com.ar/developers/es/docs/checkout-api-orders/payment-management/refunds-cancellations" target="_blank" rel="noreferrer">reembolsos y cancelaciones</a>.</li>
+            <li><a href="https://www.mercadopago.com.ar/privacidad/declaracion-privacidad/current" target="_blank" rel="noreferrer">Declaración de privacidad de Mercado Pago</a>.</li>
+          </ul>
+        </section>
+      </div>
+
+      <footer class="terms-footer">
+        <p>Al continuar, confirmás que leíste estos términos.</p>
+        <button type="button" (click)="close()">Entendido</button>
+      </footer>
+    </section>
+  </div>
+}

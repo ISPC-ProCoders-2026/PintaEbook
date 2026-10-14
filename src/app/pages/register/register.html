@@ -159,10 +159,13 @@
         </div>
       </div>
 
-      <label class="mt-4 flex items-center gap-3 text-[0.94rem] text-[#6b5348]">
-        <input type="checkbox" formControlName="terms" class="h-4 w-4 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]">
-        <span>Acepto los términos y condiciones</span>
-      </label>
+      <div class="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[0.94rem] text-[#6b5348]">
+        <label class="inline-flex cursor-pointer items-center gap-3">
+          <input type="checkbox" formControlName="terms" aria-label="Acepto los términos y condiciones" class="h-4 w-4 rounded-sm border-[#8d7b72] text-[#5d131a] focus:ring-[#b88948]">
+          <span>Acepto</span>
+        </label>
+        <button type="button" class="terms-link" (click)="openTermsModal()">los términos y condiciones</button>
+      </div>
 
       <button type="submit" [disabled]="isLoading" class="mt-6 h-12 w-full rounded-xl bg-[#5d131a] text-[1.32rem] font-semibold text-white transition hover:bg-[#7e1f2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5d131a] disabled:cursor-not-allowed disabled:opacity-60">
         {{ isLoading ? 'Creando cuenta...' : 'Registrarme' }}
@@ -200,3 +203,5 @@
     </form>
   </div>
 </section>
+
+<app-terms-modal [isOpen]="isTermsModalOpen" (closeEvent)="closeTermsModal()"></app-terms-modal>

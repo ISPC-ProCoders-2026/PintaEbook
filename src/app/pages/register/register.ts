@@ -7,6 +7,7 @@ import { RegisterRequest } from '../../models/auth.model';
 import { environment } from '../../../environments/environment.generated';
 import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
 import { ThemeService } from '../../service/theme/theme';
+import { TermsModal } from '../../shared/components/terms-modal/terms-modal';
 
 declare var google: any;
 
@@ -18,7 +19,7 @@ const matchingPasswordsValidator: ValidatorFn = (control: AbstractControl): Vali
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, ReactiveFormsModule, ThemeToggle],
+  imports: [RouterLink, ReactiveFormsModule, ThemeToggle, TermsModal],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -26,6 +27,7 @@ export class Register implements OnInit {
   readonly themeService = inject(ThemeService);
   isLoading = false;
   isGoogleRegistrationInProgress = false;
+  isTermsModalOpen = false;
   errorMessage = '';
   googleMessage = '';
   registerForm;
@@ -48,6 +50,9 @@ export class Register implements OnInit {
   ngOnInit(): void {
     this.initGoogleScript();
   }
+
+  openTermsModal(): void { this.isTermsModalOpen = true; }
+  closeTermsModal(): void { this.isTermsModalOpen = false; }
 
   private initGoogleScript(): void {
     if (typeof google !== 'undefined') {
