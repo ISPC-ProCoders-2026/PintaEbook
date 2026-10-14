@@ -24,6 +24,16 @@
 	color: #f2efe3 !important;
 }
 
+:host-context(.dark) .login-layout a[routerLink='/auth/forgot-password'],
+:host-context(.dark) .login-layout a[routerLink='/register'] {
+	color: #f2efe3 !important;
+}
+
+:host-context(.dark) .login-layout a[routerLink='/auth/forgot-password']:hover,
+:host-context(.dark) .login-layout a[routerLink='/register']:hover {
+	color: #f2da96 !important;
+}
+
 :host-context(.dark) .login-layout input,
 :host-context(.dark) .recovery-input {
 	border-color: #725846 !important;

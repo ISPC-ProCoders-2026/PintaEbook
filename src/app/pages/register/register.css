@@ -22,6 +22,14 @@
   color: #f2efe3 !important;
 }
 
+:host-context(.dark) .login-layout a[routerLink='/login'] {
+  color: #f2efe3 !important;
+}
+
+:host-context(.dark) .login-layout a[routerLink='/login']:hover {
+  color: #f2da96 !important;
+}
+
 :host-context(.dark) .login-layout input {
   border-color: #725846 !important;
   background: #2e211d !important;

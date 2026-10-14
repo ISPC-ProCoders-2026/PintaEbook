@@ -78,6 +78,15 @@ summary,
 	cursor: url('/cursors/pluma.svg') 3 29, pointer !important;
 }
 
+/* La pluma destaca al pasar por un enlace y cambia mientras se mantiene presionado. */
+a[href]:hover {
+	cursor: url('/cursors/pluma-enlace.svg') 3 29, pointer !important;
+}
+
+a[href]:active {
+	cursor: url('/cursors/pluma-presionada.svg') 3 29, pointer !important;
+}
+
 input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='file']),
 textarea,
 [contenteditable='true'],
