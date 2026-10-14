@@ -43,7 +43,7 @@
         @if (loading) { <p role="status">Cargando compras…</p> }
         @else if (error) { <p role="alert">{{ error }}</p><button type="button" (click)="loadPurchases(page)">Reintentar</button> }
         @else {
-        <p>La búsqueda y el orden se aplican a la página actual.</p>
+        <p class="purchases-page-note">La búsqueda y el orden se aplican a la página actual.</p>
         <div class="purchases-table-wrapper">
           <table class="purchases-table" aria-labelledby="purchases-list-title">
             <thead><tr><th scope="col">ID</th><th scope="col">Paquete</th><th scope="col">Fecha</th><th scope="col">Créditos</th><th scope="col">Monto</th><th scope="col">Estado</th></tr></thead>

@@ -22,6 +22,7 @@ input, select { min-height:40px; border:1px solid var(--oak); border-radius:6px;
 input { width: 100%; padding: 0 12px 0 35px; }
 select { padding: 0 10px; }
 .purchases-panel { padding: 24px; }
+.purchases-page-note { margin: 0 0 14px; color: var(--taupe); font-size: 13px; line-height: 1.5; }
 .purchases-panel__heading { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 20px; }
 .purchases-panel h2 { color:var(--ink); font-size:30px; font-weight:650; line-height:.9; letter-spacing:-.025em; }
 .purchases-panel__heading > span { color:var(--taupe); font-size:12px; }
@@ -45,6 +46,7 @@ td strong { color:var(--bordeaux); }
 :host-context(.dark) .purchases-panel__heading > span,
 :host-context(.dark) th,
 :host-context(.dark) .purchases-empty { color:#c7b8aa; }
+:host-context(.dark) .purchases-page-note { color:#fffaf1; }
 :host-context(.dark) input,
 :host-context(.dark) select { border-color:rgba(217,202,179,.25); background:rgba(46,33,29,.82); }
 :host-context(.dark) input::placeholder { color:#a99586; }

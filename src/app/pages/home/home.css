@@ -24,6 +24,8 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 .writing-callout { position: relative; display: grid; grid-template-columns: minmax(0, 650px) 1fr; min-height: 430px; padding: 6.5rem max(1.5rem, calc((100% - 1160px) / 2)); overflow: hidden; background: linear-gradient(115deg, #631b2f, #390a16); color: #fffaf1; }.writing-callout__copy { position: relative; z-index: 1; }.writing-callout h2 { max-width: 620px; margin: 0; font-size: clamp(2.35rem, 4.5vw, 4.25rem); line-height: 1.02; letter-spacing: -.04em; }.writing-callout__copy > p:not(.eyebrow) { max-width: 530px; margin: 1.35rem 0 2rem; color: #e4cfb0; font-size: 1.08rem; line-height: 1.6; }.writing-callout__ornament { position: absolute; right: 8%; bottom: -18%; color: rgba(235, 194, 94, .16); font-family: Georgia, serif; font-size: 28rem; line-height: 1; }
 :host-context(.dark) .hero::before { background: linear-gradient(90deg, rgba(9, 6, 5, .94) 0%, rgba(24, 10, 13, .8) 45%, rgba(20, 9, 11, .35) 80%); }
 :host-context(.dark) .section-intro { color: #c7b8aa; }
+:host-context(.dark) .text-link { color: #e5ab35; }
+:host-context(.dark) .text-link:hover { color: #f2efe3; }
 :host-context(.dark) .category-card { background: #2e211d; color: #f2efe3; }
 :host-context(.dark) .category-card p { color: #c7b8aa; }
 :host-context(.dark) .category-card:hover { background: #721220; }
