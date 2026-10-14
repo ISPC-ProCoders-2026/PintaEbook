@@ -136,6 +136,22 @@ h1, h2, h3 {
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
  outline: 3px solid #946a2f; outline-offset: 4px;
 }
+
+/* Realza los enlaces de texto con un subrayado dorado sutil al interactuar. */
+a[href]:not([role='button']):not(.button):not(.brand) {
+ text-decoration-color: transparent;
+ text-decoration-thickness: 1px;
+ text-underline-offset: 3px;
+ transition: text-decoration-color .18s ease, opacity .12s ease;
+}
+a[href]:not([role='button']):not(.button):not(.brand):hover {
+ text-decoration-line: underline;
+ text-decoration-color: var(--color-gold-600);
+}
+a[href]:not([role='button']):not(.button):not(.brand):active {
+ opacity: .72;
+}
+
 .dark a:focus-visible, .dark button:focus-visible, .dark input:focus-visible, .dark select:focus-visible, .dark [tabindex]:focus-visible {
  outline-color: #f2da96;
 }
