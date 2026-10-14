@@ -212,3 +212,10 @@ estado y navegar entre páginas. La búsqueda por ID y el orden se aplican a la
 página actual. Incluye carga, error con reintento y listado vacío.
 El endpoint devuelve únicamente las compras del usuario autenticado,
 incluso si es administrador; no es un reporte global de ventas.
+
+## Pruebas E2E del frontend
+
+Playwright Test con TypeScript y POM cubre navegación pública/privada,
+créditos del dashboard y planes, usando APIs y checkout simulados.
+Ejecutar `npx playwright install chromium` y `npm run e2e`.
+Consultar [instrucciones y cobertura](e2e/README.md).
