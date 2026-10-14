@@ -4,6 +4,16 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.generated';
 import { LoginRequest, GoogleLoginRequest, AuthResponse } from '../../models/auth.model';
 
+export interface PasswordResetConfirmPayload {
+  email: string;
+  code: string;
+  new_password: string;
+}
+
+export interface PasswordResetResponse {
+  detail: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +33,14 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/google/`, payload).pipe(
       tap(response => this.handleAuthentication(response))
     );
+  }
+
+  requestPasswordReset(email: string): Observable<PasswordResetResponse> {
+    return this.http.post<PasswordResetResponse>(`${this.apiUrl}/password-reset/request/`, { email });
+  }
+
+  confirmPasswordReset(payload: PasswordResetConfirmPayload): Observable<PasswordResetResponse> {
+    return this.http.post<PasswordResetResponse>(`${this.apiUrl}/password-reset/confirm/`, payload);
   }
 
   private handleAuthentication(response: AuthResponse): void {

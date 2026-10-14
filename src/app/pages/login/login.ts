@@ -18,7 +18,6 @@ declare var google: any;
 })
 export class Login implements OnInit {
   readonly themeService = inject(ThemeService);
-  isRecoveryModalOpen = false;
   isLoading = false;
   isGoogleLoginInProgress = false;
   errorMessage = '';
@@ -88,14 +87,6 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.googleMessage = 'Elegí la cuenta de Google con la que querés continuar.';
     google.accounts.id.prompt();
-  }
-
-  openRecoveryModal(): void {
-    this.isRecoveryModalOpen = true;
-  }
-
-  closeRecoveryModal(): void {
-    this.isRecoveryModalOpen = false;
   }
 
   onSubmit(): void {
