@@ -165,3 +165,28 @@ button, input, select { font: inherit; }
   .ebook-card, .ebooks-primary-action { transition: none; }
   .ebook-card:hover, .ebooks-primary-action:hover { transform: none; }
 }
+
+.ebook-card__actions { display: grid; justify-items: end; gap: 9px; }
+.ebook-export-action { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 12px; border: 1px solid #80520b; border-radius: 6px; background: #fffaf0; color: #68420a; cursor: pointer; font-size: 12px; font-weight: 700; white-space: nowrap; transition: background .2s ease, border-color .2s ease; }
+.ebook-export-action:hover:not(:disabled) { border-color: #5e0b15; background: #f5ead6; color: #5e0b15; }
+.ebook-export-action:disabled { cursor: wait; opacity: .75; }
+.ebook-export-action svg { width: 16px; height: 16px; }
+.ebook-export-action__spinner { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: ebook-export-spin .7s linear infinite; }
+.ebook-export-error { grid-column: 2 / -1; justify-self: end; max-width: 100%; margin: -7px 0 0; color: #8a1b2a; font-size: 12px; line-height: 1.4; text-align: right; }
+.ebook-export-success { grid-column: 2 / -1; justify-self: end; max-width: 100%; margin: -7px 0 0; color: #286344; font-size: 12px; line-height: 1.4; text-align: right; }
+.ebook-export-action:focus-visible { outline: 3px solid #946a2f; outline-offset: 3px; }
+:host-context(.dark) .ebook-export-action { border-color: #d8b76f; background: #453a2b; color: #ffe0a6; }
+:host-context(.dark) .ebook-export-action:hover:not(:disabled) { border-color: #f0b2b7; background: #4b3030; color: #fff8ef; }
+:host-context(.dark) .ebook-export-error { color: #ffd1ce; }
+:host-context(.dark) .ebook-export-success { color: #bce6ca; }
+:host-context(.dark) .ebook-export-action:focus-visible { outline-color: #ffd27a; }
+@keyframes ebook-export-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 680px) {
+  .ebook-card__actions { grid-column: 2; justify-items: start; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 0; }
+  .ebook-open-action { margin-top: 0; }
+  .ebook-export-action { min-height: 40px; }
+  .ebook-export-error { grid-column: 1 / -1; justify-self: start; margin: 0; text-align: left; }
+  .ebook-export-success { grid-column: 1 / -1; justify-self: start; margin: 0; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .ebook-export-action, .ebook-export-action__spinner { transition: none; animation: none; } }

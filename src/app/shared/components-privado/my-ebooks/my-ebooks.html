@@ -69,7 +69,34 @@
             <div class="ebook-progress-label"><span>Progreso del manuscrito</span><strong>{{ ebook.progress }}%</strong></div>
             <div class="ebook-progress" role="progressbar" [attr.aria-label]="'Progreso de ' + ebook.title" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="ebook.progress"><span [style.width.%]="ebook.progress"></span></div>
           </div>
-          <button type="button" class="ebook-open-action" (click)="openEbook.emit(ebook)">Abrir Editor <span aria-hidden="true">→</span></button>
+          <div class="ebook-card__actions">
+            <button type="button" class="ebook-open-action" (click)="openEbook.emit(ebook)">Abrir Editor <span aria-hidden="true">→</span></button>
+            @if (ebook.status === 'Finalizado') {
+              <button
+                type="button"
+                class="ebook-export-action"
+                [disabled]="exportingEbookId === ebook.ebook_id"
+                [attr.aria-busy]="exportingEbookId === ebook.ebook_id"
+                (click)="exportEpub(ebook)">
+                @if (exportingEbookId === ebook.ebook_id) {
+                  <span class="ebook-export-action__spinner" aria-hidden="true"></span>
+                  Preparando EPUB…
+                } @else if (exportStartedId === ebook.ebook_id) {
+                  <span aria-hidden="true">✓</span>
+                  Descarga iniciada
+                } @else {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 16v4h14v-4"/></svg>
+                  Exportar EPUB
+                }
+              </button>
+            }
+          </div>
+          @if (exportError && exportError.ebookId === ebook.ebook_id) {
+            <p class="ebook-export-error" role="alert">{{ exportError.message }}</p>
+          }
+          @if (exportStartedId === ebook.ebook_id) {
+            <p class="ebook-export-success" role="status" aria-live="polite">La descarga se inició. Revisá las descargas de tu navegador.</p>
+          }
         </article>
         }
       } @else {

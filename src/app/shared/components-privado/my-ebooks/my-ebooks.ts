@@ -1,10 +1,13 @@
 import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { timeout } from 'rxjs';
 
 import { EbookMetadataResponse } from '../../../models/ebook.model';
 import { EbooksService } from '../../../service/ebooks/ebooks';
+import { AuthService } from '../../../service/login/login';
 
 export interface EbookSummary {
   ebook_id: string;
@@ -31,6 +34,8 @@ export class MyEbooks implements OnInit {
   private readonly ebooksService = inject(EbooksService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   searchTerm = '';
   selectedStatus = 'Todos';
@@ -38,6 +43,9 @@ export class MyEbooks implements OnInit {
   ebooks: EbookSummary[] = [];
   isLoading = true;
   loadError = '';
+  exportingEbookId: string | null = null;
+  exportStartedId: string | null = null;
+  exportError: { ebookId: string; message: string } | null = null;
 
   ngOnInit(): void {
     this.loadEbooks();
@@ -86,6 +94,53 @@ export class MyEbooks implements OnInit {
     this.searchTerm = '';
     this.selectedStatus = 'Todos';
     this.sortBy = 'Última edición';
+  }
+
+  exportEpub(ebook: EbookSummary): void {
+    if (ebook.status !== 'Finalizado' || this.exportingEbookId) return;
+    this.exportingEbookId = ebook.ebook_id;
+    this.exportStartedId = null;
+    this.exportError = null;
+    this.changeDetector.detectChanges();
+
+    this.ebooksService.exportEpub(ebook.ebook_id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ blob, filename }) => {
+          const downloadUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = filename;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+          this.exportingEbookId = null;
+          this.exportStartedId = ebook.ebook_id;
+          this.changeDetector.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.exportingEbookId = null;
+          this.changeDetector.detectChanges();
+          if (error.status === 401) {
+            this.authService.logout();
+            void this.router.navigate(['/login']);
+            return;
+          }
+          this.exportError = { ebookId: ebook.ebook_id, message: this.exportErrorMessage(error.status) };
+          this.changeDetector.detectChanges();
+        }
+      });
+  }
+
+  private exportErrorMessage(status: number): string {
+    switch (status) {
+      case 404: return 'No se encontró este e-book o su contenido todavía no está disponible.';
+      case 409: return 'Este e-book todavía no está listo para exportar. Esperá a que termine la generación.';
+      case 503: return 'No se pudo acceder al contenido ahora. Probá de nuevo más tarde.';
+      default: return 'No se pudo exportar el EPUB. Revisá tu conexión e intentá nuevamente.';
+    }
   }
 
   private toSummary(item: EbookMetadataResponse): EbookSummary {

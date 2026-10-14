@@ -90,6 +90,32 @@ export class EbooksService {
     );
   }
 
+  /** Descarga el EPUB generado por el backend usando la autenticación JWT. */
+  exportEpub(ebookId: string): Observable<{ blob: Blob; filename: string }> {
+    return this.http.get(`${this.apiUrl}${encodeURIComponent(ebookId)}/export/epub/`, {
+      headers: this.authHeaders(),
+      observe: 'response',
+      responseType: 'blob'
+    }).pipe(map((response) => ({
+      blob: response.body ?? new Blob([], { type: 'application/epub+zip' }),
+      filename: this.filenameFrom(response.headers.get('Content-Disposition'))
+    })));
+  }
+
+  private filenameFrom(contentDisposition: string | null): string {
+    if (!contentDisposition) return 'ebook.epub';
+    const utf8Match = contentDisposition.match(/filename\*\s*=\s*UTF-8''([^;]+)/i);
+    const regularMatch = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
+    const rawFilename = utf8Match?.[1] ?? regularMatch?.[1];
+    if (!rawFilename) return 'ebook.epub';
+    try {
+      const decoded = decodeURIComponent(rawFilename.trim());
+      return decoded.toLowerCase().endsWith('.epub') ? decoded : `${decoded}.epub`;
+    } catch {
+      return 'ebook.epub';
+    }
+  }
+
   private getEbookPage(url: string): Observable<{ items: EbookMetadataResponse[]; next: string | null }> {
     return this.http
       .get<EbookMetadataResponse[] | PaginatedEbookMetadataResponse>(url, {
