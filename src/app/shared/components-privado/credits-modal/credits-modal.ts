@@ -1,4 +1,4 @@
-﻿import { AfterViewChecked, ElementRef, ViewChild, Component, Input, Output, EventEmitter, OnChanges, OnDestroy, inject, signal } from '@angular/core';
+﻿import { AfterViewChecked, ElementRef, ViewChild, Component, Input, Output, EventEmitter, OnChanges, OnDestroy, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { CreditPackage } from '../../../models/billing.model';
@@ -43,6 +43,17 @@ export class CreditsModal implements OnChanges, OnDestroy, AfterViewChecked {
   readonly error = signal('');
   readonly selectedPlan = signal<string | null>(null);
   isAnnual = false;
+  private checkoutRedirectStarted = false;
+
+  @HostListener('window:pageshow')
+  @HostListener('window:focus')
+  restoreCheckoutAvailability(): void {
+    if (!this.checkoutRedirectStarted) return;
+    this.checkoutRedirectStarted = false;
+    this.buyingId.set(null);
+    this.loading.set(false);
+    this.selectedPlan.set(null);
+  }
   toggleBilling(): void { this.isAnnual = !this.isAnnual; }
   selectPlan(plan: string): void {
     if (this.buyingId() !== null || this.loading()) return;
@@ -93,6 +104,7 @@ export class CreditsModal implements OnChanges, OnDestroy, AfterViewChecked {
           if (url.protocol !== 'https:' || !(url.hostname === 'mercadopago.com.ar' || url.hostname.endsWith('.mercadopago.com.ar'))) throw new Error('Invalid checkout URL');
           this.redirectToCheckout(url.href);
         } catch {
+          this.checkoutRedirectStarted = false;
           this.buyingId.set(null);
           this.error.set('No pudimos abrir Mercado Pago. Intentá nuevamente.');
         }
@@ -100,7 +112,10 @@ export class CreditsModal implements OnChanges, OnDestroy, AfterViewChecked {
       error: err => { this.buyingId.set(null); this.error.set(billingError(err.status)); }
     }));
   }
-  redirectToCheckout(url: string): void { window.location.assign(url); }
+  redirectToCheckout(url: string): void {
+    this.checkoutRedirectStarted = true;
+    window.location.assign(url);
+  }
   close(): void {
     if (this.buyingId() !== null) return;
     const dialog = this.dialog?.nativeElement;
