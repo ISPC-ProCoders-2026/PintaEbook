@@ -11,8 +11,11 @@ type MockApi = {
   balanceStatus: number;
   packagesStatus: number;
   checkoutStatus: number;
+  loginStatus: number;
+  registerStatus: number;
   packages: typeof packages;
   checkouts: unknown[];
+  registrations: unknown[];
   unexpected: string[];
 };
 
@@ -24,7 +27,8 @@ export const test = base.extend<{
   api: [async ({ page }, use) => {
     const api: MockApi = {
       balance: 275, balanceStatus: 200, packagesStatus: 200,
-      checkoutStatus: 503, packages: [...packages], checkouts: [], unexpected: [],
+      checkoutStatus: 503, loginStatus: 200, registerStatus: 201,
+      packages: [...packages], checkouts: [], registrations: [], unexpected: [],
     };
     // Every API request is intercepted; unknown endpoints fail the test.
     await page.route('**/api/**', async route => {
@@ -44,7 +48,12 @@ export const test = base.extend<{
       } else if (path.endsWith('/ebooks/')) {
         json = [];
       } else if (path.endsWith('/auth/login/')) {
-        json = { access: 'e2e-access', refresh: 'e2e-refresh', user: { id: '1', role: 'writer' } };
+        status = api.loginStatus;
+        json = status >= 400 ? { detail: 'Credenciales inválidas' } : { access: 'e2e-access', refresh: 'e2e-refresh', user: { id: '1', role: 'writer' } };
+      } else if (path.endsWith('/auth/register/')) {
+        api.registrations.push(route.request().postDataJSON());
+        status = api.registerStatus;
+        json = status >= 400 ? { detail: 'Correo ya registrado' } : { access: 'e2e-access', refresh: 'e2e-refresh', user: { id: '1', role: 'writer' } };
       } else {
         api.unexpected.push(`${route.request().method()} ${path}`);
         status = 500;
