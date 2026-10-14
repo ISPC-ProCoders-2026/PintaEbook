@@ -57,6 +57,32 @@ body {
 	background: var(--page-background);
 	color: var(--page-text);
 	font-family: var(--font-body);
+	cursor: url('/cursors/pluma.svg') 3 29, auto;
+}
+
+/* Cursor de pluma para acciones; mantiene los cursores de edición y estados del navegador. */
+a[href],
+button:not(:disabled),
+input[type='button']:not(:disabled),
+input[type='submit']:not(:disabled),
+input[type='reset']:not(:disabled),
+input[type='checkbox']:not(:disabled),
+input[type='radio']:not(:disabled),
+input[type='file']:not(:disabled),
+select:not(:disabled),
+label[for],
+summary,
+[role='button']:not([aria-disabled='true']),
+[role='link'],
+[class~='cursor-pointer'] {
+	cursor: url('/cursors/pluma.svg') 3 29, pointer !important;
+}
+
+input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='file']),
+textarea,
+[contenteditable='true'],
+[role='textbox'] {
+	cursor: text !important;
 }
 
 h1, h2, h3 {
