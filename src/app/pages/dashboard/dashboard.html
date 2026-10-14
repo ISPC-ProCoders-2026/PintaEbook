@@ -11,7 +11,7 @@
   <div class="dashboard-page">
     <app-private-navbar
       [isAdmin]="isAdmin"
-      [sectionName]="activeSection === 'ebook-editor' ? 'editor' : activeSection"
+      [sectionName]="activeSection === 'ebook-editor' ? 'ebooks' : activeSection"
       (navigationEvent)="handleSidebarNavigation($event)"
       (logoutEvent)="logout()"
       (brandClickEvent)="setActiveSection('dashboard')">
@@ -25,8 +25,6 @@
       <app-profile></app-profile>
     } @else if (activeSection === 'new-ebook') {
       <app-new-ebook (generationSucceeded)="handleGenerationSuccess()"></app-new-ebook>
-    } @else if (activeSection === 'editor' || (activeSection === 'ebook-editor' && !selectedEbook)) {
-      <app-static-ebook-editor [ebook]="selectedEbook" (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
     } @else if (activeSection === 'ebook-editor') {
       <app-static-ebook-editor [ebook]="selectedEbook" (backToLibrary)="setActiveSection('ebooks')"></app-static-ebook-editor>
     } @else {
@@ -72,7 +70,7 @@
                 <p>{{ ebook.description || 'Este proyecto todavía no tiene una descripción.' }}</p>
                 @if (ebook.updatedAt) { <p class="current-book__updated">Última actualización: {{ ebook.updatedAt }}</p> }
                 @if (ebook.status === 'Finalizado') {
-                  <button type="button" class="continue-button" (click)="openEbook(ebook)">Abrir editor <span aria-hidden="true">→</span></button>
+                  <button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Abrir en Mis Ebooks <span aria-hidden="true">→</span></button>
                 } @else {
                   <button type="button" class="continue-button" (click)="setActiveSection('ebooks')">Ver estado del proyecto <span aria-hidden="true">→</span></button>
                 }

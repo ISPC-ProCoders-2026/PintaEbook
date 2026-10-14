@@ -45,13 +45,11 @@ export class NavbarPrivado {
   ];
 
   readonly writingNavigation: NavigationItem[] = [
-    { id: 'new-ebook', label: 'Nuevo Ebook', icon: ['M12 5v14M5 12h14', 'M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z'] },
-    { id: 'editor', label: 'Editor', icon: ['m4 20 4.2-1 10.4-10.4a2.1 2.1 0 0 0-3-3L5.2 15.9z', 'm13.8 7.4 2.8 2.8'] },
+    { id: 'new-ebook', label: 'Nuevo Ebook', icon: ['m4 20 4.2-1 10.4-10.4a2.1 2.1 0 0 0-3-3L5.2 15.9z', 'm13.8 7.4 2.8 2.8'] },
   ];
 
   readonly resourceNavigation: NavigationItem[] = [
-    { id: 'credits', label: 'Comprar créditos', icon: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'm9 12 2 2 4-4'] },
-    { id: 'buy-credits', label: 'Comprar planes', icon: ['M3 3h2l2.2 12.2a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 1.9-1.4L20 8H6.2', 'M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'] },
+    { id: 'credits', label: 'Comprar créditos', icon: ['M3 3h2l2.2 12.2a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 1.9-1.4L20 8H6.2', 'M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'] },
     { id: 'purchase-history', label: 'Historial de compras', icon: ['M4 4h16v16H4z', 'M8 8h8M8 12h8M8 16h5'] },
   ];
 

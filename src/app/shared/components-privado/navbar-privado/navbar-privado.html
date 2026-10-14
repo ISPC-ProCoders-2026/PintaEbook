@@ -17,7 +17,7 @@
         <span class="brand__mark"><img src="/img/logos/logo1_acortado.png" alt="PintaEbook" width="160" height="56" /></span>
       </button>
 
-      <nav class="sidebar__nav">
+      <nav class="sidebar__nav" aria-label="Navegación principal">
         <section class="nav-group" aria-labelledby="library-title">
           <h2 id="library-title">Mis libros</h2>
           @for (item of libraryNavigation; track item.id) {
@@ -37,7 +37,7 @@
           }
         </section>
         <section class="nav-group" aria-labelledby="resource-title">
-          <h2 id="resource-title">Planes</h2>
+          <h2 id="resource-title">Créditos y compras</h2>
           @for (item of resourceNavigation; track item.id) {
             <button type="button" class="nav-link" [class.nav-link--active]="sectionName === item.id" [attr.aria-current]="sectionName === item.id ? 'page' : null" (click)="setActiveSection(item.id)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">@for (path of item.icon; track path) { <path [attr.d]="path"></path> }</svg>
@@ -48,11 +48,11 @@
         @if (isAdmin) {
           <section class="nav-group" aria-labelledby="admin-title">
             <h2 id="admin-title">Administrador</h2>
-            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === 'metrics'" (click)="openAdminMetrics()" aria-label="Ver métricas">
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === 'metrics'" [attr.aria-current]="sectionName === 'metrics' ? 'page' : null" (click)="openAdminMetrics()" aria-label="Ver métricas">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7"/></svg>
               Métricas
             </button>
-            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === 'purchases'" (click)="openAdminPurchases()" aria-label="Consultar compras">
+            <button type="button" class="nav-link" [class.nav-link--active]="sectionName === 'purchases'" [attr.aria-current]="sectionName === 'purchases' ? 'page' : null" (click)="openAdminPurchases()" aria-label="Consultar compras">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
               Compras
             </button>
@@ -83,7 +83,7 @@
     (click)="toggleSidebar()"
     [attr.aria-expanded]="isSidebarOpen" 
     aria-controls="dashboard-sidebar" 
-    aria-label="Abrir menú">
+    [attr.aria-label]="isSidebarOpen ? 'Cerrar menú' : 'Abrir menú'">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
       <path d="M4 7h16M4 12h16M4 17h16"/>
     </svg>

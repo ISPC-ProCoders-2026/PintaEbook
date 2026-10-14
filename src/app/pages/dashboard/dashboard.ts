@@ -51,9 +51,16 @@ export class Dashboard implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.subscriptions.add(this.activatedRoute.queryParamMap.subscribe((params) => {
       const section = params.get('section') ?? 'dashboard';
+      const canonicalSection = section === 'editor' ? 'ebooks'
+        : section === 'buy-credits' ? 'credits'
+          : section === 'ebook-editor' && !this.selectedEbook ? 'ebooks' : section;
+      if (canonicalSection !== section) {
+        void this.router.navigate(['/dashboard'], { queryParams: { section: canonicalSection }, replaceUrl: true });
+        return;
+      }
       this.activeSection = section;
-      this.isCreditsModalOpen = section === 'credits' || section === 'buy-credits';
-      this.creditsModalMode = section === 'buy-credits' ? 'plans' : 'credits';
+      this.isCreditsModalOpen = section === 'credits';
+      this.creditsModalMode = 'credits';
       if (section === 'dashboard') this.loadDashboardEbooks();
       this.changeDetector.markForCheck();
     }));
@@ -135,7 +142,6 @@ export class Dashboard implements OnDestroy, OnInit {
   }
 
   handleSidebarNavigation(section: string): void {
-    if (section === 'editor') this.selectedEbook = null;
     this.handleNavigation(section);
   }
 
