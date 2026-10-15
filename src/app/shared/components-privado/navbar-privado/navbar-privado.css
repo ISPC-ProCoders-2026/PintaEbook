@@ -336,3 +336,10 @@ button { font: inherit; }
 }
 .spine-plate i::before { right: 8px; }
 .spine-plate i::after { left: 8px; }
+
+.credits-indicator { display:inline-flex; flex:0 0 auto; align-items:center; gap:5px; min-height:35px; padding:0 10px; border:1px solid rgba(188,128,52,.35); border-radius:999px; background:rgba(188,128,52,.1); color:#5e0b15; white-space:nowrap; }
+.credits-indicator svg { width:15px; height:15px; }
+.credits-indicator strong { font-size:12px; font-weight:700; }
+.credits-indicator__label { font-size:11px; font-weight:600; }
+:host-context(.dark) .credits-indicator { border-color:rgba(229,171,53,.4); background:rgba(188,128,52,.14); color:#f0c45e; }
+@media (max-width:680px) { .credits-indicator { min-height:32px; gap:4px; padding:0 8px; }.credits-indicator__label { font-size:10px; } }

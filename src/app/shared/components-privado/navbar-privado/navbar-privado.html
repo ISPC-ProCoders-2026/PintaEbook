@@ -95,6 +95,14 @@
   </div>
   
   <div class="topbar__actions">
+    <div class="credits-indicator" role="status" [attr.aria-label]="'Créditos disponibles: ' + (creditsAvailable ?? 'sin datos')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M15.5 8.5c-.7-.6-1.7-.9-2.8-.9-1.6 0-2.7.8-2.7 2s1 1.8 2.5 2.2 2.7.9 2.7 2.2-1.1 2.2-2.9 2.2c-1.1 0-2.2-.4-3-1.1M12.5 6v12"></path>
+      </svg>
+      <strong>{{ creditsAvailable ?? '—' }}</strong>
+      <span class="credits-indicator__label">créditos</span>
+    </div>
     <app-theme-toggle></app-theme-toggle>
     <button type="button" class="icon-button icon-button--notification" aria-label="Notificaciones">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">

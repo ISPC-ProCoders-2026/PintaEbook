@@ -159,6 +159,7 @@ export class Dashboard implements OnDestroy, OnInit {
     // La generación se inicia en "Nuevo Ebook"; dejarla allí permite revisar
     // la obra. Mis E-books consultará la colección al abrirse.
     this.successMessage = 'E-book creado con éxito';
+    this.loadCreditBalance();
     window.clearTimeout(this.successToastTimer);
     this.successToastTimer = window.setTimeout(() => {
       this.successMessage = '';

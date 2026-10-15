@@ -12,6 +12,7 @@
     <app-private-navbar
       [isAdmin]="isAdmin"
       [sectionName]="activeSection === 'ebook-editor' ? 'ebooks' : activeSection"
+      [creditsAvailable]="creditBalance()?.credits_available ?? null"
       (navigationEvent)="handleSidebarNavigation($event)"
       (logoutEvent)="logout()"
       (brandClickEvent)="setActiveSection('dashboard')">

@@ -18,6 +18,7 @@ type NavigationItem = {
 export class NavbarPrivado {
   @Input() isAdmin = false;
   @Input() sectionName: string = 'Dashboard';
+  @Input() creditsAvailable: number | null = null;
   @Output() navigationEvent = new EventEmitter<string>();
   @Output() logoutEvent = new EventEmitter<void>();
   @Output() brandClickEvent = new EventEmitter<void>();
