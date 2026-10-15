@@ -26,7 +26,7 @@ export class NavbarPrivado {
   isSidebarOpen = false;
   isMobile = typeof window !== 'undefined' && window.innerWidth <= 860;
   get sectionLabel(): string {
-    return [...this.libraryNavigation, ...this.writingNavigation, ...this.resourceNavigation, ...this.accountNavigation]
+    return [...this.libraryNavigation, ...this.resourceNavigation, ...this.accountNavigation]
       .find(item => item.id === this.sectionName)?.label
       ?? ({ purchases: 'Compras', metrics: 'Métricas' } as Record<string, string>)[this.sectionName]
       ?? this.sectionName;
@@ -43,11 +43,9 @@ export class NavbarPrivado {
   readonly libraryNavigation: NavigationItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: ['M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5z', 'M9 20v-6h6v6'] },
     { id: 'ebooks', label: 'Mis Ebooks', icon: ['M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5z', 'M5 4.5V20.5', 'M8.5 6H15'] },
-  ];
-
-  readonly writingNavigation: NavigationItem[] = [
     { id: 'new-ebook', label: 'Nuevo Ebook', icon: ['m4 20 4.2-1 10.4-10.4a2.1 2.1 0 0 0-3-3L5.2 15.9z', 'm13.8 7.4 2.8 2.8'] },
   ];
+
 
   readonly resourceNavigation: NavigationItem[] = [
     { id: 'buy-credits', label: 'Comprar planes', icon: ['M4 4h16v16H4z', 'M8 8h8M8 12h8M8 16h5'] },
