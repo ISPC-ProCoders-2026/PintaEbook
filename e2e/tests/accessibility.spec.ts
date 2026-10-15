@@ -32,40 +32,49 @@ test('test_ebooks_dashboard_a11y', async ({ api, dashboard, page }) => {
     return String(index);
   }));
 
-  const assertKeyboardFocusVisible = async () => {
-    const active = page.locator(':focus');
-    await expect(active).toHaveAttribute('data-e2e-focus-index', /\d+/);
-    const styles = await active.evaluate((element) => {
-      const style = getComputedStyle(element);
-      return { focusVisible: element.matches(':focus-visible'), outlineStyle: style.outlineStyle, outlineWidth: style.outlineWidth };
-    });
-    expect(styles.focusVisible, 'El control debe mostrar foco al navegar con teclado').toBe(true);
-    expect(styles.outlineStyle).not.toBe('none');
-    expect(parseFloat(styles.outlineWidth)).toBeGreaterThan(0);
+  const traverseAndAssertFocus = async (key: 'Tab' | 'Shift+Tab', resetFocus = false) => {
+    const visited = new Set<string>();
+    if (resetFocus) {
+      // Start Tab from the document after the navigation click and axe scan.
+      await page.evaluate(() => {
+        document.body.setAttribute('tabindex', '-1');
+        document.body.focus();
+      });
+    } else {
+      // The forward pass ends on the last control. Seed it so Shift+Tab can
+      // verify the complete reverse order without moving focus programmatically.
+      const currentIndex = await page.evaluate(() =>
+        document.activeElement?.getAttribute('data-e2e-focus-index') ?? null);
+      expect(currentIndex).not.toBeNull();
+      visited.add(currentIndex!);
+    }
+
+    for (let step = 0; step < controlCount && visited.size < ids.length; step++) {
+      await page.keyboard.press(key);
+      const focusState = await page.evaluate(() => {
+        const active = document.activeElement as HTMLElement | null;
+        if (!active || active === document.body || active === document.documentElement) return null;
+        const style = getComputedStyle(active);
+        return {
+          index: active.getAttribute('data-e2e-focus-index'),
+          focusVisible: active.matches(':focus-visible'),
+          outlineStyle: style.outlineStyle,
+          outlineWidth: style.outlineWidth,
+        };
+      });
+      expect(focusState, `Tab debe mover el foco a un control (${key})`).not.toBeNull();
+      const state = focusState!;
+      expect(state.index, 'El foco debe estar en uno de los controles inspeccionados').not.toBeNull();
+      expect(state.focusVisible, 'El foco de teclado debe ser visible').toBe(true);
+      expect(state.outlineStyle).not.toBe('none');
+      expect(parseFloat(state.outlineWidth)).toBeGreaterThan(0);
+      visited.add(state.index!);
+    }
+    expect([...visited].sort()).toEqual([...ids].sort());
   };
 
-  // Recorre hacia delante toda la secuencia tabulable, incluidos los botones
-  // de cada tarjeta; cada foco debe tener un indicador visible.
-  const visitedForward = new Set<string>();
-  for (let step = 0; step < controlCount * 2 && visitedForward.size < ids.length; step++) {
-    await page.keyboard.press('Tab');
-    const index = await page.locator(':focus').getAttribute('data-e2e-focus-index');
-    if (index !== null) {
-      visitedForward.add(index);
-      await assertKeyboardFocusVisible();
-    }
-  }
-  expect([...visitedForward].sort()).toEqual(ids);
-
-  // Desde el final, recorre la secuencia inversa con Shift+Tab.
-  const visitedBackward = new Set<string>();
-  for (let step = 0; step < controlCount * 2 && visitedBackward.size < ids.length; step++) {
-    await page.keyboard.press('Shift+Tab');
-    const index = await page.locator(':focus').getAttribute('data-e2e-focus-index');
-    if (index !== null) {
-      visitedBackward.add(index);
-      await assertKeyboardFocusVisible();
-    }
-  }
-  expect([...visitedBackward].sort()).toEqual(ids);
+  // Recorre controles, incluidos los botones de acción de cada tarjeta, en
+  // ambos sentidos y exige un indicador visible en cada parada.
+  await traverseAndAssertFocus('Tab', true);
+  await traverseAndAssertFocus('Shift+Tab');
 });
