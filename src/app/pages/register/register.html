@@ -40,6 +40,10 @@
 
   <div class="relative flex items-center justify-center px-6 py-10 sm:px-10 lg:h-full lg:px-16 lg:py-8">
     <form class="w-full max-w-xl" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+      <a routerLink="/" class="register-home-link mb-7 inline-flex min-h-11 items-center gap-2 lg:hidden">
+        <span aria-hidden="true">←</span>
+        Volver a inicio
+      </a>
       <p class="text-[0.82rem] font-semibold uppercase tracking-[0.24em] text-[#ba8b45]">Registro</p>
       <h1 class="mt-3 font-[Georgia,Times_New_Roman,serif] text-[2.7rem] font-semibold leading-none text-[#3d1718]">Crear cuenta</h1>
       <p class="mt-3 text-[1.02rem] text-[#66544c]">Empieza a escribir tu próximo proyecto.</p>
