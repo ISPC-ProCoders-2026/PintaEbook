@@ -87,6 +87,7 @@ button { font: inherit; }
   display: flex;
   gap: 10px;
   margin-left: auto;
+  margin-right: -8px;
 }
 
 .icon-button, .menu-toggle {
