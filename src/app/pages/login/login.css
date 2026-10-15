@@ -116,6 +116,30 @@
 	color: #8b5d24;
 }
 
+.auth-home-link {
+	color: #5d131a;
+	font-family: 'Cormorant Garamond', Georgia, serif;
+	font-size: 1.15rem;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.auth-home-link:hover {
+	color: #8c2832;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.auth-home-link:focus-visible {
+	outline: 3px solid #5d131a;
+	outline-offset: 3px;
+	border-radius: 3px;
+}
+
+:host-context(.dark) .auth-home-link {
+	color: #f0b6bd;
+}
+
 .login-ribbon {
 	position: relative;
 	width: 2.05rem;

@@ -99,7 +99,7 @@
   color: #8b5d24;
 }
 
-.register-home-link {
+.auth-home-link {
   color: #5d131a;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.15rem;
@@ -107,19 +107,19 @@
   text-decoration: none;
 }
 
-.register-home-link:hover {
+.auth-home-link:hover {
   color: #8c2832;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.register-home-link:focus-visible {
+.auth-home-link:focus-visible {
   outline: 3px solid #5d131a;
   outline-offset: 3px;
   border-radius: 3px;
 }
 
-:host-context(.dark) .register-home-link {
+:host-context(.dark) .auth-home-link {
   color: #f0b6bd;
 }
 
