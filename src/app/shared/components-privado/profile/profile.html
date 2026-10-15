@@ -5,6 +5,13 @@
       <h1 id="profile-title">Perfil</h1>
       <p>Los datos que acompañan tu recorrido editorial.</p>
     </div>
+    <button class="profile-edit-button" type="button" [disabled]="!profile || isLoading" (click)="openEditDialog()" aria-label="Editar perfil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="m19.4 15 .1.1 1.3 1-1.3 2.2-1.6-.6a8 8 0 0 1-1.4.8l-.3 1.7h-2.6l-.3-1.7a8 8 0 0 1-1.4-.8l-1.6.6L7 16.1l1.3-1a8 8 0 0 1 0-1.7l-1.3-1 1.3-2.2 1.6.6a8 8 0 0 1 1.4-.8l.3-1.7h2.6l.3 1.7a8 8 0 0 1 1.4.8l1.6-.6 1.3 2.2-1.3 1a8 8 0 0 1-.1 1.6z" transform="translate(-1 -2) scale(1.08)"></path>
+      </svg>
+      <span>Editar perfil</span>
+    </button>
   </section>
 
   @if (isLoading) {
@@ -42,4 +49,41 @@
       </article>
     </section>
   }
+
+  @if (saveMessage) {
+    <p class="profile-save-message" role="status" aria-live="polite">{{ saveMessage }}</p>
+  }
+
+  <dialog #profileDialog class="profile-modal" aria-labelledby="profile-edit-title">
+    <form class="profile-modal__form" (ngSubmit)="saveProfile()">
+      <div class="profile-modal__heading">
+        <div><p class="profile-eyebrow">Datos personales</p><h2 id="profile-edit-title">Editar perfil</h2></div>
+        <button class="profile-modal__close" type="button" (click)="closeEditDialog()" aria-label="Cerrar">×</button>
+      </div>
+
+      <label class="profile-modal__field">
+        <span>Nombre</span>
+        <input name="first_name" [(ngModel)]="profileDraft.first_name" autocomplete="given-name" required maxlength="100">
+      </label>
+      <label class="profile-modal__field">
+        <span>Apellido</span>
+        <input name="last_name" [(ngModel)]="profileDraft.last_name" autocomplete="family-name" required maxlength="100">
+      </label>
+      <label class="profile-modal__field">
+        <span>Correo electrónico</span>
+        <input name="email" type="email" [(ngModel)]="profileDraft.email" autocomplete="email" required maxlength="254">
+      </label>
+
+      @if (saveError) {
+        <p class="profile-modal__error" role="alert">{{ saveError }}</p>
+      }
+
+      <div class="profile-modal__actions">
+        <button class="profile-modal__cancel" type="button" [disabled]="isSaving" (click)="closeEditDialog()">Cancelar</button>
+        <button class="profile-modal__save" type="submit" [disabled]="isSaving">
+          {{ isSaving ? 'Guardando…' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  </dialog>
 </main>

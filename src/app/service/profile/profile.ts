@@ -17,4 +17,11 @@ export class ProfileService {
 
     return this.http.get<UserProfile>(this.apiUrl, { headers }).pipe(timeout(8000));
   }
+
+  updateProfile(profile: Pick<UserProfile, 'first_name' | 'last_name' | 'email'>): Observable<Partial<UserProfile>> {
+    const token = localStorage.getItem('token');
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+
+    return this.http.patch<Partial<UserProfile>>(this.apiUrl, profile, { headers }).pipe(timeout(8000));
+  }
 }
