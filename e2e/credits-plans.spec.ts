@@ -79,8 +79,9 @@ for (const [name, id] of [['Escritor', 2], ['Editorial', 3]] as const) {
 
 test('plan sin paquete disponible muestra error sin iniciar checkout', async ({ api, dashboard }) => {
   api.packages = [];
-  await dashboard.goto('buy-credits');
-  await dashboard.dialog.getByRole('button', { name: 'Comprar con Mercado Pago' }).first().click();
+  await dashboard.goto();
+  await dashboard.navigate('Comprar planes');
+  await dashboard.plan('Escritor').getByRole('button', { name: 'Comprar con Mercado Pago' }).click();
   await expect(dashboard.dialog.getByRole('alert')).toContainText('no está disponible');
   expect(api.checkouts).toEqual([]);
 });
