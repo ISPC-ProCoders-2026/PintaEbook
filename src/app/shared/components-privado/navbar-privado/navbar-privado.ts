@@ -24,7 +24,7 @@ export class NavbarPrivado {
   @Output() brandClickEvent = new EventEmitter<void>();
 
   isSidebarOpen = false;
-  isMobile = typeof window !== 'undefined' && window.innerWidth <= 860;
+  isMobile = typeof window !== 'undefined' && window.innerWidth <= 1024;
   get sectionLabel(): string {
     return [...this.libraryNavigation, ...this.resourceNavigation, ...this.accountNavigation]
       .find(item => item.id === this.sectionName)?.label
@@ -32,7 +32,7 @@ export class NavbarPrivado {
       ?? this.sectionName;
   }
   @HostListener('window:resize')
-  onResize(): void { this.isMobile = window.innerWidth <= 860; }
+  onResize(): void { this.isMobile = window.innerWidth <= 1024; }
   @HostListener('document:keydown.escape')
   closeSidebar(): void {
     if (!this.isSidebarOpen) return;

@@ -102,7 +102,7 @@
   .navbar__right { flex-wrap: wrap; justify-content: center; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .navbar { position: relative; display: flex; justify-content: center; min-height: 4.5rem; padding: .65rem 1rem; }
   .navbar__brand img { width: 8.5rem; }
   .navbar__toggle {
