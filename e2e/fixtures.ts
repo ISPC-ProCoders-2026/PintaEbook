@@ -14,6 +14,7 @@ type MockApi = {
   loginStatus: number;
   registerStatus: number;
   packages: typeof packages;
+  ebooks: { ebook_id: string; title: string; description: string; status: string; created_at: string; updated_at: string }[];
   checkouts: unknown[];
   registrations: unknown[];
   unexpected: string[];
@@ -29,6 +30,7 @@ export const test = base.extend<{
       balance: 275, balanceStatus: 200, packagesStatus: 200,
       checkoutStatus: 503, loginStatus: 200, registerStatus: 201,
       packages: [...packages], checkouts: [], registrations: [], unexpected: [],
+      ebooks: [],
     };
     // Every API request is intercepted; unknown endpoints fail the test.
     await page.route('**/api/**', async route => {
@@ -46,7 +48,7 @@ export const test = base.extend<{
         status = api.checkoutStatus;
         json = { init_point: 'https://www.mercadopago.com.ar/checkout/mock' };
       } else if (path.endsWith('/ebooks/')) {
-        json = [];
+        json = { count: api.ebooks.length, next: null, previous: null, results: api.ebooks };
       } else if (path.endsWith('/auth/login/')) {
         status = api.loginStatus;
         json = status >= 400 ? { detail: 'Credenciales inválidas' } : { access: 'e2e-access', refresh: 'e2e-refresh', user: { id: '1', role: 'writer' } };

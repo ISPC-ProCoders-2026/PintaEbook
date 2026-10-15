@@ -37,6 +37,7 @@
     "@angular/build": "^21.2.13",
     "@angular/cli": "^21.2.13",
     "@angular/compiler-cli": "^21.2.13",
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.64.0",
     "@types/node": "^26.6.5",
     "dotenv": "^17.4.2",
