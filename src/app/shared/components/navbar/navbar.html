@@ -1,25 +1,37 @@
-<header>
+﻿<header>
   <nav class="navbar" aria-label="Navegación principal">
-    <div class="navbar__left">
-      <ul>
-        <li><a routerLink="/">Inicio</a></li>
-        <li><a routerLink="/about">Sobre Nosotros</a></li>
-        <li><a [routerLink]="['/credits']" [fragment]="'planes'">Créditos</a></li>
-      </ul>
-    </div>
-
     <div class="navbar__brand">
       <a routerLink="/" aria-label="PintaEbook">
         <img ngSrc="/img/logos/logo1_acortado.png" width="180" height="64" alt="PintaEbook" priority>
       </a>
     </div>
 
-    <div class="navbar__right">
-      <ul>
-        <li><a routerLink="/login">Iniciar Sesión</a></li>
-        <li><a routerLink="/register">Registro</a></li>
-      </ul>
-      <app-theme-toggle></app-theme-toggle>
+    <button
+      class="navbar__toggle"
+      type="button"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="navbar-menu"
+      [attr.aria-label]="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
+      (click)="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div id="navbar-menu" class="navbar__menu" [class.navbar__menu--open]="menuOpen">
+      <div class="navbar__left">
+        <ul>
+          <li><a routerLink="/" (click)="closeMenu()">Inicio</a></li>
+          <li><a routerLink="/about" (click)="closeMenu()">Sobre Nosotros</a></li>
+          <li><a [routerLink]="['/credits']" [fragment]="'planes'" (click)="closeMenu()">Créditos</a></li>
+        </ul>
+      </div>
+
+      <div class="navbar__right">
+        <ul>
+          <li><a routerLink="/login" (click)="closeMenu()">Iniciar Sesión</a></li>
+          <li><a routerLink="/register" (click)="closeMenu()">Registro</a></li>
+        </ul>
+        <app-theme-toggle></app-theme-toggle>
+      </div>
     </div>
   </nav>
 </header>
