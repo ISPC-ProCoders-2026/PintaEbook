@@ -49,6 +49,7 @@ export class NavbarPrivado {
   ];
 
   readonly resourceNavigation: NavigationItem[] = [
+    { id: 'buy-credits', label: 'Comprar planes', icon: ['M4 4h16v16H4z', 'M8 8h8M8 12h8M8 16h5'] },
     { id: 'credits', label: 'Comprar créditos', icon: ['M3 3h2l2.2 12.2a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 1.9-1.4L20 8H6.2', 'M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'] },
     { id: 'purchase-history', label: 'Historial de compras', icon: ['M4 4h16v16H4z', 'M8 8h8M8 12h8M8 16h5'] },
   ];
