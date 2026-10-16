@@ -175,18 +175,30 @@ button, input, select { font: inherit; }
 .ebook-export-error { grid-column: 2 / -1; justify-self: end; max-width: 100%; margin: -7px 0 0; color: #8a1b2a; font-size: 12px; line-height: 1.4; text-align: right; }
 .ebook-export-success { grid-column: 2 / -1; justify-self: end; max-width: 100%; margin: -7px 0 0; color: #286344; font-size: 12px; line-height: 1.4; text-align: right; }
 .ebook-export-action:focus-visible { outline: 3px solid #946a2f; outline-offset: 3px; }
+.ebook-delete-action { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 12px; border: 1px solid #8a1b2a; border-radius: 6px; background: #fff8f6; color: #7a1e1b; cursor: pointer; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.ebook-delete-action:hover:not(:disabled) { background: #fce5e3; }
+.ebook-delete-action:disabled { cursor: wait; opacity: .75; }
+.ebook-delete-action svg { width: 16px; height: 16px; }
+.ebook-delete-action:focus-visible { outline: 3px solid #946a2f; outline-offset: 3px; }
+.ebook-delete-error { grid-column: 2 / -1; justify-self: end; max-width: 100%; margin: -7px 0 0; color: #8a1b2a; font-size: 12px; line-height: 1.4; text-align: right; }
 :host-context(.dark) .ebook-export-action { border-color: #d8b76f; background: #453a2b; color: #ffe0a6; }
 :host-context(.dark) .ebook-export-action:hover:not(:disabled) { border-color: #f0b2b7; background: #4b3030; color: #fff8ef; }
 :host-context(.dark) .ebook-export-error { color: #ffd1ce; }
 :host-context(.dark) .ebook-export-success { color: #bce6ca; }
 :host-context(.dark) .ebook-export-action:focus-visible { outline-color: #ffd27a; }
+:host-context(.dark) .ebook-delete-action { border-color: #e49a96; background: #542b2c; color: #ffd1ce; }
+:host-context(.dark) .ebook-delete-action:hover:not(:disabled) { background: #683235; }
+:host-context(.dark) .ebook-delete-error { color: #ffd1ce; }
+:host-context(.dark) .ebook-delete-action:focus-visible { outline-color: #ffd27a; }
 @keyframes ebook-export-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 680px) {
   .ebook-card__actions { grid-column: 2; justify-items: start; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 0; }
   .ebook-open-action { margin-top: 0; }
   .ebook-export-action { min-height: 40px; }
+  .ebook-delete-action { min-height: 40px; }
   .ebook-export-error { grid-column: 1 / -1; justify-self: start; margin: 0; text-align: left; }
   .ebook-export-success { grid-column: 1 / -1; justify-self: start; margin: 0; text-align: left; }
+  .ebook-delete-error { grid-column: 1 / -1; justify-self: start; margin: 0; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .ebook-export-action, .ebook-export-action__spinner { transition: none; animation: none; } }
