@@ -21,7 +21,7 @@
     @if (isOpeningEbook) {
       <app-book-loader message="Estamos abriendo tu E-book..."></app-book-loader>
     } @else if (activeSection === 'ebooks') {
-      <app-my-ebooks (openEbook)="openEbook($event)" (createEbook)="setActiveSection('new-ebook')"></app-my-ebooks>
+      <app-my-ebooks (openEbook)="openEbook($event)" (createEbook)="setActiveSection('new-ebook')" (ebookDeleted)="handleEbookDeleted()"></app-my-ebooks>
     } @else if (activeSection === 'profile') {
       <app-profile></app-profile>
     } @else if (activeSection === 'new-ebook') {

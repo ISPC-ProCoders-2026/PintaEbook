@@ -90,6 +90,12 @@ export class EbooksService {
     );
   }
 
+  deleteEbook(ebookId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${encodeURIComponent(ebookId)}/`, {
+      headers: this.authHeaders()
+    });
+  }
+
   /** Descarga el EPUB generado por el backend usando la autenticación JWT. */
   exportEpub(ebookId: string): Observable<{ blob: Blob; filename: string }> {
     return this.http.get(`${this.apiUrl}${encodeURIComponent(ebookId)}/export/epub/`, {

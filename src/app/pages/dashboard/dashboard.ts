@@ -82,6 +82,10 @@ export class Dashboard implements OnDestroy, OnInit {
     return this.ebooks.filter((ebook) => ebook.status === 'Fallido').length;
   }
 
+  handleEbookDeleted(): void {
+    this.loadDashboardEbooks();
+  }
+
   private loadDashboardEbooks(): void {
     this.isLoadingEbooks = true;
     this.ebooksLoadError = false;
