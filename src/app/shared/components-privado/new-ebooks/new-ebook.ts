@@ -51,6 +51,8 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   isAssistantWorking = false;
   assistantMessage = '';
   assistantError = '';
+  assistantErrorModalOpen = false;
+  assistantErrorTitle = 'No pudimos aplicar el cambio';
   creditsAvailable: number | null = null;
   readonly fieldErrors: Record<string, string> = {};
   generationProgress: GenerationProgress = {
@@ -205,6 +207,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
     this.isAssistantWorking = true;
     this.assistantError = '';
+    this.assistantErrorModalOpen = false;
     this.assistantMessage = 'El asistente está trabajando en esta sección…';
     this.ebooksService.generateSection({
       ebook_id: ebook.ebook_id,
@@ -240,21 +243,42 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
       error: (error: HttpErrorResponse) => {
         this.isAssistantWorking = false;
         this.assistantMessage = '';
-        if (error.status === 401) {
-          this.assistantError = 'El servidor rechazó tu sesión. Cerrá sesión y volvé a ingresar para usar el asistente.';
-        } else if (error.status === 402) {
+        if (error.status === 402) {
           const body = error.error as Record<string, unknown> | null;
-          const detail = body?.['error'];
-          this.assistantError = detail && typeof detail === 'object' && 'message' in detail
-            ? String((detail as { message: unknown }).message)
+          const payload = body?.['error'] as Record<string, unknown> | undefined;
+          this.assistantError = typeof payload?.['message'] === 'string'
+            ? payload['message']
             : 'Necesitás al menos 10 créditos para refinar una sección.';
-          this.refreshCreditBalance();
+          const available = payload?.['credits_available'];
+          if (typeof available === 'number') this.creditsAvailable = available;
+          else this.refreshCreditBalance();
+        } else if (error.status === 401) {
+          this.assistantError = 'El servidor rechazó tu sesión. Cerrá sesión y volvé a ingresar para usar el asistente.';
+        } else if (error.status === 504) {
+          this.assistantError = 'El proveedor de IA tardó demasiado en responder. No se debitaron créditos; podés intentarlo nuevamente.';
+        } else if (error.status === 502 || error.status === 503) {
+          const body = error.error as Record<string, unknown> | null;
+          this.assistantError = typeof body?.['detail'] === 'string'
+            ? body['detail']
+            : 'El servicio de IA no está disponible. No se aplicaron cambios; intentá nuevamente más tarde.';
         } else {
           this.assistantError = 'No se pudo aplicar el cambio. Revisá la conexión e intentá nuevamente.';
         }
+        this.assistantErrorTitle = error.status === 402
+          ? 'Créditos insuficientes'
+          : error.status === 504
+            ? 'La IA tardó demasiado'
+            : error.status === 502 || error.status === 503
+              ? 'Servicio de IA no disponible'
+              : 'No pudimos aplicar el cambio';
+        this.assistantErrorModalOpen = true;
         this.changeDetector.markForCheck();
       }
     });
+  }
+
+  closeAssistantErrorModal(): void {
+    this.assistantErrorModalOpen = false;
   }
 
   private handleProgress(progress: GenerationProgress): void {

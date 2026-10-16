@@ -171,7 +171,7 @@ export class EbooksService {
         lastProgress = Math.max(lastProgress, currentProgress);
 
         if (status === 'FAILED') {
-          const userMessage = 'La generación falló en el servidor. El libro no pudo completarse; intentá más tarde o contactá al equipo técnico.';
+          const userMessage = message.error ?? message.message ?? 'La generación falló en el servidor. No se completó el libro; revisá tu saldo antes de volver a intentarlo.';
           finish({
             progress: lastProgress,
             status_message: userMessage,

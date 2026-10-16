@@ -204,4 +204,19 @@
       </section>
     </div>
   }
+
+  @if (assistantErrorModalOpen) {
+    <div class="generation-backdrop" role="presentation">
+      <section class="generation-modal assistant-error-modal" role="alertdialog" aria-modal="true" aria-labelledby="assistant-error-title" aria-describedby="assistant-error-message">
+        <span class="generation-modal__spark assistant-error-modal__icon" aria-hidden="true">!</span>
+        <p class="eyebrow">Pinta Ebook / Asistente IA</p>
+        <h2 id="assistant-error-title">{{ assistantErrorTitle }}</h2>
+        <p id="assistant-error-message" class="generation-modal__message" role="alert">{{ assistantError }}</p>
+        @if (creditsAvailable !== null) {
+          <p class="assistant-error-modal__credits">Saldo disponible: <strong>{{ creditsAvailable }} créditos</strong></p>
+        }
+        <button type="button" class="button button--primary generation-modal__close" (click)="closeAssistantErrorModal()">Entendido</button>
+      </section>
+    </div>
+  }
 </main>
