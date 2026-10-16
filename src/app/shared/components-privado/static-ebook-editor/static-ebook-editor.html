@@ -6,8 +6,8 @@
       <p class="editor-page__intro">Actualizá los datos y el contenido de tu libro.</p>
     </div>
     <div class="editor-page__actions">
-      @if (saveMessage) { <span class="save-message" role="status">{{ saveMessage }}</span> }
-      <button type="button" class="editor-button editor-button--primary" [disabled]="isLoading || isSaving || !content" (click)="saveChanges()">
+      <span class="save-message" role="status" aria-live="polite" aria-atomic="true">{{ isSaving ? 'Guardando cambios…' : saveMessage }}</span>
+      <button type="button" class="editor-button editor-button--primary" [disabled]="isLoading || !content" [attr.aria-busy]="isSaving" (click)="saveChanges()">
         {{ isSaving ? 'Guardando…' : 'Guardar cambios' }}
       </button>
     </div>
@@ -50,7 +50,7 @@
             <p class="manuscript-page__kicker">{{ selectedSection.title }}</p>
             <h2 id="manuscript-title">{{ title || 'Tu E-book' }}</h2>
             <label class="content-label" for="section-content">Contenido HTML</label>
-            <textarea id="section-content" class="section-editor" [value]="selectedSection.content_html" (input)="updateSectionHtml($any($event.target).value)" [disabled]="isSaving" spellcheck="false" aria-describedby="section-help"></textarea>
+            <textarea id="section-content" class="section-editor" [value]="selectedSection.content_html" (input)="updateSectionHtml($any($event.target).value)" [readOnly]="isSaving" spellcheck="false" aria-describedby="section-help"></textarea>
             <p id="section-help" class="content-help">Podés editar el texto y conservar etiquetas HTML como &lt;p&gt;, &lt;h2&gt; y &lt;strong&gt;.</p>
           </article>
         } @else {
@@ -61,14 +61,14 @@
       <aside class="editor-details" aria-labelledby="details-title">
         <p class="editor-page__eyebrow">Detalles</p>
         <h2 id="details-title">Tu proyecto</h2>
-        <label class="metadata-field"><span>Título</span><input [(ngModel)]="title" maxlength="255" [disabled]="isSaving" /></label>
-        <label class="metadata-field"><span>Descripción</span><textarea [(ngModel)]="description" rows="6" [disabled]="isSaving"></textarea></label>
+        <label class="metadata-field"><span>Título</span><input [(ngModel)]="title" maxlength="255" [readOnly]="isSaving" /></label>
+        <label class="metadata-field"><span>Descripción</span><textarea [(ngModel)]="description" rows="6" [readOnly]="isSaving"></textarea></label>
         <dl class="project-details">
           <div><dt>Estado</dt><dd>{{ metadata?.status ?? '—' }}</dd></div>
           <div><dt>Capítulos</dt><dd>{{ content.chapters.length }}</dd></div>
           <div><dt>Secciones</dt><dd>{{ sectionCount }}</dd></div>
         </dl>
-        <button type="button" class="editor-button editor-button--primary editor-save-mobile" [disabled]="isSaving" (click)="saveChanges()">{{ isSaving ? 'Guardando…' : 'Guardar cambios' }}</button>
+        <button type="button" class="editor-button editor-button--primary editor-save-mobile" [attr.aria-busy]="isSaving" (click)="saveChanges()">{{ isSaving ? 'Guardando…' : 'Guardar cambios' }}</button>
       </aside>
     </div>
   }
