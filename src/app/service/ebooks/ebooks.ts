@@ -251,7 +251,15 @@ export class EbooksService {
             subscriber.error(error);
             return;
           }
-          if (!finished && socket === currentSocket) scheduleReconnect();
+          if (!finished && socket === currentSocket) {
+            subscriber.next({
+              progress: lastProgress,
+              status_message: 'Se perdió la conexión de progreso. Estamos intentando reconectar y verificando el estado del libro; no vuelvas a enviarlo.',
+              completed: false,
+              ebook_id: ebookId
+            });
+            scheduleReconnect();
+          }
         };
       };
 

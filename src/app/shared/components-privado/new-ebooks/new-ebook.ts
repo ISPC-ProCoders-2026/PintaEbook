@@ -37,6 +37,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   });
   showEditor = false;
   isLoading = false;
+  private submissionOutcomeUnknown = false;
   saveMessage = '';
   formError = '';
   wordCount = 0;
@@ -89,8 +90,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
     this.formError = '';
     Object.keys(this.fieldErrors).forEach((key) => delete this.fieldErrors[key]);
-    this.generatedEbook = null;
-    this.previewError = '';
+    // Conserva la vista previa anterior hasta confirmar el resultado de esta solicitud.
     this.isLoading = true;
     this.showProgressModal = true;
     this.generationProgress = {
@@ -125,8 +125,23 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
           });
       },
       error: (error: HttpErrorResponse) => {
-        this.isLoading = false;
         this.showHttpError(error);
+        if (error.status === 0) {
+          // El servidor pudo aceptar la solicitud aunque se haya perdido la respuesta.
+          // Mantener el bloqueo evita que un reintento cree otro libro.
+          this.submissionOutcomeUnknown = true;
+          this.formError = 'Se perdió la conexión mientras confirmábamos la solicitud. Puede que el libro ya se esté generando; no vuelvas a enviarla. Revisá Mis E-books para consultar su estado.';
+          this.generationProgress = {
+            progress: 0,
+            status_message: this.formError,
+            completed: true,
+            error: this.formError
+          };
+          this.showProgressModal = true;
+          this.changeDetector.markForCheck();
+          return;
+        }
+        this.isLoading = false;
         if (error.status === 402) {
           this.generationProgress = {
             progress: 0,
@@ -147,7 +162,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   closeProgressModal(): void {
     if (!this.generationProgress.completed) return;
     this.showProgressModal = false;
-    this.isLoading = false;
+    if (!this.submissionOutcomeUnknown) this.isLoading = false;
   }
 
   selectAssistantSection(event: Event): void {
@@ -244,6 +259,9 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
   private handleProgress(progress: GenerationProgress): void {
     this.generationProgress = progress;
+    if (progress.status_message.includes('Se perdió la conexión de progreso')) {
+      this.showProgressModal = true;
+    }
     if (progress.credits_available !== undefined) this.creditsAvailable = progress.credits_available;
     this.changeDetector.markForCheck();
 
