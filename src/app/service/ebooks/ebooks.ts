@@ -90,6 +90,12 @@ export class EbooksService {
     );
   }
 
+  deleteEbook(ebookId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${encodeURIComponent(ebookId)}/`, {
+      headers: this.authHeaders()
+    });
+  }
+
   /** Descarga el EPUB generado por el backend usando la autenticación JWT. */
   exportEpub(ebookId: string): Observable<{ blob: Blob; filename: string }> {
     return this.http.get(`${this.apiUrl}${encodeURIComponent(ebookId)}/export/epub/`, {
@@ -165,7 +171,7 @@ export class EbooksService {
         lastProgress = Math.max(lastProgress, currentProgress);
 
         if (status === 'FAILED') {
-          const userMessage = 'La generación falló en el servidor. El libro no pudo completarse; intentá más tarde o contactá al equipo técnico.';
+          const userMessage = message.error ?? message.message ?? 'La generación falló en el servidor. No se completó el libro; revisá tu saldo antes de volver a intentarlo.';
           finish({
             progress: lastProgress,
             status_message: userMessage,
@@ -245,7 +251,15 @@ export class EbooksService {
             subscriber.error(error);
             return;
           }
-          if (!finished && socket === currentSocket) scheduleReconnect();
+          if (!finished && socket === currentSocket) {
+            subscriber.next({
+              progress: lastProgress,
+              status_message: 'Se perdió la conexión de progreso. Estamos intentando reconectar y verificando el estado del libro; no vuelvas a enviarlo.',
+              completed: false,
+              ebook_id: ebookId
+            });
+            scheduleReconnect();
+          }
         };
       };
 

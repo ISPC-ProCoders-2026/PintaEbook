@@ -169,7 +169,12 @@ h1 { margin: 0; color: var(--bordeaux); font-family: 'Playfair Display', Georgia
 .generation-modal__meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; color: var(--taupe); font-size: 10px; text-align: left; }
 .generation-modal__meta strong { color: var(--bordeaux); font-size: 14px; }
 .generation-modal__close { width: 100%; margin-top: 24px; }
+.assistant-error-modal__icon { border-color: rgba(138, 30, 42, .35); background: rgba(138, 30, 42, .08); color: #8a1e2a; font-weight: 800; }
+.assistant-error-modal__credits { margin: 0; color: var(--taupe); font-size: 12px; }
+.assistant-error-modal__credits strong { color: var(--bordeaux); }
 :host-context(.dark) .generation-modal { border-color: rgba(217, 202, 179, .24); background: #2e211d; box-shadow: 0 28px 80px rgba(0, 0, 0, .5); }
+:host-context(.dark) .assistant-error-modal__icon { border-color: rgba(240, 182, 189, .4); background: rgba(240, 182, 189, .1); color: #f0b6bd; }
+:host-context(.dark) .assistant-error-modal__credits strong { color: #e5ab35; }
 :host-context(.dark) .generation-modal__spark { border-color: rgba(229, 171, 53, .5); }
 :host-context(.dark) .field input::placeholder,
 :host-context(.dark) .field textarea::placeholder { color: #c7b8aa; opacity: 1; }

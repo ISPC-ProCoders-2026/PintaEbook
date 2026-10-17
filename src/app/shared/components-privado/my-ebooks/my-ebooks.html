@@ -75,7 +75,7 @@
               <button
                 type="button"
                 class="ebook-export-action"
-                [disabled]="exportingEbookId === ebook.ebook_id"
+                [disabled]="exportingEbookId === ebook.ebook_id || deletingEbookId === ebook.ebook_id"
                 [attr.aria-busy]="exportingEbookId === ebook.ebook_id"
                 (click)="exportEpub(ebook)">
                 @if (exportingEbookId === ebook.ebook_id) {
@@ -90,12 +90,29 @@
                 }
               </button>
             }
+            <button
+              type="button"
+              class="ebook-delete-action"
+              [disabled]="deletingEbookId === ebook.ebook_id || exportingEbookId === ebook.ebook_id"
+              [attr.aria-busy]="deletingEbookId === ebook.ebook_id"
+              [attr.aria-label]="'Eliminar ' + ebook.title"
+              (click)="deleteEbook(ebook)">
+              @if (deletingEbookId === ebook.ebook_id) {
+                Eliminando…
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5 7l1 13h12l1-13M9 7V4h6v3"/></svg>
+                Eliminar
+              }
+            </button>
           </div>
           @if (exportError && exportError.ebookId === ebook.ebook_id) {
             <p class="ebook-export-error" role="alert">{{ exportError.message }}</p>
           }
           @if (exportStartedId === ebook.ebook_id) {
             <p class="ebook-export-success" role="status" aria-live="polite">La descarga se inició. Revisá las descargas de tu navegador.</p>
+          }
+          @if (deleteError && deleteError.ebookId === ebook.ebook_id) {
+            <p class="ebook-delete-error" role="alert">{{ deleteError.message }}</p>
           }
         </article>
         }

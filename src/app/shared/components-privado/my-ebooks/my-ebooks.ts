@@ -30,6 +30,7 @@ export interface EbookSummary {
 export class MyEbooks implements OnInit {
   @Output() openEbook = new EventEmitter<EbookSummary>();
   @Output() createEbook = new EventEmitter<void>();
+  @Output() ebookDeleted = new EventEmitter<void>();
 
   private readonly ebooksService = inject(EbooksService);
   private readonly destroyRef = inject(DestroyRef);
@@ -46,6 +47,8 @@ export class MyEbooks implements OnInit {
   exportingEbookId: string | null = null;
   exportStartedId: string | null = null;
   exportError: { ebookId: string; message: string } | null = null;
+  deletingEbookId: string | null = null;
+  deleteError: { ebookId: string; message: string } | null = null;
 
   ngOnInit(): void {
     this.loadEbooks();
@@ -132,6 +135,39 @@ export class MyEbooks implements OnInit {
           this.changeDetector.detectChanges();
         }
       });
+  }
+
+  deleteEbook(ebook: EbookSummary): void {
+    if (this.deletingEbookId) return;
+
+    this.deletingEbookId = ebook.ebook_id;
+    this.deleteError = null;
+    this.ebooksService.deleteEbook(ebook.ebook_id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.ebooks = this.ebooks.filter((item) => item.ebook_id !== ebook.ebook_id);
+          this.deletingEbookId = null;
+          this.ebookDeleted.emit();
+          this.changeDetector.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.deletingEbookId = null;
+          if (error.status === 401) {
+            this.authService.logout();
+            void this.router.navigate(['/login']);
+            return;
+          }
+          this.deleteError = { ebookId: ebook.ebook_id, message: this.deleteErrorMessage(error.status) };
+          this.changeDetector.detectChanges();
+        }
+      });
+  }
+
+  private deleteErrorMessage(status: number): string {
+    if (status === 404) return 'Este ebook ya no existe o no está disponible.';
+    if (status === 403) return 'No tenés permiso para eliminar este ebook.';
+    return 'No se pudo eliminar el ebook. Revisá tu conexión e intentá nuevamente.';
   }
 
   private exportErrorMessage(status: number): string {

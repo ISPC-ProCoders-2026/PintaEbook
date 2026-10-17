@@ -37,6 +37,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   });
   showEditor = false;
   isLoading = false;
+  private submissionOutcomeUnknown = false;
   saveMessage = '';
   formError = '';
   wordCount = 0;
@@ -50,6 +51,8 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   isAssistantWorking = false;
   assistantMessage = '';
   assistantError = '';
+  assistantErrorModalOpen = false;
+  assistantErrorTitle = 'No pudimos aplicar el cambio';
   creditsAvailable: number | null = null;
   readonly fieldErrors: Record<string, string> = {};
   generationProgress: GenerationProgress = {
@@ -89,8 +92,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
     this.formError = '';
     Object.keys(this.fieldErrors).forEach((key) => delete this.fieldErrors[key]);
-    this.generatedEbook = null;
-    this.previewError = '';
+    // Conserva la vista previa anterior hasta confirmar el resultado de esta solicitud.
     this.isLoading = true;
     this.showProgressModal = true;
     this.generationProgress = {
@@ -125,8 +127,23 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
           });
       },
       error: (error: HttpErrorResponse) => {
-        this.isLoading = false;
         this.showHttpError(error);
+        if (error.status === 0) {
+          // El servidor pudo aceptar la solicitud aunque se haya perdido la respuesta.
+          // Mantener el bloqueo evita que un reintento cree otro libro.
+          this.submissionOutcomeUnknown = true;
+          this.formError = 'Se perdió la conexión mientras confirmábamos la solicitud. Puede que el libro ya se esté generando; no vuelvas a enviarla. Revisá Mis E-books para consultar su estado.';
+          this.generationProgress = {
+            progress: 0,
+            status_message: this.formError,
+            completed: true,
+            error: this.formError
+          };
+          this.showProgressModal = true;
+          this.changeDetector.markForCheck();
+          return;
+        }
+        this.isLoading = false;
         if (error.status === 402) {
           this.generationProgress = {
             progress: 0,
@@ -147,7 +164,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
   closeProgressModal(): void {
     if (!this.generationProgress.completed) return;
     this.showProgressModal = false;
-    this.isLoading = false;
+    if (!this.submissionOutcomeUnknown) this.isLoading = false;
   }
 
   selectAssistantSection(event: Event): void {
@@ -190,6 +207,7 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
 
     this.isAssistantWorking = true;
     this.assistantError = '';
+    this.assistantErrorModalOpen = false;
     this.assistantMessage = 'El asistente está trabajando en esta sección…';
     this.ebooksService.generateSection({
       ebook_id: ebook.ebook_id,
@@ -225,25 +243,49 @@ export class NewEbook implements AfterViewInit, OnDestroy, OnInit {
       error: (error: HttpErrorResponse) => {
         this.isAssistantWorking = false;
         this.assistantMessage = '';
-        if (error.status === 401) {
-          this.assistantError = 'El servidor rechazó tu sesión. Cerrá sesión y volvé a ingresar para usar el asistente.';
-        } else if (error.status === 402) {
+        if (error.status === 402) {
           const body = error.error as Record<string, unknown> | null;
-          const detail = body?.['error'];
-          this.assistantError = detail && typeof detail === 'object' && 'message' in detail
-            ? String((detail as { message: unknown }).message)
+          const payload = body?.['error'] as Record<string, unknown> | undefined;
+          this.assistantError = typeof payload?.['message'] === 'string'
+            ? payload['message']
             : 'Necesitás al menos 10 créditos para refinar una sección.';
-          this.refreshCreditBalance();
+          const available = payload?.['credits_available'];
+          if (typeof available === 'number') this.creditsAvailable = available;
+          else this.refreshCreditBalance();
+        } else if (error.status === 401) {
+          this.assistantError = 'El servidor rechazó tu sesión. Cerrá sesión y volvé a ingresar para usar el asistente.';
+        } else if (error.status === 504) {
+          this.assistantError = 'El proveedor de IA tardó demasiado en responder. No se debitaron créditos; podés intentarlo nuevamente.';
+        } else if (error.status === 502 || error.status === 503) {
+          const body = error.error as Record<string, unknown> | null;
+          this.assistantError = typeof body?.['detail'] === 'string'
+            ? body['detail']
+            : 'El servicio de IA no está disponible. No se aplicaron cambios; intentá nuevamente más tarde.';
         } else {
           this.assistantError = 'No se pudo aplicar el cambio. Revisá la conexión e intentá nuevamente.';
         }
+        this.assistantErrorTitle = error.status === 402
+          ? 'Créditos insuficientes'
+          : error.status === 504
+            ? 'La IA tardó demasiado'
+            : error.status === 502 || error.status === 503
+              ? 'Servicio de IA no disponible'
+              : 'No pudimos aplicar el cambio';
+        this.assistantErrorModalOpen = true;
         this.changeDetector.markForCheck();
       }
     });
   }
 
+  closeAssistantErrorModal(): void {
+    this.assistantErrorModalOpen = false;
+  }
+
   private handleProgress(progress: GenerationProgress): void {
     this.generationProgress = progress;
+    if (progress.status_message.includes('Se perdió la conexión de progreso')) {
+      this.showProgressModal = true;
+    }
     if (progress.credits_available !== undefined) this.creditsAvailable = progress.credits_available;
     this.changeDetector.markForCheck();
 
